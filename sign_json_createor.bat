@@ -66,7 +66,7 @@ goto :3
  echo これは看板の発光の度合いを設定します。
  echo -16 ランダムに点滅する
  echo -15~-1 RS信号が入っている時、発光する(数字は発光の強さ)
- echo 0 発行しない
+ echo 0 発光しない
  echo 1~15 常に発光する(数字は発光の強さ)
  set /p lightValue=
  echo lightValueは %lightValue% に設定されました。
@@ -75,7 +75,7 @@ goto :3
  goto signjson
 :signjson
  set back=signjson
- echo ------ファイル名:signboard_%texture%.json-------
+ echo ------ファイル名:SignBoard_%texture%.json-------
  echo {
  echo   "texture": "%texture%",
  echo   "backTexture": %backTexture%,
