@@ -50,7 +50,7 @@ goto selectwelcome
  set /p modelFile=
  echo modelFileは %modelFile% に設定されました。
  echo ------------------
- echo 列車の3Dモデルの材質数を決めてください。
+ echo 列車の3Dモデルの材質数を決めてください。 材質数は必ず1~10に設定してください。でないとバグります
  set /p mat=
  echo 材質数は %mat% に設定されました。
  echo ------------------
@@ -257,7 +257,7 @@ goto selectwelcome
  set /p modelFileb=
  echo modelFileは %modelFileb% に設定されました。
  echo ------------------
- echo ボギーの3Dモデルの材質数を決めてください。
+ echo ボギーの3Dモデルの材質数を決めてください。 材質数は必ず1~10に設定してください。でないとバグります
  set /p bogie=
  echo 材質数は %bogie% に設定されました。
  echo ------------------
@@ -1049,7 +1049,7 @@ rem 以下bogiemodel3の場合
  echo ------------------
  goto json
  :trainedit_mat
- echo 列車の3Dモデルの材質数を決めてください。
+ echo 列車の3Dモデルの材質数を決めてください。 材質数は必ず1~10に設定してください。でないとバグります
  set /p mat=
  echo 材質数は %mat% に設定されました。
  echo ------------------
@@ -1240,7 +1240,7 @@ rem 以下bogiemodel3の場合
  echo ------------------
  goto json
  :trainedit_bogiemat
- echo ボギーの3Dモデルの材質数を決めてください。
+ echo ボギーの3Dモデルの材質数を決めてください。 材質数は必ず1~10に設定してください。でないとバグります
  set /p bogie=
  echo 材質数は %bogie% に設定されました。
  echo ------------------
