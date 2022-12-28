@@ -3,7 +3,7 @@
 
 使い方:バッチファイルを起動する
 
-ダウンロードは右側のtagsを押してv0.1-preをクリック,その後にsign_json_v0.1.batと書かれているものを押すとダウンロードが開始します。
+ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.8 "ahaha")を押してassetsの一番上を押してください。
 
 てか誤字ってるけど許してなw
 
