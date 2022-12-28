@@ -1909,7 +1909,7 @@ echo ----
 echo スペシャルサンクス
 echo  jsonのデータ値の提供
 echo   -- .zip
-echo   -- [スペシャルサンクス,回答待ち]
+echo   -- はちこうとっかい
 echo  デバッグ
 echo   -- akikawa9616
 echo  (c) 2022-2023 akikawa9616
