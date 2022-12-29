@@ -5,6 +5,8 @@
 
 ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.8 "ahaha")を押してassetsの一番上を押してください。
 
+注意:一部のデータ値のみ対応しています
+
 てか誤字ってるけど許してなw
 
 ----
