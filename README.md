@@ -3,7 +3,7 @@
 
 使い方:バッチファイルを起動し、データ値を設定するとjsonの中身が出てくるのでそれをコピーしてどこかに張り付け、使用しましょう
 
-ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.8 "ahaha")を押してassetsの一番上を押してください。
+ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.8.1 "ahaha")を押してassetsの一番上を押してください。
 
 注意:一部のデータ値のみ対応しています
 
