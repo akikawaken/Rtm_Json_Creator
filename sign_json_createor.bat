@@ -952,7 +952,7 @@ rem à»â∫bogiemodel3ÇÃèÍçá
  if not "%soundScriptPath%" == "" echo  "soundScriptPath": %soundScriptPath%,
  if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]],
  if not "%notdisplaycab%" == "" echo  "notDisplayCab": %notDisplayCab%,
- if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%
+ if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%,
  echo "accuracy": "%accuracy%"
  echo }
  echo --------------------------------------------------
