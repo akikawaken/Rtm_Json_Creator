@@ -729,6 +729,10 @@ rem 以下bogiemodel3の場合
  set /p rollSpeedCoefficient=
  echo rollSpeedCoefficientは %rollSpeedCoefficient% に設定されました。
  echo -------------------
+ echo rollCoefficientを決めてください。
+ set /p rollCoefficient=
+ echo rollCoefficientは %rollCoefficient% に設定されました。
+ echo -------------------
  echo rollVariationCoefficientを決めてください。
  set /p rollVariationCoefficient=
  echo rollVariationCoefficientは %rollVariationCoefficient% に設定されました。
@@ -947,7 +951,7 @@ rem 以下bogiemodel3の場合
  if not "%serverScriptPath%" == "" echo  "serverScriptPath": %serverScriptPath%,
  if not "%guiScriptPath%" == "" echo  "guiScriptPath": %guiScriptPath%,
  if not "%guiTexture%" == "" echo  "guitexture": %guiTexture%,
- if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ]
+ if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ],
  if not "%size1%" == "" echo  "size": [%size1% , %size2%],
  if not "%soundScriptPath%" == "" echo  "soundScriptPath": %soundScriptPath%,
  if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]],
@@ -966,7 +970,7 @@ rem 以下bogiemodel3の場合
 :trainedit
  echo どの部分を編集しますか?
  echo 次のどれかの名前を入力してください
- echo trainname,traintype,tags,trainmodel2,bogiemodel2,buttontexture,playerpos,bogiepos,traindistance,acceleration,maxspeed1,sound_horn,sound_dooropen,sound_stop,sound_doorclose,offset,sound_s_a,sound_accleration,sound_BrakeRelease,sound_BrakeRelease2,deceleration,sound_d_s,rolling,mutejointsound,rollspeedcoefficient,rollVariationCoefficient,rollWidthCoefficient,usecustomcolor,defaultdata,scale,smoothing,docalling,serverscriptpath,guiscriptpath,guitexture,renderaabb,size,soundscriptpath,smoke,notDisplayCab,wheelRotationSpeed,isSingleTrain,accuracy
+ echo trainname,traintype,tags,trainmodel2,bogiemodel2,buttontexture,playerpos,bogiepos,traindistance,acceleration,maxspeed1,sound_horn,sound_dooropen,sound_stop,sound_doorclose,offset,sound_s_a,sound_accleration,sound_BrakeRelease,sound_BrakeRelease2,deceleration,sound_d_s,rolling,mutejointsound,rollspeedcoefficient,rollVariationCoefficient,rollWidthCoefficient,usecustomcolor,defaultdata,scale,smoothing,docalling,serverscriptpath,guiscriptpath,guitexture,renderaabb,size,soundscriptpath,smoke,notDisplayCab,wheelRotationSpeed,isSingleTrain,rollCoefficient,accuracy
  echo trainmodelのmatの中身を変更する場合は"mat"と打ってください。,bogiemodelの場合は"mat2"です。
  set /p user=
  if %user% == trainname goto trainedit_name
@@ -1014,6 +1018,7 @@ rem 以下bogiemodel3の場合
  if %user% == sound_BrakeRelease goto trainedit_brake
  if %user% == sound_BrakeRelease2 goto trainedit_brake2
  if %user% == isSingleTrain goto trainedit_single
+ if %user% == rollCoefficient goto trainedit_rollcoe
  echo エラー:不明な名前
  goto json
  :trainedit_name
@@ -1708,6 +1713,12 @@ rem 以下bogiemodel3の場合
  echo sound_BrakeRelease2を決めてください。
  set /p sound_BrakeRelease2=
  echo sound_BrakeRelease2は %sound_BrakeRelease2% に設定されました。
+ echo --------------------
+ goto json
+ :trainedit_rollcoe
+ echo rollCoefficientを決めてください。
+ set /p rollCoefficient=
+ echo rollCoefficientは %rollCoefficient% に設定されました。
  echo --------------------
  goto json
  :trainedit_single
