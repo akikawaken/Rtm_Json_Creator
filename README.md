@@ -5,7 +5,10 @@
 
 ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.9.0 "ahaha")を押してassetsの一番上を押してください。
 
-注意:一部のデータ値のみ対応しています
+以下のデータ値に対応しています。
+trainname,traintype,tags,trainmodel2,bogiemodel2,buttontexture,playerpos,bogiepos,traindistance,acceleration,maxspeed1,sound_horn,sound_dooropen,sound_stop,sound_doorclose,offset,sound_s_a,sound_accleration,sound_BrakeRelease,sound_BrakeRelease2,deceleration,sound_d_s,rolling,mutejointsound,rollspeedcoefficient,rollVariationCoefficient,rollWidthCoefficient,usecustomcolor,defaultdata,scale,smoothing,docalling,serverscriptpath,guiscriptpath,guitexture,renderaabb,size,soundscriptpath,smoke,notDisplayCab,wheelRotationSpeed,isSingleTrain,accuracy,texture,backtexture,height,width,depth,frame,animationcycle,color,lightvalue
+
+**trainmodelとbogiemodelは材質数10までの制限があります。**
 
 てか誤字ってるけど許してなw
 
