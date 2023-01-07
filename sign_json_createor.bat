@@ -948,7 +948,7 @@ rem à»â∫bogiemodel3ÇÃèÍçá
  if not "%guiScriptPath%" == "" echo  "guiScriptPath": %guiScriptPath%,
  if not "%guiTexture%" == "" echo  "guitexture": %guiTexture%,
  if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ]
- if not "%size1%" == "" echo  "size": [%size1% , %size2%]
+ if not "%size1%" == "" echo  "size": [%size1% , %size2%],
  if not "%soundScriptPath%" == "" echo  "soundScriptPath": %soundScriptPath%,
  if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]],
  if not "%notdisplaycab%" == "" echo  "notDisplayCab": %notDisplayCab%,
