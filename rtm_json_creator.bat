@@ -18,6 +18,7 @@ set user=
  if %start% == 2 goto 2
  if %start% == 3 goto 3
  if %start% == 4 goto 4
+ if %start% == beta goto beta
  if %start% == 749 goto json 
  if %start% == 827 goto signjson
  echo エラー:不明な番号です。
@@ -1929,6 +1930,26 @@ rem 以下bogiemodel3の場合
  pause
   cls
  goto selectwelcome
+
+:beta
+ echo 列車のモデルファイルを検索します...
+ echo;
+ echo この機能を正確に使用するには"assets\minecraft\models\"へbatchを移動させてください。
+ echo;
+ echo 検索を行っています...
+ set modelget="ModelTrain_*"
+ if exist %modelget% (
+     for %%f in ("%modelget%") do (
+         echo %%f
+         set /a count=count+1
+     )
+ ) ELSE (
+     echo ファイルが見つかりませんでした。
+ )
+     echo -----------
+     echo %count%個のファイルが見つかりました。
+   pause
+   goto selectwelcome
 rem memo
  rem 変数:bogie はボギー材質数の判定にのみ使用します。  bogiemodel2とbogiemodel3で共用です。(bogiemodel3の場合は前になります。)
  rem 変数:bogie2 はbogiemodel3のときのみ使用し、後のモデルの材質数です。
