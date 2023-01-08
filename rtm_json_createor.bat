@@ -1915,20 +1915,20 @@ rem 以下bogiemodel3の場合
  goto signjson
 
 :4
-echo 作者:akikawa9616
-echo akikawa9616の連絡先:twitter:@akikawa_9616,mail:akikawa9616@outlook.jp
-echo ----
-echo スペシャルサンクス
-echo  jsonのデータ値の提供
-echo   -- .zip
-echo   -- はちこうとっかい
-echo  デバッグ
-echo   -- akikawa9616
-echo  (c) 2022-2023 akikawa9616
-echo thank you !
-pause
-cls
-goto selectwelcome
+ echo 作者:akikawa9616
+ echo akikawa9616の連絡先:twitter:@akikawa_9616,mail:akikawa9616@outlook.jp
+ echo ----
+ echo スペシャルサンクス
+ echo  jsonのデータ値の提供
+ echo   -- .zip
+ echo   -- はちこうとっかい
+ echo  デバッグ
+ echo   -- akikawa9616
+ echo  (c) 2022-2023 akikawa9616
+ echo thank you !
+ pause
+  cls
+ goto selectwelcome
 rem memo
  rem 変数:bogie はボギー材質数の判定にのみ使用します。  bogiemodel2とbogiemodel3で共用です。(bogiemodel3の場合は前になります。)
  rem 変数:bogie2 はbogiemodel3のときのみ使用し、後のモデルの材質数です。
