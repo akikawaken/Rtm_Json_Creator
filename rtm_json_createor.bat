@@ -1,27 +1,27 @@
 @echo off
 set user=
 :welcome
-echo rtm json createorへようこそ!
-echo 行動を選択してください
-:selectwelcome
-echo ----------------------------------------
-echo  行動の番号         行動の内容          
-echo ----------------------------------------
-echo     1        列車のjsonを作成します。     
-echo     2              終了させます。       
-echo     3        看板のjsonを作成します。 
-echo     4        スペシャルサンクスと作者  
-echo ----------------------------------------
-set /p start=行動の数字を入力してください...
-set back=selectwelcome
-if %start% == 1 goto 1
-if %start% == 2 goto 2
-if %start% == 3 goto 3
-if %start% == 4 goto 4
-if %start% == 749 goto json 
-if %start% == 827 goto signjson
-echo エラー:不明な番号です。
-goto selectwelcome
+ echo rtm json createorへようこそ!
+ echo 行動を選択してください
+ :selectwelcome
+ echo ----------------------------------------
+ echo  行動の番号         行動の内容          
+ echo ----------------------------------------
+ echo     1        列車のjsonを作成します。     
+ echo     2              終了させます。       
+ echo     3        看板のjsonを作成します。 
+ echo     4        スペシャルサンクスと作者  
+ echo ----------------------------------------
+ set /p start=行動の数字を入力してください...
+ set back=selectwelcome
+ if %start% == 1 goto 1
+ if %start% == 2 goto 2
+ if %start% == 3 goto 3
+ if %start% == 4 goto 4
+ if %start% == 749 goto json 
+ if %start% == 827 goto signjson
+ echo エラー:不明な番号です。
+ goto selectwelcome
 :1
  cls
  echo 列車のjsonを作成します。
