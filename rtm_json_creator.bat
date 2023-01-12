@@ -969,6 +969,7 @@ rem 以下bogiemodel3の場合
  if %user% == 1 goto trainedit
  if %user% == 2 goto 2
  echo エラー:不明な番号
+ goto json
 :trainedit
  echo どの部分を編集しますか?
  echo 次のどれかの名前を入力してください
@@ -1022,7 +1023,7 @@ rem 以下bogiemodel3の場合
  if %user% == isSingleTrain goto trainedit_single
  if %user% == rollCoefficient goto trainedit_rollcoe
  echo エラー:不明な名前
- goto json
+ goto trainedit
  :trainedit_name
  echo -----------------
  echo trainNameを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)
