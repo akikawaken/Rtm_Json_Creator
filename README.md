@@ -17,4 +17,5 @@ trainname,traintype,tags,trainmodel2,bogiemodel2,buttontexture,playerpos,bogiepo
 
 てか誤字ってるけど許してなw
 
-
+# 注意
+このリポジトリ( https://github.com/akikawaken/creator )以外ではこのファイルを配布していません。 もし別の場所で配布されているのを発見した場合は作者へすぐに知らせてください。
