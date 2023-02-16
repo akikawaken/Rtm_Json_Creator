@@ -7,10 +7,11 @@ set user=
  echo ----------------------------------------
  echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     1        列車のjsonを作成します。     
+ echo     1         列車のjsonを作成します。     
  echo     2              終了させます。       
- echo     3        看板のjsonを作成します。 
- echo     4        スペシャルサンクスと作者  
+ echo     3         看板のjsonを作成します。 
+ echo     4         スペシャルサンクスと作者  
+ echo     5        転轍機のjsonを作成します。
  echo ----------------------------------------
  set /p start=行動の数字を入力してください...
  set back=selectwelcome
@@ -18,6 +19,7 @@ set user=
  if %start% == 2 goto 2
  if %start% == 3 goto 3
  if %start% == 4 goto 4
+ if %start% == 5 goto 5
  if %start% == beta goto beta
  if %start% == 749 goto json 
  if %start% == 827 goto signjson
@@ -1934,6 +1936,420 @@ rem 以下bogiemodel3の場合
   cls
  goto selectwelcome
 
+:5
+ cls
+ echo 転轍機のjsonを作成します。
+ echo もし、途中でミスをした場合は、最後に編集できるのでそこで変更してください。
+ echo -------------
+ echo nameを決めてください。
+ echo これは転轍機の名前になります。競合しないような名前を設定してください。
+ set /p name=
+ echo nameは %name% に設定されました。
+ echo -------------
+ echo modelfileを決めてください。
+ set /p modelFile=
+ echo modelfileは %modelFile% に設定されました。
+ echo -------------
+ echo %modelFile% の材質数を設定してください。
+ set /p mat=
+ echo 材質数は %mat% に設定されました。
+ echo -------------
+ echo 3Dモデルの材質,1つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat1=
+ echo 材質,1つめの名前は %mat1% に設定されました。
+ echo ------------------
+ echo %mat1% のテクスチャへのパスを記述してください。
+ set /p mat1texture=
+ echo %mat1% のテクスチャパスは %mat1texture% に設定されました。
+ echo ------------------
+ if %mat% geq 2 goto smat2
+ goto switcher
+ :smat2
+   echo 3Dモデルの材質,2つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat2=
+   echo 材質,2つめの名前は %mat2% に設定されました。
+   echo ------------------
+   echo %mat2% のテクスチャへのパスを記述してください。
+   set /p mat2texture=
+   echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
+   echo ------------------
+ if %mat% geq 3 goto smat3
+ goto switcher
+ :smat3
+   echo 3Dモデルの材質,3つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat3=
+   echo 材質,3つめの名前は %mat3% に設定されました。
+   echo ------------------
+   echo %mat3% のテクスチャへのパスを記述してください。
+   set /p mat3texture=
+   echo %mat3% のテクスチャパスは %mat3texture% に設定されました。
+   echo ------------------
+ if %mat% geq 4 goto smat4
+ goto switcher
+ :smat4
+   echo 3Dモデルの材質,4つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat4=
+   echo 材質,4つめの名前は %mat4% に設定されました。
+   echo ------------------
+   echo %mat4% のテクスチャへのパスを記述してください。
+   set /p mat4texture=
+   echo %mat4% のテクスチャパスは %mat4texture% に設定されました。
+ if %mat% geq 5 goto smat5
+ goto switcher
+ :smat5
+   echo 3Dモデルの材質,5つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat5=
+   echo 材質,5つめの名前は %mat5% に設定されました。
+   echo ------------------
+   echo %mat5% のテクスチャへのパスを記述してください。 
+   set /p mat5texture=
+   echo %mat5% のテクスチャパスは %mat5texture% に設定されました。
+   echo ------------------
+ if %mat% geq 6 goto smat6
+ goto switcher
+ :smat6
+   echo 3Dモデルの材質,6つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat6=
+   echo 材質,6つめの名前は %mat6% に設定されました。
+   echo ------------------
+   echo %mat6% のテクスチャへのパスを記述してください。 
+   set /p mat6texture=
+   echo %mat6% のテクスチャパスは %mat6texture% に設定されました。
+   echo ------------------
+ if %mat% geq 7 goto smat7
+ goto switcher
+ :smat7
+   echo 3Dモデルの材質,7つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat7=
+   echo 材質,7つめの名前は %mat7% に設定されました。
+   echo ------------------
+   echo %mat7% のテクスチャへのパスを記述してください。 
+   set /p mat7texture=
+   echo %mat7% のテクスチャパスは %mat7texture% に設定されました。
+   echo ------------------
+ if %mat% geq 8 goto smat8
+ goto switcher
+ :smat8
+   echo 3Dモデルの材質,8つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat8=
+   echo 材質,8つめの名前は %mat8% に設定されました。
+   echo ------------------
+   echo %mat8% のテクスチャへのパスを記述してください。 
+   set /p mat8texture=
+   echo %mat8% のテクスチャパスは %mat8texture% に設定されました。
+   echo ------------------
+ if %mat% geq 9 goto smat9
+ goto switcher
+ :smat9
+   echo 3Dモデルの材質,9つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat9=
+   echo 材質,9つめの名前は %mat9% に設定されました。
+   echo ------------------
+   echo %mat9% のテクスチャへのパスを記述してください。 
+   set /p mat9texture=
+   echo %mat9% のテクスチャパスは %mat9texture% に設定されました。
+   echo ------------------
+ if %mat% geq 10 goto smat10
+ goto switcher
+ :smat10
+   echo 3Dモデルの材質,10つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat10=
+   echo 材質,10つめの名前は %mat10% に設定されました。
+   echo ------------------
+   echo %mat10% のテクスチャへのパスを記述してください。 
+   set /p mat10texture=
+   echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
+   echo ------------------
+ if %mat% geq 11 goto smat11
+ goto switcher
+ :switcher
+ echo buttontextureを決めてください。
+ set /p button=
+ echo buttonTextureは %button% に設定されました。
+ echo --------------------
+ echo sound_onactivateを決めてください。
+ echo この値が何をするかわからない場合は"minecraft:random.click"を入力してください。
+ set /p sound_onactivate=
+ echo sound_onactivateは %sound_onactivate% に設定されました。
+ echo --------------------
+ echo smoothingを決めてください。
+ set /p smoothing=
+ echo smoothingは %smoothing% に設定されました。
+ echo --------------------
+ echo doCallingを決めてください。
+ set /p doCalling=
+ echo doCallingは %doCalling% に設定されました。
+ echo --------------------
+ echo accuracyを決めてください。
+ set /p accuracy=
+ echo accuracyは %accuracy% に設定されました。
+ echo --------------------
+ echo tagsを決めてください。
+ echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
+ set /p tags=
+ echo tagsは %tags% に設定されました。
+ echo --------------------
+ echo おめでとうございます!
+ echo 完成しました!
+ echo ------------
+ echo 以下に完成したものを表示します。
+ goto switcher_json
+:switcher_json
+ set back=switcher_json
+ echo -----ファイル名:ModelMachine_%name%.json-----
+ echo {
+ echo   "name": "%name%",
+ echo   "model": {
+ echo     "modelFile": "%modelFile%",
+  if %mat% == 1 echo     "textures":[ ["%mat1%", "%mat1texture%", ""]] },
+  if %mat% == 2 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""]] },
+  if %mat% == 3 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""]] },
+  if %mat% == 4 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""]] },
+  if %mat% == 5 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""]] },
+  if %mat% == 6 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""]] },
+  if %mat% == 7 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""]] },
+  if %mat% == 8 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""]] },
+  if %mat% == 9 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""]] },
+  if %mat% == 10 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""],["%mat10%", "%mat10texture%", ""]] },
+ echo   "buttonTexture": "%button%",
+ echo   "machineType": "Point",
+ echo   "sound_OnActivate": "%sound_onactivate%",
+ echo   "smoothing": %smoothing%,
+ echo   "doCulling": %docalling%,
+ echo   "accuracy": "%accuracy%",
+ echo   "tags": "%tags%"
+ echo }
+ echo -----------------------------------
+ echo このjsonで満足していますか?
+ echo 編集をする場合は1,終了する場合は2を押してください。
+ set /p user=
+ if %user% == 1 goto switcheredit
+ if %user% == 2 goto 2
+ echo エラー:不明な番号
+ goto switcher_json
+:switcheredit
+ echo どの部分を編集しますか?
+ echo 次のどれかの名前を入力してください
+ echo name,modelfile,textures,buttonTexture,machineType,sound_OnActivate,smoothing,doCalling,accuracy,tags
+ echo 材質関係を変更する場合は有効な数字を入力してください。
+ echo;
+ echo --有効な数字--
+ echo %mat1% を編集する場合は 1 を押してください。
+ if %mat% geq 2 echo %mat2% を編集する場合は 2 を押してください。
+ if %mat% geq 3 echo %mat3% を編集する場合は 3 を押してください。
+ if %mat% geq 4 echo %mat4% を編集する場合は 4 を押してください。
+ if %mat% geq 5 echo %mat5% を編集する場合は 5 を押してください。
+ if %mat% geq 6 echo %mat6% を編集する場合は 6 を押してください。
+ if %mat% geq 7 echo %mat7% を編集する場合は 7 を押してください。
+ if %mat% geq 8 echo %mat8% を編集する場合は 8 を押してください。
+ if %mat% geq 9 echo %mat9% を編集する場合は 9 を押してください。
+ if %mat% geq 10 echo %mat10% を編集する場合は 10 を押してください。
+ set /p user=
+ if %user% == name goto switcheredit_name
+ if %user% == modelfile goto switcheredit_model
+ if %user% == textures goto switcheredit_texture
+ if %user% == buttonTexture goto switcheredit_button
+ if %user% == machineType goto switcheredit_machine
+ if %user% == sound_OnActivate goto switcheredit_sound
+ if %user% == smoothing goto switcheredit_smoo
+ if %user% == docalling goto switcheredit_call
+ if %user% == accuracy goto switcheredit_acc
+ if %user% == tags goto switcheredit_tags
+ if %user% == 1 goto switcheredit_mat_1
+ if %user% == 2 goto switcheredit_mat_2
+ if %user% == 3 goto switcheredit_mat_3
+ if %user% == 4 goto switcheredit_mat_4
+ if %user% == 5 goto switcheredit_mat_5
+ if %user% == 6 goto switcheredit_mat_6
+ if %user% == 7 goto switcheredit_mat_7
+ if %user% == 8 goto switcheredit_mat_8
+ if %user% == 9 goto switcheredit_mat_9
+ if %user% == 10 goto switcheredit_mat_10
+ echo エラー:不明な名前
+ goto switcher_json
+
+ :switcheredit_name
+ echo -------------
+ echo nameを決めてください。
+ echo これは転轍機の名前になります。競合しないような名前を設定してください。
+ set /p name=
+ echo nameは %name% に設定されました。
+ goto switcher_json
+
+ :switcheredit_model
+ echo -------------
+ echo modelfileを決めてください。
+ set /p modelFile=
+ echo modelfileは %modelFile% に設定されました。
+ goto switcher_json
+
+ :switcheredit_texture
+ echo -------------
+ echo buttontextureを決めてください。
+ set /p button=
+ echo buttonTextureは %button% に設定されました。
+ goto switcher_json
+
+ :switcheredit_sound
+ echo --------------------
+ echo sound_onactivateを決めてください。
+ echo この値が何をするかわからない場合は"minecraft:random.click"を入力してください。
+ set /p sound_onactivate=
+ echo sound_onactivateは %sound_onactivate% に設定されました。
+ goto switcher_json
+
+ :switcheredit_smoo
+ echo --------------------
+ echo smoothingを決めてください。
+ set /p smoothing=
+ echo smoothingは %smoothing% に設定されました。
+ goto switcher_json
+
+ :switcheredit_acc
+ echo --------------------
+ echo accuracyを決めてください。
+ set /p accuracy=
+ echo accuracyは %accuracy% に設定されました。
+ goto switcher_json
+ 
+ :switcheredit_tags
+ echo --------------------
+ echo tagsを決めてください。
+ echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
+ set /p tags=
+ echo tagsは %tags% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_1
+ echo -------------
+ echo 3Dモデルの材質,1つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat1=
+ echo 材質,1つめの名前は %mat1% に設定されました。
+ echo ------------------
+ echo %mat1% のテクスチャへのパスを記述してください。
+ set /p mat1texture=
+ echo %mat1% のテクスチャパスは %mat1texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_2
+ echo -------------
+ echo 3Dモデルの材質,2つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat2=
+ echo 材質,2つめの名前は %mat2% に設定されました。
+ echo ------------------
+ echo %mat2% のテクスチャへのパスを記述してください。
+ set /p mat2texture=
+ echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_3
+ echo -------------
+ echo 3Dモデルの材質,3つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat3=
+ echo 材質,3つめの名前は %mat3% に設定されました。
+ echo ------------------
+ echo %mat3% のテクスチャへのパスを記述してください。
+ set /p mat3texture=
+ echo %mat3% のテクスチャパスは %mat3texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_4
+ echo -------------
+ echo 3Dモデルの材質,4つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat4=
+ echo 材質,4つめの名前は %mat4% に設定されました。
+ echo ------------------
+ echo %mat4% のテクスチャへのパスを記述してください。
+ set /p mat4texture=
+ echo %mat4% のテクスチャパスは %mat4texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_5
+ echo -------------
+ echo 3Dモデルの材質,5つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat5=
+ echo 材質,5つめの名前は %mat5% に設定されました。
+ echo ------------------
+ echo %mat5% のテクスチャへのパスを記述してください。
+ set /p mat5texture=
+ echo %mat5% のテクスチャパスは %mat5texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_6
+ echo -------------
+ echo 3Dモデルの材質,6つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat6=
+ echo 材質,6つめの名前は %mat6% に設定されました。
+ echo ------------------
+ echo %mat6% のテクスチャへのパスを記述してください。
+ set /p mat6texture=
+ echo %mat6% のテクスチャパスは %mat6texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_7
+ echo -------------
+ echo 3Dモデルの材質,7つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat7=
+ echo 材質,7つめの名前は %mat7% に設定されました。
+ echo ------------------
+ echo %mat7% のテクスチャへのパスを記述してください。
+ set /p mat7texture=
+ echo %mat7% のテクスチャパスは %mat7texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_8
+ echo -------------
+ echo 3Dモデルの材質,8つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat28=
+ echo 材質,8つめの名前は %mat8% に設定されました。
+ echo ------------------
+ echo %mat8% のテクスチャへのパスを記述してください。
+ set /p mat8texture=
+ echo %mat8% のテクスチャパスは %mat8texture% に設定されました。
+ goto switcher_json
+
+ :switcheredit_mat_9
+ echo -------------
+ echo 3Dモデルの材質,9つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat9=
+ echo 材質,9つめの名前は %mat9% に設定されました。
+ echo ------------------
+ echo %mat2% のテクスチャへのパスを記述してください。
+ set /p mat2texture=
+ echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
+ goto switcher_json
+ 
+ :switcheredit_mat_10
+ echo -------------
+ echo 3Dモデルの材質,10つめの名前を決めてください。
+ echo 材質名を入力してください。
+ set /p mat10=
+ echo 材質,10つめの名前は %mat10% に設定されました。
+ echo ------------------
+ echo %mat10% のテクスチャへのパスを記述してください。
+ set /p mat10texture=
+ echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
+ goto switcher_json
+
 :beta
  echo 列車のモデルファイルを検索します...
  echo;
@@ -1953,6 +2369,7 @@ rem 以下bogiemodel3の場合
      echo %count%個のファイルが見つかりました。
    pause
    goto selectwelcome
+  
 rem memo
  rem 変数:bogie はボギー材質数の判定にのみ使用します。  bogiemodel2とbogiemodel3で共用です。(bogiemodel3の場合は前になります。)
  rem 変数:bogie2 はbogiemodel3のときのみ使用し、後のモデルの材質数です。
