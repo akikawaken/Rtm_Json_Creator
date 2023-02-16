@@ -1921,7 +1921,7 @@ rem 以下bogiemodel3の場合
 :4
  echo 作者:akikawa9616
  echo akikawa9616の連絡先:twitter:@akikawa_9616,mail:akikawa9616@outlook.jp
- echo このバッチファイルは https://github.com/akikawaken/creator にて配布されました。 バージョン:0.9.0
+ echo このバッチファイルは https://github.com/akikawaken/creator にて配布されました。 バージョン:0.9.1
  echo if u download from other site. that copy file/copy site, DELETE NOW THIS FILE.
  echo ----
  echo スペシャルサンクス
