@@ -1,32 +1,35 @@
 @echo off
 set user=
+set version=0.9.2.6(public)
+set tsw=NONE
 :welcome
- echo rtm json createorへようこそ!
- echo 行動を選択してください
- :selectwelcome
- echo ----------------------------------------
- echo  行動の番号         行動の内容          
- echo ----------------------------------------
- echo     1         列車のjsonを作成します。     
- echo     2              終了させます。       
- echo     3         看板のjsonを作成します。 
- echo     4         スペシャルサンクスと作者  
- echo     5        転轍機のjsonを作成します。
- echo ----------------------------------------
- set /p start=行動の数字を入力してください...
- set back=selectwelcome
- if %start% == 1 goto 1
- if %start% == 2 goto 2
- if %start% == 3 goto 3
- if %start% == 4 goto 4
- if %start% == 5 goto 5
- if %start% == beta goto beta
- if %start% == 749 goto json 
- if %start% == 827 goto signjson
- echo エラー:不明な番号です。
- goto selectwelcome
+echo rtm json createorへようこそ!
+echo 行動を選択してください
+:selectwelcome
+echo ----------------------------------------
+echo  行動の番号         行動の内容          
+echo ----------------------------------------
+echo     1        列車のjsonを作成します。     
+echo     2              終了させます。       
+echo     3        看板のjsonを作成します。 
+echo     4        スペシャルサンクスと作者  
+echo     5        転轍機のjsonを作成します。
+echo ----------------------------------------
+set /p start=行動の数字を入力してください...
+set back=selectwelcome
+if %start% == 1 goto 1
+if %start% == 2 goto 2
+if %start% == 3 goto 3
+if %start% == 4 goto 4
+if %start% == 5 goto 5
+if %start% == 749 goto json 
+if %start% == 827 goto signjson
+if %start% == error goto werror
+echo エラー:不明な番号です。
+goto selectwelcome
 :1
  cls
+ set tsw=t
  echo 列車のjsonを作成します。
  echo もし途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -----------------
@@ -898,7 +901,7 @@ rem 以下bogiemodel3の場合
  if %bogie12% == 1 goto bogie1
  if %bogie12% == 2 goto bogie2
  if %bogie12% == 8273 goto bogie8273
- echo 変数未設定:"bogie12" , 台車設定をスキップします。
+ set errorcount=1
  goto json2
  :bogie8273
   echo debug mode.
@@ -946,7 +949,7 @@ rem 以下bogiemodel3の場合
  if not "%mutejointsound%" == "" echo  "mutejointsound": %mutejointsound%,
  if not "%rollSpeedCoefficient%" == "" echo  "rollSpeedCoefficient": %rollSpeedCoefficient%,
  if not "%rollWidthCoefficient%" == "" echo  "rollWidthCoefficient": %rollWidthCoefficient%,
- if not "%rollCoefficient%" == "" echo "rollCoefficient": %rollCoefficient%,
+ if not "%rollCoefficient%" == "" echo  "rollCoefficient": %rollCoefficient%,
  if not "%usecustomcolor%" == "" echo  "useCustomColor": %useCustomColor%,
  if not "%defaultData%" == "" echo  "defaultData": %defaultData%,
  if not "%scale%" == "" echo  "scale": %scale%,
@@ -964,14 +967,99 @@ rem 以下bogiemodel3の場合
  echo "accuracy": "%accuracy%"
  echo }
  echo --------------------------------------------------
- echo このjsonで満足していますか?
- echo 編集をする場合は1,終了する場合は2を押してください。
+ echo 行動を選択してください
+ echo ----------------------------------------
+ echo  行動の番号         行動の内容          
+ echo ----------------------------------------
+ echo     1              jsonを編集する       
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。(beta)  
+ echo ----------------------------------------
  set user=
  set /p user=
  if %user% == 1 goto trainedit
  if %user% == 2 goto 2
+ if %user% == 3 goto savetrainjson
  echo エラー:不明な番号
  goto json
+
+:savetrainjson
+ echo jsonを保存します。 jsonはこのbatchファイルがあるディレクトリにできるはずです。
+ pause
+ echo { > ModelTrain_%trainname%.json
+ echo    "trainName": "%trainname%", >> ModelTrain_%trainname%.json
+ echo    "trainType": "%traintype%", >> ModelTrain_%trainname%.json
+ echo    "tags":"%tags%", >> ModelTrain_%trainname%.json
+ echo    "trainModel2":{"modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
+ if %mat% == 1 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 2 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 3 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 4 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 5 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 6 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 7 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 8 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 9 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 10 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"]] }, >> ModelTrain_%trainname%.json
+  echo  "bogieModel2":{ >> ModelTrain_%trainname%.json
+  echo    "modelFile": "%modelFileb%", >> ModelTrain_%trainname%.json
+  if %bogie% == 1 echo         "textures":[ ["%bogie1%", "%bogie1texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 2 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 3 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 4 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 5 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 6 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 7 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 8 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 9 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 10 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"]] }, >> ModelTrain_%trainname%.json
+ echo  "buttonTexture": "%button%", >> ModelTrain_%trainname%.json
+ echo  "playerPos": [[%playerPosx%, %playerPosy%, %playerPosz%], [%playerPos2x%, %playerPos2y%, %playerPos2z%]],  >> ModelTrain_%trainname%.json
+ echo  "bogiePos": [[%bogieposx%, %bogieposy%, %bogieposz%], [%bogiepos2x%, %bogiepos2y%, %bogiepos2z%]],  >> ModelTrain_%trainname%.json
+ echo  "trainDistance": %trainDistance%,  >> ModelTrain_%trainname%.json
+ if not "%accelerateion%" == "" echo  "accelerateion" : %accelerateion%, >> ModelTrain_%trainname%.json
+ if not "%maxspeed1%" == "" echo  "maxSpeed": [%maxSpeed1% , %maxSpeed2% , %maxSpeed3% , %maxSpeed4% , %maxSpeed5%], >> ModelTrain_%trainname%.json
+ if not "%sound_horn%" == "" echo  "sound_Horn": "%sound_horn%", >> ModelTrain_%trainname%.json
+ if not "%sound_DoorOpen%" == "" echo  "sound_DoorOpen": "%sound_DoorOpen%", >> ModelTrain_%trainname%.json
+ if not "%offset%" == "" echo  "offset": [%offset% , %offset2% , %offset3%], >> ModelTrain_%trainname%.json
+ if not "%sound_DoorClose%" == "" echo  "sound_DoorClose": %sound_DoorClose%, >> ModelTrain_%trainname%.json
+ if not "%sound_Stop%" == "" echo  "sound_Stop": %sound_Stop%, >> ModelTrain_%trainname%.json
+ if not "%sound_S_A%" == "" echo  "sound_S_A": %sound_S_A%, >> ModelTrain_%trainname%.json
+ if not "%sound_accleration%" == "" echo  "sound_accleration": %sound_accleration%, >> ModelTrain_%trainname%.json
+ if not "%Deceleration%" == "" echo  "sound_Deceration": %sound_Deceleration%, >> ModelTrain_%trainname%.json
+ if not "%sound_D_S%" == "" echo  "sound_D_S": %sound_D_S%, >> ModelTrain_%trainname%.json
+ if not "%rolling%" == "" echo  "rolling": %rolling%, >> ModelTrain_%trainname%.json
+ if not "%mutejointsound%" == "" echo  "mutejointsound": %mutejointsound%, >> ModelTrain_%trainname%.json
+ if not "%rollSpeedCoefficient%" == "" echo  "rollSpeedCoefficient": %rollSpeedCoefficient%, >> ModelTrain_%trainname%.json
+ if not "%rollWidthCoefficient%" == "" echo  "rollWidthCoefficient": %rollWidthCoefficient%, >> ModelTrain_%trainname%.json
+ if not "%rollCoefficient%" == "" echo  "rollCoefficient": %rollCoefficient%, >> ModelTrain_%trainname%.json
+ if not "%usecustomcolor%" == "" echo  "useCustomColor": %useCustomColor%, >> ModelTrain_%trainname%.json
+ if not "%defaultData%" == "" echo  "defaultData": %defaultData%, >> ModelTrain_%trainname%.json
+ if not "%scale%" == "" echo  "scale": %scale%, >> ModelTrain_%trainname%.json
+ if not "%smoothing%" == "" echo  "smoothing": %smoothing%, >> ModelTrain_%trainname%.json
+ if not "%doCalling%" == "" echo  "doCalling": %doCalling%, >> ModelTrain_%trainname%.json
+ if not "%serverScriptPath%" == "" echo  "serverScriptPath": %serverScriptPath%, >> ModelTrain_%trainname%.json
+ if not "%guiScriptPath%" == "" echo  "guiScriptPath": %guiScriptPath%, >> ModelTrain_%trainname%.json
+ if not "%guiTexture%" == "" echo  "guitexture": %guiTexture%, >> ModelTrain_%trainname%.json
+ if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ], >> ModelTrain_%trainname%.json
+ if not "%size1%" == "" echo  "size": [%size1% , %size2%], >> ModelTrain_%trainname%.json
+ if not "%soundScriptPath%" == "" echo  "soundScriptPath": %soundScriptPath%, >> ModelTrain_%trainname%.json
+ if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]], >> ModelTrain_%trainname%.json
+ if not "%notdisplaycab%" == "" echo  "notDisplayCab": %notDisplayCab%, >> ModelTrain_%trainname%.json
+ if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%, >> ModelTrain_%trainname%.json
+ echo "accuracy": "%accuracy%" >> ModelTrain_%trainname%.json
+ echo } >> ModelTrain_%trainname%.json
+  if exist ModelTrain_%trainname%.json (
+  echo;
+  echo ファイルの保存が完了しました。
+  echo ファイル名:"ModelTrain_%trainname%.json"
+  echo;
+ ) ELSE (
+  set error=13N
+  goto ERROR
+ )
+ goto %back%
+
 :trainedit
  echo どの部分を編集しますか?
  echo 次のどれかの名前を入力してください
@@ -1025,7 +1113,7 @@ rem 以下bogiemodel3の場合
  if %user% == isSingleTrain goto trainedit_single
  if %user% == rollCoefficient goto trainedit_rollcoe
  echo エラー:不明な名前
- goto trainedit
+ goto json
  :trainedit_name
  echo -----------------
  echo trainNameを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)
@@ -1362,7 +1450,7 @@ rem 以下bogiemodel3の場合
    echo ------------------
  if %bogie% geq 9 goto editbogie9
  goto json
- :bogie9
+ :editbogie9
    echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie9=
@@ -1745,6 +1833,7 @@ rem 以下bogiemodel3の場合
   exit
 :3
  cls
+ set tsw=S
  echo 看板のjsonを作成します。
  echo もし途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
@@ -1760,19 +1849,19 @@ rem 以下bogiemodel3の場合
  set /p backTexture=
  echo backTextureは %backTexture% に設定されました。
  echo -------------
- echo heightを決めてください。 使用可能:整数と小数第二位まで(例:0.75) 
+ echo heightを決めてください。 使用可能:整数と小数第三位まで(例:0.75) 
  echo 単位は"メートル"です。
  echo これは看板の高さになります。
  set /p height=
  echo heightは %height% に設定されました。
  echo -------------
- echo widthを決めてください。  使用可能:整数と小数第二位まで(例:2.25)
+ echo widthを決めてください。  使用可能:整数と小数第三位まで(例:2.25)
  echo 単位は"メートル"です。
  echo これは看板の横の長さになります。
  set /p width=
  echo widthは %width% に設定されました。
  echo -------------
- echo depthを決めてください。 使用可能:整数と小数第二位まで(例:0.375)
+ echo depthを決めてください。 使用可能:整数と小数第三位まで(例:0.375)
  echo 単位は"メートル"です。
  echo これは看板の奥行になります。
  set /p depth=
@@ -1820,14 +1909,47 @@ rem 以下bogiemodel3の場合
  echo   "lightValue": %lightValue%
  echo }
  echo ------------------------------------------------
- echo このjsonで満足していますか?
- echo 編集をする場合は1,終了する場合は2を押してください。
+ echo 行動を選択してください
+ echo ----------------------------------------
+ echo  行動の番号         行動の内容          
+ echo ----------------------------------------
+ echo     1              jsonを編集する       
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。(beta)  
+ echo ----------------------------------------
  set user=
  set /p user=
  if %user% == 1 goto signedit
  if %user% == 2 goto 2
+ if %user% == 3 goto savesignjson
  echo エラー:不明な番号
  goto signjson
+
+:savesignjson
+ echo jsonを保存します。 jsonはこのbatchファイルがあるディレクトリにできるはずです。
+ pause
+ echo { > SignBoard_%texture%.json
+ echo   "texture": "%texture%", >> SignBoard_%texture%.json
+ echo   "backTexture": %backTexture%, >> SignBoard_%texture%.json
+ echo   "height": %height%, >> SignBoard_%texture%.json
+ echo   "width": %width%, >> SignBoard_%texture%.json
+ echo   "depth": %depth%, >> SignBoard_%texture%.json
+ echo   "frame": %frame%, >> SignBoard_%texture%.json
+ echo   "animationCycle": %animationCycle%, >> SignBoard_%texture%.json
+ echo   "color" : %color%, >> SignBoard_%texture%.json
+ echo   "lightValue": %lightValue% >> SignBoard_%texture%.json
+ echo } >> SignBoard_%texture%.json
+ if exist SignBoard_%texture%.json (
+  echo;
+  echo ファイルの保存が完了しました。
+  echo ファイル名:"SignBoard_%texture%.json"
+  echo;
+ ) ELSE (
+  set error=33N
+  goto ERROR
+ )
+ goto %back%
+
 :signedit
  echo どの部分を編集しますか?
  echo jsonのデータ値の名前を入力してください。(上のjsonからデータ値をコピペしてください。小文字大文字の違いでエラーになってしまいます。)
@@ -1862,7 +1984,7 @@ rem 以下bogiemodel3の場合
  goto signjson
  :signedit_h
  echo -------------
- echo heightを決めてください。 使用可能:整数と小数第二位まで(例:0.75) 
+ echo heightを決めてください。 使用可能:整数と小数第三位まで(例:0.75) 
  echo 単位は"メートル"です。
  echo これは看板の高さになります。
  set /p height=
@@ -1870,7 +1992,7 @@ rem 以下bogiemodel3の場合
  goto signjson
  :signedit_w
  echo -------------
- echo widthを決めてください。  使用可能:整数と小数第二位まで(例:2.25)
+ echo widthを決めてください。  使用可能:整数と小数第三位まで(例:2.25)
  echo 単位は"メートル"です。
  echo これは看板の横の長さになります。
  set /p width=
@@ -1878,7 +2000,7 @@ rem 以下bogiemodel3の場合
  goto signjson
  :signedit_d
  echo -------------
- echo depthを決めてください。 使用可能:整数と小数第二位まで(例:0.375)
+ echo depthを決めてください。 使用可能:整数と小数第三位まで(例:0.375)
  echo 単位は"メートル"です。
  echo これは看板の奥行になります。
  set /p depth=
@@ -1919,25 +2041,23 @@ rem 以下bogiemodel3の場合
  goto signjson
 
 :4
- echo 作者:akikawa9616
- echo akikawa9616の連絡先:twitter:@akikawa_9616,mail:akikawa9616@outlook.jp
- echo このバッチファイルは https://github.com/akikawaken/creator にて配布されました。 バージョン:0.9.1
- echo if u download from other site. that copy file/copy site, DELETE NOW THIS FILE.
- echo ----
- echo スペシャルサンクス
- echo  jsonのデータ値の提供
- echo   -- .zip
- echo   -- はちこうとっかい
- echo  デバッグ
- echo   -- akikawa9616
- echo  (c) 2022-2023 akikawa9616
- echo thank you !
- pause
-  cls
- goto selectwelcome
-
+echo 作者:akikawa9616
+echo akikawa9616の連絡先:twitter:@akikawa_9616,mail:akikawa9616@outlook.jp
+echo ----
+echo スペシャルサンクス
+echo  jsonのデータ値の提供
+echo   -- .zip
+echo   -- はちこうとっかい
+echo  デバッグ
+echo   -- akikawa9616
+echo  (c) 2022-2023 akikawa9616
+echo thank you !
+pause
+cls
+goto selectwelcome
 :5
  cls
+ set tsw=w
  echo 転轍機のjsonを作成します。
  echo もし、途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
@@ -2111,6 +2231,7 @@ rem 以下bogiemodel3の場合
  echo   "name": "%name%",
  echo   "model": {
  echo     "modelFile": "%modelFile%",
+  if %mat% == "" goto error
   if %mat% == 1 echo     "textures":[ ["%mat1%", "%mat1texture%", ""]] },
   if %mat% == 2 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""]] },
   if %mat% == 3 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""]] },
@@ -2130,13 +2251,57 @@ rem 以下bogiemodel3の場合
  echo   "tags": "%tags%"
  echo }
  echo -----------------------------------
- echo このjsonで満足していますか?
- echo 編集をする場合は1,終了する場合は2を押してください。
+ echo 行動を選択してください
+ echo ----------------------------------------
+ echo  行動の番号         行動の内容          
+ echo ----------------------------------------
+ echo     1              jsonを編集する       
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。(beta)  
+ echo ----------------------------------------
  set /p user=
  if %user% == 1 goto switcheredit
  if %user% == 2 goto 2
+ if %user% == 3 goto saveswitcherjson
  echo エラー:不明な番号
  goto switcher_json
+
+:saveswitcherjson
+ echo jsonを保存します。 jsonはこのbatchファイルがあるディレクトリにできるはずです。
+ pause
+ echo { > ModelMachine_%name%.json
+ echo   "name": "%name%", >> ModelMachine_%name%.json
+ echo   "model": { >> ModelMachine_%name%.json
+ echo     "modelFile": "%modelFile%", >> ModelMachine_%name%.json
+  if %mat% == 1 echo     "textures":[ ["%mat1%", "%mat1texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 2 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 3 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 4 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 5 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 6 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 7 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 8 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 9 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""]] }, >> ModelMachine_%name%.json
+  if %mat% == 10 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""],["%mat10%", "%mat10texture%", ""]] }, >> ModelMachine_%name%.json
+ echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
+ echo   "machineType": "Point", >> ModelMachine_%name%.json
+ echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
+ echo   "smoothing": %smoothing%, >> ModelMachine_%name%.json
+ echo   "doCulling": %docalling%, >> ModelMachine_%name%.json
+ echo   "accuracy": "%accuracy%", >> ModelMachine_%name%.json
+ echo   "tags": "%tags%" >> ModelMachine_%name%.json
+ echo } >> ModelMachine_%name%.json
+  if exist ModelMachine_%name%.json (
+  echo;
+  echo ファイルの保存が完了しました。
+  echo ファイル名:"ModelMachine_%name%.json"
+  echo;
+ ) ELSE (
+  set error=53N
+  goto ERROR
+ )
+ goto %back%
+
 :switcheredit
  echo どの部分を編集しますか?
  echo 次のどれかの名前を入力してください
@@ -2350,26 +2515,13 @@ rem 以下bogiemodel3の場合
  echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
  goto switcher_json
 
-:beta
- echo 列車のモデルファイルを検索します...
- echo;
- echo この機能を正確に使用するには"assets\minecraft\models\"へbatchを移動させてください。
- echo;
- echo 検索を行っています...
- set modelget="ModelTrain_*"
- if exist %modelget% (
-     for %%f in ("%modelget%") do (
-         echo %%f
-         set /a count=count+1
-     )
- ) ELSE (
-     echo ファイルが見つかりませんでした。
- )
-     echo -----------
-     echo %count%個のファイルが見つかりました。
-   pause
-   goto selectwelcome
-  
+ 
+
+
+
+
+ 
+
 rem memo
  rem 変数:bogie はボギー材質数の判定にのみ使用します。  bogiemodel2とbogiemodel3で共用です。(bogiemodel3の場合は前になります。)
  rem 変数:bogie2 はbogiemodel3のときのみ使用し、後のモデルの材質数です。
@@ -2378,3 +2530,33 @@ rem 対応しているデータ値
   rem trainname,traintype,tags,trainmodel2,bogiemodel2,buttontexture,playerpos,bogiepos,traindistance,acceleration,maxspeed1,sound_horn,sound_dooropen,sound_stop,sound_doorclose,offset,sound_s_a,sound_accleration,sound_BrakeRelease,sound_BrakeRelease2,deceleration,sound_d_s,rolling,mutejointsound,rollspeedcoefficient,rollVariationCoefficient,rollWidthCoefficient,usecustomcolor,defaultdata,scale,smoothing,docalling,serverscriptpath,guiscriptpath,guitexture,renderaabb,size,soundscriptpath,smoke,notDisplayCab,wheelRotationSpeed,isSingleTrain,accuracy
  rem signboard
   rem texture,backtexture,height,width,depth,frame,animationcycle,color,lightvalue
+rem ERROR CODE
+ rem 33N 
+  rem 看板のjsonを保存した後にそのファイルが見つかりませんでした。
+ rem 13N
+  rem 列車のjsonを保存した後にそのファイルが見つかりませんでした。
+ rem 53N
+  rem 転轍機のjsonを保存した後にそのファイルが見つかりませんでした。
+ rem 0-00
+  rem 故意的に発生させたエラー。
+ 
+:werror
+ echo 故意的なエラー。
+ set error=0-00
+ goto error
+
+
+
+:ERROR
+  echo 申し訳ありません。どこかでエラーが発生しました。
+  echo 可能であれば、作者に失敗した際の詳細情報を送信してください。
+  echo 今後の改良に情報を使用させていただきます。
+  echo (第三者への送信や、情報の公開は一切しません。)
+  echo;
+  echo --詳細情報--
+  echo OS:%OS%
+  echo cmdext:%cmdextversion%
+  echo dir:%cd%
+  echo T/S/W:%tsw%
+  echo error-code:%error%
+  pause
