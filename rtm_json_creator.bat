@@ -1,6 +1,6 @@
 @echo off
 set user=
-set version=0.9.2.6(public)
+set version=0.9.2.8(public)
 set tsw=NONE
 :welcome
 echo rtm json createorへようこそ!
@@ -239,6 +239,97 @@ goto selectwelcome
    echo ------------------
  if %mat% geq 11 goto mat11
  goto bogies
+ :mat11
+   echo 列車の3Dモデルの材質,11つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat11=
+   echo 材質,1つめの名前は %mat11% に設定されました。
+   echo ------------------
+   echo %mat10% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat11texture=
+   echo %mat11% のテクスチャパスは %mat11texture% に設定されました。
+   echo ------------------
+   echo %mat11% の %mat11texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat11a=
+   echo %mat11% の %mat11texture% のオプションは %mat11a% に設定されました。
+   echo ------------------
+ if %mat% geq 12 goto mat12
+ goto bogies
+ :mat12
+   echo 列車の3Dモデルの材質,12つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat12=
+   echo 材質,1つめの名前は %mat12% に設定されました。
+   echo ------------------
+   echo %mat12% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat12texture=
+   echo %mat12% のテクスチャパスは %mat12texture% に設定されました。
+   echo ------------------
+   echo %mat12% の %mat12texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat12a=
+   echo %mat12% の %mat12texture% のオプションは %mat12a% に設定されました。
+   echo ------------------
+ if %mat% geq 13 goto mat13
+ goto bogies
+ :mat13
+   echo 列車の3Dモデルの材質,13つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat13=
+   echo 材質,1つめの名前は %mat13% に設定されました。
+   echo ------------------
+   echo %mat13% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat13texture=
+   echo %mat13% のテクスチャパスは %mat13texture% に設定されました。
+   echo ------------------
+   echo %mat13% の %mat13texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat13a=
+   echo %mat13% の %mat13texture% のオプションは %mat13a% に設定されました。
+   echo ------------------
+ if %mat% geq 14 goto mat14
+ goto bogies
+ :mat14
+   echo 列車の3Dモデルの材質,14つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat14=
+   echo 材質,1つめの名前は %mat14% に設定されました。
+   echo ------------------
+   echo %mat14% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat14texture=
+   echo %mat14% のテクスチャパスは %mat14texture% に設定されました。
+   echo ------------------
+   echo %mat14% の %mat14texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat14a=
+   echo %mat14% の %mat14texture% のオプションは %mat14a% に設定されました。
+   echo ------------------
+ if %mat% geq 15 goto mat15
+ goto bogies
+ :mat15
+   echo 列車の3Dモデルの材質,15つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat15=
+   echo 材質,1つめの名前は %mat15% に設定されました。
+   echo ------------------
+   echo %mat15% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat15texture=
+   echo %mat15% のテクスチャパスは %mat15texture% に設定されました。
+   echo ------------------
+   echo %mat15% の %mat15texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat15a=
+   echo %mat15% の %mat15texture% のオプションは %mat15a% に設定されました。
+   echo ------------------
+ if %mat% geq 16 goto mat16
+ goto bogies
+
  :bogies
  echo ボギーのモデルを前後別に設定しますか?
  echo 別にしない場合は1,別にする場合は2を入力してください。
@@ -298,7 +389,7 @@ goto selectwelcome
  if %bogie% geq 3 goto bogie3
  goto 1222
  :bogie3
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,3つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie3=
    echo 材質,1つめの名前は %bogie3% に設定されました。
@@ -311,7 +402,7 @@ goto selectwelcome
  if %bogie% geq 4 goto bogie4
  goto 1222
  :bogie4
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,4つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie4=
    echo 材質,1つめの名前は %bogie4% に設定されました。
@@ -324,7 +415,7 @@ goto selectwelcome
  if %bogie% geq 5 goto bogie5
  goto 1222
  :bogie5
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,5つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie5=
    echo 材質,1つめの名前は %bogie5% に設定されました。
@@ -337,7 +428,7 @@ goto selectwelcome
  if %bogie% geq 6 goto bogie6
  goto 1222
  :bogie6
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,6つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie6=
    echo 材質,1つめの名前は %bogie6% に設定されました。
@@ -350,7 +441,7 @@ goto selectwelcome
  if %bogie% geq 7 goto bogie7
  goto 1222
  :bogie7
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,7つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie7=
    echo 材質,1つめの名前は %bogie7% に設定されました。
@@ -363,7 +454,7 @@ goto selectwelcome
  if %bogie% geq 8 goto bogie8
  goto 1222
  :bogie8
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,8つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie8=
    echo 材質,1つめの名前は %bogie8% に設定されました。
@@ -376,7 +467,7 @@ goto selectwelcome
  if %bogie% geq 9 goto bogie9
  goto 1222
  :bogie9
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,9つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie9=
    echo 材質,1つめの名前は %bogie9% に設定されました。
@@ -389,7 +480,7 @@ goto selectwelcome
  if %bogie% geq 10 goto bogie10
  goto 1222
  :bogie10
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,10つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie10=
    echo 材質,1つめの名前は %bogie10% に設定されました。
@@ -400,6 +491,71 @@ goto selectwelcome
    echo %bogie10% のテクスチャパスは %bogie10texture% に設定されました。
    echo ------------------
  if %bogie% geq 11 goto bogie11
+ goto 1222
+ :bogie11
+   echo ボギーの3Dモデルの材質,11つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie11=
+   echo 材質,1つめの名前は %bogie11% に設定されました。
+   echo ------------------
+   echo %bogie11% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie11texture=
+   echo %bogie11% のテクスチャパスは %bogie11texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 12 goto bogie12
+ goto 1222
+ :bogie12
+   echo ボギーの3Dモデルの材質,12つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie12=
+   echo 材質,1つめの名前は %bogie12% に設定されました。
+   echo ------------------
+   echo %bogie12% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie12texture=
+   echo %bogie12% のテクスチャパスは %bogie12texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 13 goto bogie13
+ goto 1222
+ :bogie13
+   echo ボギーの3Dモデルの材質,13つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie13=
+   echo 材質,1つめの名前は %bogie13% に設定されました。
+   echo ------------------
+   echo %bogie13% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie13texture=
+   echo %bogie13% のテクスチャパスは %bogie13texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 14 goto bogie14
+ goto 1222
+ :bogie14
+   echo ボギーの3Dモデルの材質,14つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie14=
+   echo 材質,1つめの名前は %bogie14% に設定されました。
+   echo ------------------
+   echo %bogie14% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie14texture=
+   echo %bogie14% のテクスチャパスは %bogie14texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 15 goto bogie15
+ goto 1222
+ :bogie15
+   echo ボギーの3Dモデルの材質,15つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie15=
+   echo 材質,1つめの名前は %bogie15% に設定されました。
+   echo ------------------
+   echo %bogie15% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie15texture=
+   echo %bogie15% のテクスチャパスは %bogie15texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 16 goto bogie16
  goto 1222
  
 rem 以下bogiemodel3の場合
@@ -897,6 +1053,11 @@ rem 以下bogiemodel3の場合
   if %mat% == 8 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"]] },
   if %mat% == 9 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"]] },
   if %mat% == 10 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"]] },
+  if %mat% == 11 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"]] },
+  if %mat% == 12 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"]] },
+  if %mat% == 13 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"]] },
+  if %mat% == 14 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"]] },
+  if %mat% == 15 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"]] },
 
  if %bogie12% == 1 goto bogie1
  if %bogie12% == 2 goto bogie2
@@ -921,6 +1082,11 @@ rem 以下bogiemodel3の場合
   if %bogie% == 8 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"]] },
   if %bogie% == 9 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"]] },
   if %bogie% == 10 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"]] },
+  if %bogie% == 11 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"]] },
+  if %bogie% == 12 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"]] },
+  if %bogie% == 13 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"],["%bogie13%", "%bogie13texture%"]] },
+  if %bogie% == 14 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"],["%bogie13%", "%bogie13texture%"],["%bogie14%", "%bogie14texture%"]] },
+  if %bogie% == 15 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"],["%bogie13%", "%bogie13texture%"],["%bogie14%", "%bogie14texture%"],["%bogie15%", "%bogie15texture%"]] },
  
  rem bogiemodel3が完成した場合、この文章の2行下以外のremを外してください。
  rem :bogie2
@@ -1001,6 +1167,11 @@ rem 以下bogiemodel3の場合
   if %mat% == 8 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"]] }, >> ModelTrain_%trainname%.json
   if %mat% == 9 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"]] }, >> ModelTrain_%trainname%.json
   if %mat% == 10 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 11 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 12 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 13 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 14 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"]] }, >> ModelTrain_%trainname%.json
+  if %mat% == 15 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"]] }, >> ModelTrain_%trainname%.json
   echo  "bogieModel2":{ >> ModelTrain_%trainname%.json
   echo    "modelFile": "%modelFileb%", >> ModelTrain_%trainname%.json
   if %bogie% == 1 echo         "textures":[ ["%bogie1%", "%bogie1texture%"]] }, >> ModelTrain_%trainname%.json
@@ -1013,6 +1184,11 @@ rem 以下bogiemodel3の場合
   if %bogie% == 8 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"]] }, >> ModelTrain_%trainname%.json
   if %bogie% == 9 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"]] }, >> ModelTrain_%trainname%.json
   if %bogie% == 10 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 11 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 12 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 13 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"],["%bogie13%", "%bogie13texture%"]] }, >> ModelTrain_%trainname%.json
+  if %bogie% == 14 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"],["%bogie13%", "%bogie13texture%"],["%bogie14%", "%bogie14texture%"]] }, >> ModelTrain_%trainname%.json 
+  if %bogie% == 15 echo         "textures":[ ["%bogie1%", "%bogie1texture%"],["%bogie2%", "%bogie2texture%"],["%bogie3%", "%bogie3texture%"],["%bogie4%", "%bogie4texture%"],["%bogie5%", "%bogie5texture%"],["%bogie6%", "%bogie6texture%"],["%bogie7%", "%bogie7texture%"],["%bogie8%", "%bogie8texture%"],["%bogie9%", "%bogie9texture%"],["%bogie10%", "%bogie10texture%"],["%bogie11%", "%bogie11texture%"],["%bogie12%", "%bogie12texture%"],["%bogie13%", "%bogie13texture%"],["%bogie14%", "%bogie14texture%"],["%bogie15%", "%bogie15texture%"]] }, >> ModelTrain_%trainname%.json 
  echo  "buttonTexture": "%button%", >> ModelTrain_%trainname%.json
  echo  "playerPos": [[%playerPosx%, %playerPosy%, %playerPosz%], [%playerPos2x%, %playerPos2y%, %playerPos2z%]],  >> ModelTrain_%trainname%.json
  echo  "bogiePos": [[%bogieposx%, %bogieposy%, %bogieposz%], [%bogiepos2x%, %bogiepos2y%, %bogiepos2z%]],  >> ModelTrain_%trainname%.json
@@ -1330,6 +1506,97 @@ rem 以下bogiemodel3の場合
    echo ------------------
  if %mat% geq 11 goto editmat11
  goto json
+ :editmat11
+   echo 列車の3Dモデルの材質,11つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat11=
+   echo 材質,1つめの名前は %mat11% に設定されました。
+   echo ------------------
+   echo %mat10% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat11texture=
+   echo %mat11% のテクスチャパスは %mat11texture% に設定されました。
+   echo ------------------
+   echo %mat11% の %mat11texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat11a=
+   echo %mat11% の %mat11texture% のオプションは %mat11a% に設定されました。
+   echo ------------------
+ if %mat% geq 12 goto editmat12
+ goto json
+ :editmat12
+   echo 列車の3Dモデルの材質,12つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat12=
+   echo 材質,1つめの名前は %mat12% に設定されました。
+   echo ------------------
+   echo %mat12% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat12texture=
+   echo %mat12% のテクスチャパスは %mat12texture% に設定されました。
+   echo ------------------
+   echo %mat12% の %mat12texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat12a=
+   echo %mat12% の %mat12texture% のオプションは %mat12a% に設定されました。
+   echo ------------------
+ if %mat% geq 13 goto editmat13
+ goto json
+ :editmat13
+   echo 列車の3Dモデルの材質,13つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat13=
+   echo 材質,1つめの名前は %mat13% に設定されました。
+   echo ------------------
+   echo %mat13% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat13texture=
+   echo %mat13% のテクスチャパスは %mat13texture% に設定されました。
+   echo ------------------
+   echo %mat13% の %mat13texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat13a=
+   echo %mat13% の %mat13texture% のオプションは %mat13a% に設定されました。
+   echo ------------------
+ if %mat% geq 14 goto editmat14
+ goto json
+ :editmat14
+   echo 列車の3Dモデルの材質,14つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat14=
+   echo 材質,1つめの名前は %mat14% に設定されました。
+   echo ------------------
+   echo %mat14% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat14texture=
+   echo %mat14% のテクスチャパスは %mat14texture% に設定されました。
+   echo ------------------
+   echo %mat14% の %mat14texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat14a=
+   echo %mat14% の %mat14texture% のオプションは %mat14a% に設定されました。
+   echo ------------------
+ if %mat% geq 15 goto editmat15
+ goto json
+ :editmat15
+   echo 列車の3Dモデルの材質,15つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat15=
+   echo 材質,1つめの名前は %mat15% に設定されました。
+   echo ------------------
+   echo %mat15% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat15texture=
+   echo %mat15% のテクスチャパスは %mat15texture% に設定されました。
+   echo ------------------
+   echo %mat15% の %mat15texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat15a=
+   echo %mat15% の %mat15texture% のオプションは %mat15a% に設定されました。
+   echo ------------------
+ if %mat% geq 16 goto mat16
+ goto json
+
  :trainedit_bogiemodel
  echo modelfileを決めてください。
  echo ボギーの3Dモデルのファイル名を"拡張子あり"で入力してください。
@@ -1475,6 +1742,71 @@ rem 以下bogiemodel3の場合
    echo %bogie10% のテクスチャパスは %bogie10texture% に設定されました。
    echo ------------------
  if %bogie% geq 11 goto editbogie11
+ goto json 
+ :editbogie11
+   echo ボギーの3Dモデルの材質,11つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie11=
+   echo 材質,1つめの名前は %bogie11% に設定されました。
+   echo ------------------
+   echo %bogie11% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie11texture=
+   echo %bogie11% のテクスチャパスは %bogie11texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 12 goto editbogie12
+ goto json
+ :editbogie12
+   echo ボギーの3Dモデルの材質,12つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie12=
+   echo 材質,1つめの名前は %bogie12% に設定されました。
+   echo ------------------
+   echo %bogie12% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie12texture=
+   echo %bogie12% のテクスチャパスは %bogie12texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 13 goto editbogie13
+ goto json
+ :editbogie13
+   echo ボギーの3Dモデルの材質,13つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie13=
+   echo 材質,1つめの名前は %bogie13% に設定されました。
+   echo ------------------
+   echo %bogie13% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie13texture=
+   echo %bogie13% のテクスチャパスは %bogie13texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 14 goto editbogie14
+ goto json
+ :editbogie14
+   echo ボギーの3Dモデルの材質,14つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie14=
+   echo 材質,1つめの名前は %bogie14% に設定されました。
+   echo ------------------
+   echo %bogie14% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie14texture=
+   echo %bogie14% のテクスチャパスは %bogie14texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 15 goto editbogie15
+ goto json
+ :editbogie15
+   echo ボギーの3Dモデルの材質,15つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie15=
+   echo 材質,1つめの名前は %bogie15% に設定されました。
+   echo ------------------
+   echo %bogie15% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie15texture=
+   echo %bogie15% のテクスチャパスは %bogie15texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 16 goto editbogie16
  goto json
  :trainedit_button
  echo buttontextureを決めてください。
