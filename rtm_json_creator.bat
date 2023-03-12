@@ -1,6 +1,6 @@
 @echo off
 set user=
-set version=0.9.2.9(private)
+set version=0.9.2.9(public)
 set tsw=NONE
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :welcome
