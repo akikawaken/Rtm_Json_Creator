@@ -57,7 +57,7 @@ goto selectwelcome
  set /p modelFile=
  echo modelFileは %modelFile% に設定されました。
  echo ------------------
- echo 列車の3Dモデルの材質数を決めてください。 材質数は必ず1~10に設定してください。でないとバグります
+ echo 列車の3Dモデルの材質数を決めてください。 材質数は必ず1~20に設定してください。でないとバグります
  set /p mat=
  echo 材質数は %mat% に設定されました。
  echo ------------------
