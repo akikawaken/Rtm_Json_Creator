@@ -1,6 +1,6 @@
 @echo off
 set user=
-set version=0.9.2.9(public)
+set version=0.9.2.9.1(public)
 set tsw=NONE
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :welcome
@@ -449,7 +449,7 @@ goto selectwelcome
  set /p bogie=
  echo 材質数は %bogie% に設定されました。
  echo ------------------
- echo 列車の3Dモデルの材質,1つめの名前を決めてください。
+ echo ボギーの3Dモデルの材質,1つめの名前を決めてください。
  echo 材質名を入力してください。
  set /p bogie1=
  echo 材質,1つめの名前は %bogie1% に設定されました。
@@ -458,11 +458,6 @@ goto selectwelcome
  echo オプションは次で設定します。
  set /p bogie1texture=
  echo %bogie1% のテクスチャパスは %bogie1texture% に設定されました。
- echo ------------------
- echo %bogie1% の %bogie1texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
- echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
- set /p bogie1a=
- echo %bogie1% の %bogie1texture% のオプションは %bogie1a% に設定されました。
  echo ------------------
  if %bogie% geq 2 goto bogie2
  goto 1222
