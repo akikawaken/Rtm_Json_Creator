@@ -8,7 +8,7 @@ windows(動作確認済み:win10home,win11home)
 不明なファイル/危険なファイルとして起動がブロックされることがあります。 その場合、詳細から続行するをクリックして起動してください。
 もし、このバッチファイルが危なさそうに見えるのならば、githubでコードを覗いてみてください。 あなたがバッチを理解できるのならば、危なくないことがわかるはずです。
 # ダウンロード場所
-ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.9.2 "ahaha")を押してassetsの一番上を押してください。
+ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.9.2 "ahaha")を押してassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。
 
 # 材質数制限について
 転轍機は10,その他は20まで設定できます。
