@@ -760,7 +760,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 3 goto bogie3
  goto 1222
  :bogie3
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,3つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie3=
    echo 材質,1つめの名前は %bogie3% に設定されました。
@@ -778,7 +778,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 4 goto bogie4
  goto 1222
  :bogie4
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,4つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie4=
    echo 材質,1つめの名前は %bogie4% に設定されました。
@@ -796,7 +796,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 5 goto bogie5
  goto 1222
  :bogie5
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,5つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie5=
    echo 材質,1つめの名前は %bogie5% に設定されました。
@@ -814,7 +814,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 6 goto bogie6
  goto 1222
  :bogie6
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,6つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie6=
    echo 材質,1つめの名前は %bogie6% に設定されました。
@@ -832,7 +832,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 7 goto bogie7
  goto 1222
  :bogie7
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,7つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie7=
    echo 材質,1つめの名前は %bogie7% に設定されました。
@@ -850,7 +850,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 8 goto bogie8
  goto 1222
  :bogie8
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,8つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie8=
    echo 材質,1つめの名前は %bogie8% に設定されました。
@@ -868,7 +868,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 9 goto bogie9
  goto 1222
  :bogie9
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,9つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie9=
    echo 材質,1つめの名前は %bogie9% に設定されました。
@@ -886,7 +886,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 10 goto bogie10
  goto 1222
  :bogie10
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,10つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie10=
    echo 材質,1つめの名前は %bogie10% に設定されました。
@@ -902,6 +902,186 @@ rem 以下bogiemodel3の場合
    echo %bogie10% の %bogie10texture% のオプションは %bogie10a% に設定されました。
    echo ------------------
  if %bogie% geq 11 goto bogie11
+ goto 1222
+ :bogie11
+   echo ボギーの3Dモデルの材質,11つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie11=
+   echo 材質,1つめの名前は %bogie11% に設定されました。
+   echo ------------------
+   echo %bogie11% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie11texture=
+   echo %bogie11% のテクスチャパスは %bogie11texture% に設定されました。
+   echo ------------------
+   echo %bogie11% の %bogie11texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie11a=
+   echo %bogie11% の %bogie11texture% のオプションは %bogie11a% に設定されました。
+   echo ------------------
+ if %bogie% geq 12 goto bogie12
+ goto 1222
+ :bogie12
+   echo ボギーの3Dモデルの材質,12つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie12=
+   echo 材質,1つめの名前は %bogie12% に設定されました。
+   echo ------------------
+   echo %bogie12% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie12texture=
+   echo %bogie12% のテクスチャパスは %bogie12texture% に設定されました。
+   echo ------------------
+   echo %bogie12% の %bogie12texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie12a=
+   echo %bogie12% の %bogie12texture% のオプションは %bogie12a% に設定されました。
+   echo ------------------
+ if %bogie% geq 13 goto bogie13
+ goto 1222
+ :bogie13
+   echo ボギーの3Dモデルの材質,13つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie13=
+   echo 材質,1つめの名前は %bogie13% に設定されました。
+   echo ------------------
+   echo %bogie13% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie13texture=
+   echo %bogie13% のテクスチャパスは %bogie13texture% に設定されました。
+   echo ------------------
+   echo %bogie13% の %bogie13texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie13a=
+   echo %bogie13% の %bogie13texture% のオプションは %bogie13a% に設定されました。
+   echo ------------------
+ if %bogie% geq 14 goto bogie14
+ goto 1222
+ :bogie14
+   echo ボギーの3Dモデルの材質,14つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie14=
+   echo 材質,1つめの名前は %bogie14% に設定されました。
+   echo ------------------
+   echo %bogie14% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie14texture=
+   echo %bogie14% のテクスチャパスは %bogie14texture% に設定されました。
+   echo ------------------
+   echo %bogie14% の %bogie14texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie14a=
+   echo %bogie14% の %bogie14texture% のオプションは %bogie14a% に設定されました。
+   echo ------------------
+ if %bogie% geq 15 goto bogie15
+ goto 1222
+ :bogie15
+   echo ボギーの3Dモデルの材質,15つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie15=
+   echo 材質,1つめの名前は %bogie15% に設定されました。
+   echo ------------------
+   echo %bogie15% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie15texture=
+   echo %bogie15% のテクスチャパスは %bogie15texture% に設定されました。
+   echo ------------------
+   echo %bogie15% の %bogie15texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie15a=
+   echo %bogie15% の %bogie15texture% のオプションは %bogie15a% に設定されました。
+   echo ------------------
+ if %bogie% geq 16 goto bogie16
+ goto 1222
+ :bogie16
+   echo ボギーの3Dモデルの材質,16つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie16=
+   echo 材質,1つめの名前は %bogie16% に設定されました。
+   echo ------------------
+   echo %bogie16% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie16texture=
+   echo %bogie16% のテクスチャパスは %bogie16texture% に設定されました。
+   echo ------------------
+   echo %bogie16% の %bogie16texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie16a=
+   echo %bogie16% の %bogie16texture% のオプションは %bogie16a% に設定されました。
+   echo ------------------
+ if %bogie% geq 17 goto bogie17
+ goto 1222
+ :bogie17
+   echo ボギーの3Dモデルの材質,17つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie17=
+   echo 材質,1つめの名前は %bogie17% に設定されました。
+   echo ------------------
+   echo %bogie17% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie17texture=
+   echo %bogie17% のテクスチャパスは %bogie17texture% に設定されました。
+   echo ------------------
+   echo %bogie17% の %bogie17texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie17a=
+   echo %bogie17% の %bogie17texture% のオプションは %bogie17a% に設定されました。
+   echo ------------------
+ if %bogie% geq 18 goto bogie18
+ goto 1222
+ :bogie18
+   echo ボギーの3Dモデルの材質,18つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie18=
+   echo 材質,1つめの名前は %bogie18% に設定されました。
+   echo ------------------
+   echo %bogie18% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie18texture=
+   echo %bogie18% のテクスチャパスは %bogie18texture% に設定されました。
+   echo ------------------
+   echo %bogie18% の %bogie18texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie18a=
+   echo %bogie18% の %bogie18texture% のオプションは %bogie18a% に設定されました。
+   echo ------------------
+ if %bogie% geq 19 goto bogie19
+ goto 1222
+ :bogie19
+   echo ボギーの3Dモデルの材質,19つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie19=
+   echo 材質,1つめの名前は %bogie19% に設定されました。
+   echo ------------------
+   echo %bogie19% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie19texture=
+   echo %bogie19% のテクスチャパスは %bogie19texture% に設定されました。
+   echo ------------------
+   echo %bogie19% の %bogie19texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie19a=
+   echo %bogie19% の %bogie19texture% のオプションは %bogie19a% に設定されました。
+   echo ------------------
+ if %bogie% geq 20 goto bogie20
+ goto 1222
+ :bogie20
+   echo ボギーの3Dモデルの材質,20つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie20=
+   echo 材質,1つめの名前は %bogie20% に設定されました。
+   echo ------------------
+   echo %bogie20% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie20texture=
+   echo %bogie20% のテクスチャパスは %bogie20texture% に設定されました。
+   echo ------------------
+   echo %bogie20% の %bogie20texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p bogie20a=
+   echo %bogie20% の %bogie20texture% のオプションは %bogie20a% に設定されました。
+   echo ------------------
+ if %bogie% geq 21 goto bogie21
  goto 1222
 
 :1222
@@ -1306,7 +1486,7 @@ rem 以下bogiemodel3の場合
   rem if %bogie% == 1 echo         {"modelFile": "%modelFileb%","textures":[ ["%bogie1%", "%bogie1texture%", "%bogie1a%"]]},{"modelFile": "%modelmobie2%","textures":[ ["%bogie1%", "%bogie1texture%", "%bogie1a%"]]} }],
 
 
- :json2
+:json2
  echo  "buttonTexture": "%button%",
  echo  "playerPos": [[%playerPosx%, %playerPosy%, %playerPosz%], [%playerPos2x%, %playerPos2y%, %playerPos2z%]], 
  echo  "bogiePos": [[%bogieposx%, %bogieposy%, %bogieposz%], [%bogiepos2x%, %bogiepos2y%, %bogiepos2z%]], 
@@ -1816,8 +1996,88 @@ rem 以下bogiemodel3の場合
    set /p mat15a=
    echo %mat15% の %mat15texture% のオプションは %mat15a% に設定されました。
    echo ------------------
- if %mat% geq 16 goto mat16
+ if %mat% geq 16 goto editmat16
  goto json
+ :editmat16
+   echo 列車の3Dモデルの材質,16つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat16=
+   echo 材質,1つめの名前は %mat16% に設定されました。
+   echo ------------------
+   echo %mat16% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat16texture=
+   echo %mat16% のテクスチャパスは %mat16texture% に設定されました。
+   echo ------------------
+   echo %mat16% の %mat16texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat16a=
+   echo %mat16% の %mat16texture% のオプションは %mat16a% に設定されました。
+  if %mat% geq 17 goto editmat17
+ :editmat17
+   echo 列車の3Dモデルの材質,17つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat17=
+   echo 材質,1つめの名前は %mat17% に設定されました。
+   echo ------------------
+   echo %mat17% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat17texture=
+   echo %mat17% のテクスチャパスは %mat17texture% に設定されました。
+   echo ------------------
+   echo %mat17% の %mat17texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat17a=
+   echo %mat17% の %mat17texture% のオプションは %mat17a% に設定されました。
+   if %mat% geq 18 goto editmat18
+ :editmat18
+   echo 列車の3Dモデルの材質,18つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat18=
+   echo 材質,1つめの名前は %mat18% に設定されました。
+   echo ------------------
+   echo %mat18% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat18texture=
+   echo %mat18% のテクスチャパスは %mat18texture% に設定されました。
+   echo ------------------
+   echo %mat18% の %mat18texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat18a=
+   echo %mat18% の %mat18texture% のオプションは %mat18a% に設定されました。
+   if %mat% geq 19 goto editmat19
+ :editmat19
+   echo 列車の3Dモデルの材質,19つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat19=
+   echo 材質,1つめの名前は %mat19% に設定されました。
+   echo ------------------
+   echo %mat19% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat19texture=
+   echo %mat19% のテクスチャパスは %mat19texture% に設定されました。
+   echo ------------------
+   echo %mat19% の %mat19texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat19a=
+   echo %mat19% の %mat19texture% のオプションは %mat19a% に設定されました。
+   if %mat% geq 20 goto editmat20
+ :editmat20
+   echo 列車の3Dモデルの材質,20つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat20=
+   echo 材質,1つめの名前は %mat20% に設定されました。
+   echo ------------------
+   echo %mat20% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mat20texture=
+   echo %mat20% のテクスチャパスは %mat20texture% に設定されました。
+   echo ------------------
+   echo %mat20% の %mat20texture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mat20a=
+   echo %mat20% の %mat20texture% のオプションは %mat20a% に設定されました。
+   if %mat% geq 21 goto editmat21
 
  :trainedit_bogiemodel
  echo modelfileを決めてください。
@@ -1862,7 +2122,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 3 goto editbogie3
  goto json
  :editbogie3
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,3つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie3=
    echo 材質,1つめの名前は %bogie3% に設定されました。
@@ -1875,7 +2135,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 4 goto editbogie4
  goto json
  :editbogie4
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,4つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie4=
    echo 材質,1つめの名前は %bogie4% に設定されました。
@@ -1888,7 +2148,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 5 goto editbogie5
  goto json
  :editbogie5
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,5つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie5=
    echo 材質,1つめの名前は %bogie5% に設定されました。
@@ -1901,7 +2161,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 6 goto editbogie6
  goto json
  :editbogie6
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,6つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie6=
    echo 材質,1つめの名前は %bogie6% に設定されました。
@@ -1914,7 +2174,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 7 goto editbogie7
  goto json
  :editbogie7
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,7つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie7=
    echo 材質,1つめの名前は %bogie7% に設定されました。
@@ -1927,7 +2187,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 8 goto editbogie8
  goto json
  :editbogie8
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,8つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie8=
    echo 材質,1つめの名前は %bogie8% に設定されました。
@@ -1940,7 +2200,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 9 goto editbogie9
  goto json
  :editbogie9
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,9つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie9=
    echo 材質,1つめの名前は %bogie9% に設定されました。
@@ -1953,7 +2213,7 @@ rem 以下bogiemodel3の場合
  if %bogie% geq 10 goto editbogie10
  goto json
  :editbogie10
-   echo ボギーの3Dモデルの材質,2つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,10つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p bogie10=
    echo 材質,1つめの名前は %bogie10% に設定されました。
@@ -2030,6 +2290,59 @@ rem 以下bogiemodel3の場合
    echo ------------------
  if %bogie% geq 16 goto editbogie16
  goto json
+ :editbogie16
+   echo ボギーの3Dモデルの材質,16つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie16=
+   echo 材質,1つめの名前は %bogie16% に設定されました。
+   echo ------------------
+   echo %bogie16% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie16texture=
+   echo %bogie16% のテクスチャパスは %bogie16texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 17 goto editbogie17
+ goto json
+ :editbogie17
+   echo ボギーの3Dモデルの材質,17つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie17=
+   echo 材質,1つめの名前は %bogie17% に設定されました。
+   echo ------------------
+   echo %bogie17% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie17texture=
+   echo %bogie17% のテクスチャパスは %bogie17texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 18 goto editbogie18
+ goto json
+ :editbogie18
+   echo ボギーの3Dモデルの材質,18つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie18=
+   echo 材質,1つめの名前は %bogie18% に設定されました。
+   echo ------------------
+   echo %bogie18% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie18texture=
+   echo %bogie18% のテクスチャパスは %bogie18texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 19 goto editbogie19
+ goto json
+ :editbogie19
+   echo ボギーの3Dモデルの材質,19つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie19=
+   echo 材質,1つめの名前は %bogie19% に設定されました。
+   echo ------------------
+   echo %bogie19% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie19texture=
+   echo %bogie19% のテクスチャパスは %bogie19texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 20 goto editbogie20
+ goto json
+
  :trainedit_button
  echo buttontextureを決めてください。
  echo 車輌選択画面のボタンのテクスチャへのパスを記述してください。(普通であれば、 textures/train/button_train.png などになります。)
