@@ -1540,7 +1540,10 @@ rem 以下bogiemodel3の場合
  goto %back%
 
 :savetrainjson
- echo jsonを保存します。 jsonはこのbatchファイルがあるディレクトリにできるはずです。
+ echo jsonを保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
+ echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\ModelTrain_%trainname%にできるはずです。)
+ echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
+ echo on
  pause
  echo { > ModelTrain_%trainname%.json
  echo    "trainName": "%trainname%", >> ModelTrain_%trainname%.json
@@ -1627,6 +1630,7 @@ rem 以下bogiemodel3の場合
  if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%, >> ModelTrain_%trainname%.json
  echo "accuracy": "%accuracy%" >> ModelTrain_%trainname%.json
  echo } >> ModelTrain_%trainname%.json
+ echo off
   if exist ModelTrain_%trainname%.json (
   echo;
   echo ファイルの保存が完了しました。
@@ -2341,6 +2345,19 @@ rem 以下bogiemodel3の場合
    echo %bogie19% のテクスチャパスは %bogie19texture% に設定されました。
    echo ------------------
  if %bogie% geq 20 goto editbogie20
+ goto json
+ :editbogie20
+   echo ボギーの3Dモデルの材質,20つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p bogie20=
+   echo 材質,1つめの名前は %bogie20% に設定されました。
+   echo ------------------
+   echo %bogie20% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p bogie20texture=
+   echo %bogie20% のテクスチャパスは %bogie20texture% に設定されました。
+   echo ------------------
+ if %bogie% geq 21 goto editbogie21
  goto json
 
  :trainedit_button
