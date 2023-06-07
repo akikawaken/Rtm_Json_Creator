@@ -11,8 +11,18 @@ windows(動作確認済み:win10home,win11home)
 ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.9.2 "ahaha")を押してassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。
 
 # 材質数制限について
+**0.9.3.5(public)より列車のみ材質数を無限に使えるようになりました**  
+**それ以外のバージョンは↓**  
 転轍機は10,その他は20まで設定できます。  
 てか誤字ってるけど許してなw
 
-# 注意
-このリポジトリ( https://github.com/akikawaken/creator )以外ではこのファイルを配布していません。 もし別の場所で配布されているのを発見した場合は作者へすぐに知らせてください。
+# LICENCE 
+MITです。
+- - -
+Copyright (c) 2022-2023 akikawa9616
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
