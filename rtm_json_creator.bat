@@ -795,7 +795,7 @@ goto selectwelcome
  echo   -- はちこうとっかい
  echo  デバッグ
  echo   -- akikawa9616
- echo   -- ちとがわ | https://youtube.com/@Chitogawa12
+ echo   -- ちとがわ / https://youtube.com/@Chitogawa12
  echo thank you !
  echo;
  echo このプログラムはMITライセンスで公開されています。
@@ -809,6 +809,7 @@ goto selectwelcome
  echo;
  echo THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  echo -----------------------------
+ echo version: %version%
  pause
  cls
  goto selectwelcome
