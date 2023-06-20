@@ -1,40 +1,40 @@
-# sounds.json�̃e�X�g�@�\�ɂ���
+# sounds.jsonのテスト機能について
 
-sounds.json��JSON�쐬�@�\���e�X�g���邽�߂̋@�\��������Ă��܂��B  
-��ԍŏ��̍s���I����ʂ�"999"���w�肷��ƃe�X�g�@�\���g�p���邱�Ƃ��ł��܂��B
+sounds.jsonのJSON作成機能をテストするための機能を備えています。  
+一番最初の行動選択画面で"999"を指定するとテスト機能を使用することができます。
 
 ## sounds.log
 
-souds.log�Ƃ́A���̃e�X�g�@�\���g�p�����ۂɏo��t�@�C���ł��B���̃t�@�C�����g�p���ăe�X�g�����邱�Ƃ��ł��܂��B  
+souds.logとは、このテスト機能を使用した際に出るファイルです。このファイルを使用してテストをすることができます。  
 - - -
-���߂Ă��̋@�\���g���ꍇ:
-1. �ŏ��̍s���I����ʂ�999���^�C�v����B
-1. "n"����͂��ăG���^�[����B
-1. �K�v�ȍs������͂���
-1. �쐬���I���̂�҂�
-1. sounds.log�̓��e�����ׂăR�s�[����
-1. rtm_json_creator���N������"8"->"y"�̏��ɍs����I������
-1. sounds.log�̃R�s�[�������e��"CTRL"+"V"�Œ���t����B
-1. "\\\\\\"���^�C�v���A�K����1�����
-1. sounds.json���ł��Ă�΃e�X�g����
+初めてこの機能を使う場合:
+1. 最初の行動選択画面で999をタイプする。
+1. "n"を入力してエンターする。
+1. 必要な行数を入力する
+1. 作成が終わるのを待つ
+1. sounds.logの内容をすべてコピーする
+1. rtm_json_creatorを起動して"8"->"y"の順に行動を選択する
+1. sounds.logのコピーした内容を"CTRL"+"V"で張り付ける。
+1. "\\\\\\"をタイプし、適当に1つ入れる
+1. sounds.jsonができてればテスト完了
 - - -
-���߂Ăł͂Ȃ��ꍇ:
-1. �ŏ��̍s���I����ʂ�999���^�C�v����B
-1. "y"����͂��ăG���^�[����B
-1. �K�v�ȍs������͂����ʂ܂ōs������K�v�ȍs������͂���
-1. �쐬���I���̂�҂�
-1. sounds.log�̓��e�����ׂăR�s�[����
-1. rtm_json_creator���N������"8"->"y"�̏��ɍs����I������
-1. sounds.log�̃R�s�[�������e��"CTRL"+"V"�Œ���t����B
-1. "\\\\\\"���^�C�v���A�K����1�����
-1. sounds.json���ł��Ă�΃e�X�g����
+初めてではない場合:
+1. 最初の行動選択画面で999をタイプする。
+1. "y"を入力してエンターする。
+1. 必要な行数を入力する画面まで行ったら必要な行数を入力する
+1. 作成が終わるのを待つ
+1. sounds.logの内容をすべてコピーする
+1. rtm_json_creatorを起動して"8"->"y"の順に行動を選択する
+1. sounds.logのコピーした内容を"CTRL"+"V"で張り付ける。
+1. "\\\\\\"をタイプし、適当に1つ入れる
+1. sounds.jsonができてればテスト完了
 
-## ����
-- �K�v�ȍs���̓��͖͂{���ɕK�v�ȕ��݂̂ɂ��邱�ƁB  
-    ->�ꍇ�ɂ���Ă�sounds.log�̃t�@�C���T�C�Y��1�b��1KB�y�[�X�ő����ėe�ʂ�H���Ԃ��܂�
-- ���̋@�\���g�p���č쐬����sounds.json���g�p���邱�Ƃ͂قڂł��܂���  
-    ->�쐬���ꂽsounds.json�ɑΉ����鉹���t�@�C���͎����ō쐬����܂���.
-- sounds.log�ō쐬���ꂽ������("sound\29005.ogg"�Ȃ�)���d�����Ă���  
-    ->"sound\"�̌�̐����̓����_���ɐ�������Ă���A�d����1/32767�̊m���Ŕ������܂��B(������1~32767�̊Ԃ̐���������������܂���)  
+## 注意
+- 必要な行数の入力は本当に必要な分のみにすること。  
+    ->場合によってはsounds.logのファイルサイズが1秒に1KBペースで増えて容量を食いつぶします
+- この機能を使用して作成したsounds.jsonを使用することはほぼできません  
+    ->作成されたsounds.jsonに対応する音声ファイルは自動で作成されません.
+- sounds.logで作成された文字列("sound\29005.ogg"など)が重複している  
+    ->"sound\"の後の数字はランダムに生成されており、重複が1/32768の確率で発生します。(数字は0~32767の間の数字しか生成されません)  
 
 (c) 2023 akikawa9616
