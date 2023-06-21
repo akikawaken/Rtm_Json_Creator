@@ -16,7 +16,7 @@ windows(動作確認済み:win10home,win11home)
 転轍機は10,その他は20まで設定できます。  
 てか誤字ってるけど許してなw
 
-# LICENCE 
+# LICENSE 
 **0.9.3.5(public)より先のバージョンのみMITです。**
 - - -
 Copyright (c) 2022-2023 akikawa9616
