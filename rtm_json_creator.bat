@@ -800,7 +800,7 @@ goto selectwelcome
  echo   -- はちこうとっかい
  echo  デバッグ
  echo   -- akikawa9616
- echo   -- ちとがわ / https://youtube.com/@Chitogawa12
+ echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
  echo thank you !
  echo;
  echo このプログラムはMITライセンスで公開されています。
