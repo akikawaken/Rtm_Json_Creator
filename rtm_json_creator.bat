@@ -2,7 +2,7 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.3.5(public)
+set version=0.9.4(public)
 set tsw=NONE
 set time2=%time: =0%
 set nowtime=%time2:~0,2%%time2:~3,2%%time2:~6,2%
@@ -18,10 +18,12 @@ echo     1        列車のjsonを作成します。
 echo     2              終了させます。       
 echo     3        看板のjsonを作成します。 
 echo     4        スペシャルサンクスと作者  
-echo     5   機能あり設置物のjsonを作成します。
+echo     5   機能あり設置物のjsonを作成します。 
 echo     6         NPCのjsonを作成します。 
 echo     7          旗のjsonを作成します。
 echo     8        sounds.jsonを作成します。
+echo     9      ディレクトリを構成します。
+echo    10  指定されたディレクトリをzip化します。
 echo ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
@@ -33,10 +35,13 @@ if %start% == 5 goto 5
 if %start% == 6 goto 6
 if %start% == 7 goto 7
 if %start% == 8 goto 8
+if %start% == 9 goto 9
+if %start% == 10 goto zip
 if %start% == 749 goto json 
 if %start% == 827 goto signjson
 if %start% == 999 goto soundcreate
 if %start% == error goto werror
+if %start% == setpath goto setpath
 echo エラー:不明な番号です。
 goto selectwelcome
 :1
@@ -2004,6 +2009,43 @@ goto selectwelcome
   pause
   goto 2
 
+:9
+ echo RTMのディレクトリ構成を作成します。
+ echo どこにディレクトリを作成しますか?(記述されたパス下に"RTM"フォルダができます。)
+ set /p directry=
+ pushd c:\
+ pushd %directry%
+ md RTM\assets\minecraft\models\json
+ md RTM\assets\minecraft\scripts
+ md RTM\assets\minecraft\textures\container
+ md RTM\assets\minecraft\textures\machine
+ md RTM\assets\minecraft\textures\rail
+ md RTM\assets\minecraft\textures\rrs
+ md RTM\assets\minecraft\textures\signal
+ md RTM\assets\minecraft\textures\signboard
+ md RTM\assets\minecraft\textures\train
+ md RTM\assets\minecraft\textures\npc
+ md RTM\mods\RTM\train
+ tree
+ echo どう? できた?
+ pause
+ cls
+ goto welcome
+:zip
+ echo;
+ echo この機能はベータ版です。
+ echo 動作保証外です。
+ echo;
+ echo ディレクトリをzip化します。
+ echo どのディレクトリをzip化しますか? assetsフォルダのパスを入力してください。(c:\rtm\assetsをzipしたい場合はc:\rtm\assetsと入力。)
+ echo ヒント: 隠しファイルはzip化されません
+ set /p directry=
+ md %temp%\.rtm
+ Powershell Compress-Archive -Path %directry%\* -DestinationPath %temp%\.rtm\rtm_addon%random%
+ explorer.exe %temp%\.rtm
+ echo Done.
+ pause
+ exit
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要な死を選択することで99行にプラスで5行を書き加えることができます。)
@@ -2032,6 +2074,11 @@ goto selectwelcome
  echo;
  pause
  exit
+:setpath
+ set /p setpath=Enter path here :
+ pushd %setpath%
+ echo Done.
+ goto welcome
 rem memo
  rem 変数:bogie はボギー材質数の判定にのみ使用します。  bogiemodel2とbogiemodel3で共用です。(bogiemodel3の場合は前になります。)
  rem 変数:bogie2 はbogiemodel3のときのみ使用し、後のモデルの材質数です。
