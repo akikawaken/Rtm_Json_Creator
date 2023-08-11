@@ -23,7 +23,7 @@ echo     6         NPCのjsonを作成します。
 echo     7          旗のjsonを作成します。
 echo     8        sounds.jsonを作成します。
 echo     9      ディレクトリを構成します。
-echo    10  指定されたディレクトリをzip化します。
+echo    10  指定されたディレクトリをzip化します。(べーたばんです)
 echo ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
