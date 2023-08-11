@@ -2012,6 +2012,9 @@ goto selectwelcome
 :9
  echo RTMのディレクトリ構成を作成します。
  echo どこにディレクトリを作成しますか?(記述されたパス下に"RTM"フォルダができます。)
+ echo;
+ echo 注意: すでに指定されたディレクトリにRTMフォルダがあると多分バグります。
+ echo;
  set /p directry=
  pushd c:\
  pushd %directry%
@@ -2026,6 +2029,7 @@ goto selectwelcome
  md RTM\assets\minecraft\textures\train
  md RTM\assets\minecraft\textures\npc
  md RTM\mods\RTM\train
+ pushd %directry%\RTM
  tree
  echo どう? できた?
  pause
@@ -2037,7 +2041,7 @@ goto selectwelcome
  echo 動作保証外です。
  echo;
  echo ディレクトリをzip化します。
- echo どのディレクトリをzip化しますか? assetsフォルダのパスを入力してください。(c:\rtm\assetsをzipしたい場合はc:\rtm\assetsと入力。)
+ echo どのディレクトリをzip化しますか? assetsフォルダのパスを入力してください。(c:\rtm\assetsをzipしたい場合はc:\rtmと入力。)
  echo ヒント: 隠しファイルはzip化されません
  set /p directry=
  md %temp%\.rtm
