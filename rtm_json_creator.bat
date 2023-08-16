@@ -89,7 +89,7 @@ goto selectwelcome
  echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
  echo          "textures":[>> ModelTrain_%trainname%.json
  echo ------------------
- set count=1
+ set count=0
 :matcountsetting
  set /p matcount=—ñÔƒ‚ƒfƒ‹‚ÌŞ¿”‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢
  echo Ş¿”‚Í %matcount% ‚Éİ’è‚³‚ê‚Ü‚µ‚½B
