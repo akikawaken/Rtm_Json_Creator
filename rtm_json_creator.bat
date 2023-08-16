@@ -2,7 +2,7 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.4(public)
+set version=0.9.4.2(public)
 set tsw=NONE
 set time2=%time: =0%
 set nowtime=%time2:~0,2%%time2:~3,2%%time2:~6,2%
@@ -1913,7 +1913,7 @@ goto selectwelcome
   echo    ] >> sounds.json
   echo   } >> sounds.json
   echo } >> sounds.json
-   if exist sounds.json (
+  if exist sounds.json (
   echo;
   echo ファイルの保存が完了しました。
   echo ファイルパス:"%cd%\sounds.json"
@@ -2116,9 +2116,9 @@ rem ERROR CODE
   echo (第三者への送信や、情報の公開は一切しません。)
   echo;
   echo --詳細情報--
-  echo OS:%OS%
+  ver
   echo cmdext:%cmdextversion%
-  echo dir:%cd%
-  echo T/S/W/N:%tsw%
+  echo path:%cd%
+  echo TSW:%tsw%
   echo error-code:%error%
   pause
