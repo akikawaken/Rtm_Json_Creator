@@ -11,10 +11,10 @@ windows(動作確認済み:win10home,win11home)
 [ダウンロードはここを押してassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。](https://github.com/akikawaken/creator/releases/tag/v0.9.4 "download page" )
 
 # 材質数制限について
-**0.9.3.5(public)より列車のみ材質数を無限に使えるようになりました**  
+**0.9.3.5(public)より列車の材質数を無限に使えるようになりました**  
+**0.9.4.3(public)より機能あり設置物の材質数を無限に使えるようになりました**  
 **それ以外のバージョンは↓**  
 転轍機は10,その他は20まで設定できます。  
-てか誤字ってるけど許してなw
 
 # LICENSE 
 **0.9.3.5(public)より先のバージョンのみMITです。**
@@ -26,3 +26,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# 五時
+誤字は許してください
