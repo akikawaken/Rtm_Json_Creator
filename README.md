@@ -8,7 +8,7 @@ windows(動作確認済み:win10home,win11home)
 不明なファイル/危険なファイルとして起動がブロックされることがあります。 その場合、詳細から続行するをクリックして起動してください。  
 もし、このバッチファイルが危なさそうに見えるのならば、githubでコードを覗いてみてください。 あなたがバッチを理解できるのならば、危なくないことがわかるはずです。
 # ダウンロード場所
-ダウンロードは[ここ](https://github.com/akikawaken/creator/releases/tag/v0.9.4 "download page" )を押してassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。
+[ダウンロードはここを押してassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。](https://github.com/akikawaken/creator/releases/tag/v0.9.4 "download page" )
 
 # 材質数制限について
 **0.9.3.5(public)より列車のみ材質数を無限に使えるようになりました**  
