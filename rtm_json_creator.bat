@@ -853,128 +853,52 @@ goto selectwelcome
  set /p modelFile=
  echo modelfileは %modelFile% に設定されました。
  echo -------------
+ :cantthat
  echo %modelFile% の材質数を設定してください。
- set /p mat=
- echo 材質数は %mat% に設定されました。
+ set /p matc=
+ echo 材質数は %matc% に設定されました。
  echo -------------
- echo 3Dモデルの材質,1つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat1=
- echo 材質,1つめの名前は %mat1% に設定されました。
- echo ------------------
- echo %mat1% のテクスチャへのパスを記述してください。
- set /p mat1texture=
- echo %mat1% のテクスチャパスは %mat1texture% に設定されました。
- echo ------------------
- if %mat% geq 2 goto smat2
- goto switcher
- :smat2
-   echo 3Dモデルの材質,2つめの名前を決めてください。
+ set count=1
+ del %temp%\.Rtm_Json_Creator_json.tscf
+ :madamada
+  if %matc% == %count% goto saigo
+   echo ------------------
+   echo 機能あり設置物の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
-   set /p mat2=
-   echo 材質,2つめの名前は %mat2% に設定されました。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat2% のテクスチャへのパスを記述してください。
-   set /p mat2texture=
-   echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
- if %mat% geq 3 goto smat3
- goto switcher
- :smat3
-   echo 3Dモデルの材質,3つめの名前を決めてください。
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> %temp%\.Rtm_Json_Creator_json.tscf 
+ set /a count=%count% + 1
+   goto madamada
+   :saigo
+   echo ------------------
+   echo 機能あり設置物の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
-   set /p mat3=
-   echo 材質,3つめの名前は %mat3% に設定されました。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat3% のテクスチャへのパスを記述してください。
-   set /p mat3texture=
-   echo %mat3% のテクスチャパスは %mat3texture% に設定されました。
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
- if %mat% geq 4 goto smat4
- goto switcher
- :smat4
-   echo 3Dモデルの材質,4つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat4=
-   echo 材質,4つめの名前は %mat4% に設定されました。
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
-   echo %mat4% のテクスチャへのパスを記述してください。
-   set /p mat4texture=
-   echo %mat4% のテクスチャパスは %mat4texture% に設定されました。
- if %mat% geq 5 goto smat5
- goto switcher
- :smat5
-   echo 3Dモデルの材質,5つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat5=
-   echo 材質,5つめの名前は %mat5% に設定されました。
-   echo ------------------
-   echo %mat5% のテクスチャへのパスを記述してください。 
-   set /p mat5texture=
-   echo %mat5% のテクスチャパスは %mat5texture% に設定されました。
-   echo ------------------
- if %mat% geq 6 goto smat6
- goto switcher
- :smat6
-   echo 3Dモデルの材質,6つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat6=
-   echo 材質,6つめの名前は %mat6% に設定されました。
-   echo ------------------
-   echo %mat6% のテクスチャへのパスを記述してください。 
-   set /p mat6texture=
-   echo %mat6% のテクスチャパスは %mat6texture% に設定されました。
-   echo ------------------
- if %mat% geq 7 goto smat7
- goto switcher
- :smat7
-   echo 3Dモデルの材質,7つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat7=
-   echo 材質,7つめの名前は %mat7% に設定されました。
-   echo ------------------
-   echo %mat7% のテクスチャへのパスを記述してください。 
-   set /p mat7texture=
-   echo %mat7% のテクスチャパスは %mat7texture% に設定されました。
-   echo ------------------
- if %mat% geq 8 goto smat8
- goto switcher
- :smat8
-   echo 3Dモデルの材質,8つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat8=
-   echo 材質,8つめの名前は %mat8% に設定されました。
-   echo ------------------
-   echo %mat8% のテクスチャへのパスを記述してください。 
-   set /p mat8texture=
-   echo %mat8% のテクスチャパスは %mat8texture% に設定されました。
-   echo ------------------
- if %mat% geq 9 goto smat9
- goto switcher
- :smat9
-   echo 3Dモデルの材質,9つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat9=
-   echo 材質,9つめの名前は %mat9% に設定されました。
-   echo ------------------
-   echo %mat9% のテクスチャへのパスを記述してください。 
-   set /p mat9texture=
-   echo %mat9% のテクスチャパスは %mat9texture% に設定されました。
-   echo ------------------
- if %mat% geq 10 goto smat10
- goto switcher
- :smat10
-   echo 3Dモデルの材質,10つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat10=
-   echo 材質,10つめの名前は %mat10% に設定されました。
-   echo ------------------
-   echo %mat10% のテクスチャへのパスを記述してください。 
-   set /p mat10texture=
-   echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
-   echo ------------------
- if %mat% geq 11 goto smat11
- goto switcher
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> %temp%\.Rtm_Json_Creator_json.tscf 
  :switcher
  echo buttontextureを決めてください。
  set /p button=
@@ -1004,7 +928,6 @@ goto selectwelcome
  echo おめでとうございます!
  echo 完成しました!
  echo ------------
- echo 以下に完成したものを表示します。
  goto switcher_json
 :switcher_json
  set back=switcher_json
@@ -1013,17 +936,12 @@ goto selectwelcome
  echo   "name": "%name%",
  echo   "model": {
  echo     "modelFile": "%modelFile%",
-  if %mat% == "" goto error
-  if %mat% == 1 echo     "textures":[ ["%mat1%", "%mat1texture%", ""]] },
-  if %mat% == 2 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""]] },
-  if %mat% == 3 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""]] },
-  if %mat% == 4 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""]] },
-  if %mat% == 5 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""]] },
-  if %mat% == 6 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""]] },
-  if %mat% == 7 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""]] },
-  if %mat% == 8 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""]] },
-  if %mat% == 9 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""]] },
-  if %mat% == 10 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""],["%mat10%", "%mat10texture%", ""]] },
+ echo     "textures":[
+ for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do (
+  echo %%a
+ )
+ echo     ]
+ echo     },
  echo   "buttonTexture": "%button%",
  echo   "machineType": "%machinetype%",
  echo   "sound_OnActivate": "%sound_onactivate%",
@@ -1032,17 +950,15 @@ goto selectwelcome
  echo   "accuracy": "%accuracy%",
  echo   "tags": "%tags%"
  echo }
- echo -----------------------------------
+ echo ----------------------------------------
  echo 行動を選択してください
  echo ----------------------------------------
  echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     1              jsonを編集する       
  echo     2              終了させます。       
  echo     3         jsonを保存します。(beta)  
  echo ----------------------------------------
  set /p user=
- if %user% == 1 goto switcheredit
  if %user% == 2 goto 2
  if %user% == 3 goto saveswitcherjson
  echo エラー:不明な番号
@@ -1057,16 +973,12 @@ goto selectwelcome
  echo   "name": "%name%", >> ModelMachine_%name%.json
  echo   "model": { >> ModelMachine_%name%.json
  echo     "modelFile": "%modelFile%", >> ModelMachine_%name%.json
-  if %mat% == 1 echo     "textures":[ ["%mat1%", "%mat1texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 2 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 3 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 4 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 5 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 6 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 7 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 8 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 9 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""]] }, >> ModelMachine_%name%.json
-  if %mat% == 10 echo     "textures":[ ["%mat1%", "%mat1texture%", ""],["%mat2%", "%mat2texture%", ""],["%mat3%", "%mat3texture%", ""],["%mat4%", "%mat4texture%", ""],["%mat5%", "%mat5texture%", ""],["%mat6%", "%mat6texture%", ""],["%mat7%", "%mat7texture%", ""],["%mat8%", "%mat8texture%", ""],["%mat9%", "%mat9texture%", ""],["%mat10%", "%mat10texture%", ""]] }, >> ModelMachine_%name%.json
+ echo     "textures":[ >> ModelMachine_%name%.json
+ for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do (
+  echo    %%a >> ModelMachine_%name%.json
+ )
+ echo     ]  >> ModelMachine_%name%.json
+ echo     },  >> ModelMachine_%name%.json
  echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
  echo   "machineType": "%machinetype%", >> ModelMachine_%name%.json
  echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
@@ -1085,221 +997,6 @@ goto selectwelcome
   goto ERROR
  )
  goto %back%
-
-:switcheredit
- echo どの部分を編集しますか?
- echo 次のどれかの名前を入力してください
- echo name,modelfile,textures,buttonTexture,sound_OnActivate,smoothing,doCulling,accuracy,tags
- echo 材質関係を変更する場合は有効な数字を入力してください。
- echo;
- echo --有効な数字--
- echo %mat1% を編集する場合は 1 を押してください。
- if %mat% geq 2 echo %mat2% を編集する場合は 2 を押してください。
- if %mat% geq 3 echo %mat3% を編集する場合は 3 を押してください。
- if %mat% geq 4 echo %mat4% を編集する場合は 4 を押してください。
- if %mat% geq 5 echo %mat5% を編集する場合は 5 を押してください。
- if %mat% geq 6 echo %mat6% を編集する場合は 6 を押してください。
- if %mat% geq 7 echo %mat7% を編集する場合は 7 を押してください。
- if %mat% geq 8 echo %mat8% を編集する場合は 8 を押してください。
- if %mat% geq 9 echo %mat9% を編集する場合は 9 を押してください。
- if %mat% geq 10 echo %mat10% を編集する場合は 10 を押してください。
- set /p user=
- if %user% == name goto switcheredit_name
- if %user% == modelfile goto switcheredit_model
- if %user% == textures goto switcheredit_texture
- if %user% == buttonTexture goto switcheredit_button
- if %user% == sound_OnActivate goto switcheredit_sound
- if %user% == smoothing goto switcheredit_smoo
- if %user% == doCulling goto switcheredit_call
- if %user% == accuracy goto switcheredit_acc
- if %user% == tags goto switcheredit_tags
- if %user% == 1 goto switcheredit_mat_1
- if %user% == 2 goto switcheredit_mat_2
- if %user% == 3 goto switcheredit_mat_3
- if %user% == 4 goto switcheredit_mat_4
- if %user% == 5 goto switcheredit_mat_5
- if %user% == 6 goto switcheredit_mat_6
- if %user% == 7 goto switcheredit_mat_7
- if %user% == 8 goto switcheredit_mat_8
- if %user% == 9 goto switcheredit_mat_9
- if %user% == 10 goto switcheredit_mat_10
- echo エラー:不明な名前
- goto switcher_json
-
- :switcheredit_name
- echo -------------
- echo nameを決めてください。
- echo これは機能あり設置物の名前になります。競合しないような名前を設定してください。
- set /p name=
- echo nameは %name% に設定されました。
- goto switcher_json
-
- :switcheredit_model
- echo -------------
- echo modelfileを決めてください。
- set /p modelFile=
- echo modelfileは %modelFile% に設定されました。
- goto switcher_json
-
- :switcheredit_texture
- echo -------------
- echo buttontextureを決めてください。
- set /p button=
- echo buttonTextureは %button% に設定されました。
- goto switcher_json
-
- :switcheredit_sound
- echo --------------------
- echo sound_onactivateを決めてください。
- echo この値が何をするかわからない場合は"minecraft:random.click"を入力してください。
- set /p sound_onactivate=
- echo sound_onactivateは %sound_onactivate% に設定されました。
- goto switcher_json
-
- :switcheredit_smoo
- echo --------------------
- echo smoothingを決めてください。
- set /p smoothing=
- echo smoothingは %smoothing% に設定されました。
- goto switcher_json
-
- :switcheredit_acc
- echo --------------------
- echo accuracyを決めてください。
- set /p accuracy=
- echo accuracyは %accuracy% に設定されました。
- goto switcher_json
- 
- :switcheredit_tags
- echo --------------------
- echo tagsを決めてください。
- echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
- set /p tags=
- echo tagsは %tags% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_1
- echo -------------
- echo 3Dモデルの材質,1つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat1=
- echo 材質,1つめの名前は %mat1% に設定されました。
- echo ------------------
- echo %mat1% のテクスチャへのパスを記述してください。
- set /p mat1texture=
- echo %mat1% のテクスチャパスは %mat1texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_2
- echo -------------
- echo 3Dモデルの材質,2つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat2=
- echo 材質,2つめの名前は %mat2% に設定されました。
- echo ------------------
- echo %mat2% のテクスチャへのパスを記述してください。
- set /p mat2texture=
- echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_3
- echo -------------
- echo 3Dモデルの材質,3つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat3=
- echo 材質,3つめの名前は %mat3% に設定されました。
- echo ------------------
- echo %mat3% のテクスチャへのパスを記述してください。
- set /p mat3texture=
- echo %mat3% のテクスチャパスは %mat3texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_4
- echo -------------
- echo 3Dモデルの材質,4つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat4=
- echo 材質,4つめの名前は %mat4% に設定されました。
- echo ------------------
- echo %mat4% のテクスチャへのパスを記述してください。
- set /p mat4texture=
- echo %mat4% のテクスチャパスは %mat4texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_5
- echo -------------
- echo 3Dモデルの材質,5つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat5=
- echo 材質,5つめの名前は %mat5% に設定されました。
- echo ------------------
- echo %mat5% のテクスチャへのパスを記述してください。
- set /p mat5texture=
- echo %mat5% のテクスチャパスは %mat5texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_6
- echo -------------
- echo 3Dモデルの材質,6つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat6=
- echo 材質,6つめの名前は %mat6% に設定されました。
- echo ------------------
- echo %mat6% のテクスチャへのパスを記述してください。
- set /p mat6texture=
- echo %mat6% のテクスチャパスは %mat6texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_7
- echo -------------
- echo 3Dモデルの材質,7つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat7=
- echo 材質,7つめの名前は %mat7% に設定されました。
- echo ------------------
- echo %mat7% のテクスチャへのパスを記述してください。
- set /p mat7texture=
- echo %mat7% のテクスチャパスは %mat7texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_8
- echo -------------
- echo 3Dモデルの材質,8つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat28=
- echo 材質,8つめの名前は %mat8% に設定されました。
- echo ------------------
- echo %mat8% のテクスチャへのパスを記述してください。
- set /p mat8texture=
- echo %mat8% のテクスチャパスは %mat8texture% に設定されました。
- goto switcher_json
-
- :switcheredit_mat_9
- echo -------------
- echo 3Dモデルの材質,9つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat9=
- echo 材質,9つめの名前は %mat9% に設定されました。
- echo ------------------
- echo %mat2% のテクスチャへのパスを記述してください。
- set /p mat2texture=
- echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
- goto switcher_json
- 
- :switcheredit_mat_10
- echo -------------
- echo 3Dモデルの材質,10つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat10=
- echo 材質,10つめの名前は %mat10% に設定されました。
- echo ------------------
- echo %mat10% のテクスチャへのパスを記述してください。
- set /p mat10texture=
- echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
- goto switcher_json
-
-
-
 :6
  cls
  set tsw=n
