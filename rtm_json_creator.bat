@@ -48,8 +48,7 @@ goto selectwelcome
  cls
  set tsw=t
  echo 列車のjsonを作成します。
- echo これはJSONが自動保存されます。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
- echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\ModelTrain_%%trainname%%.jsonにできるはずです。)
+ echo これはJSONが自動保存されます。 jsonは%cd%\ModelTrain_%%trainname%%.jsonにできるはずです。
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  echo -----------------
  rem TrainName setting start
@@ -675,8 +674,7 @@ goto selectwelcome
  goto signjson
 
 :savesignjson
- echo jsonを保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
- echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\SignBoard_%texture%にできるはずです。)
+ echo jsonを保存します。 jsonは%cd%\SignBoard_%texture%.jsonにできるはずです。
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > SignBoard_%texture%.json
@@ -965,8 +963,7 @@ goto selectwelcome
  goto switcher_json
 
 :saveswitcherjson
- echo jsonを保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
- echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\ModelMachine_%name%にできるはずです。)
+ echo jsonを保存します。 jsonは%cd%\ModelMachine_%name%.jsonにできるはずです。
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > ModelMachine_%name%.json
@@ -1206,8 +1203,7 @@ goto selectwelcome
  goto %back%
 
 :savenpcjson
- echo jsonを保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
- echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\ModelNPC_%name%にできるはずです。)
+ echo jsonを保存します。 jsonは%cd%\ModelNPC_%name%.jsonにできるはずです。
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > ModelNPC_%name%.json
@@ -1498,8 +1494,7 @@ goto selectwelcome
  echo エラー:不明な番号
  goto %back%
 :saveflagjson
- echo jsonを保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
- echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\ModelNPC_%name%にできるはずです。)
+ echo jsonを保存します。 jsonは%cd%\ModelNPC_%texture:~19%.jsonにできるはずです。
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > Flag_%texture:~19%.json
@@ -1596,8 +1591,7 @@ goto selectwelcome
   if %user% == n goto 2
   if %user% == y goto savesounds
   :savesounds
-  echo jsonを保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
-  echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\sounds.jsonにできるはずです。)
+  echo jsonを保存します。 jsonは%cd%\sounds.jsonにできるはずです。
   echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
   set soundpath=%soundpath:/=.%
   pause
@@ -1624,8 +1618,7 @@ goto selectwelcome
 
  :sound_two
   echo 注意:
-  echo jsonを自動保存します。 jsonは実行したコマンドプロンプトのパス上にできるはずです。
-  echo (例えばc:\json\にパスされているcmdで実行した場合はc:\json\sounds.jsonにできるはずです。)
+  echo jsonを自動保存します。 jsonは%cd%\sounds.jsonにできるはずです。
   echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
   echo --------
   set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
