@@ -2,7 +2,7 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.4.4(public)
+set version=0.9.4.5(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -1007,138 +1007,55 @@ goto selectwelcome
  set /p name=
  echo nameは %name% に設定されました。
  echo -------------
- set nomodel=1
- set /p nomodel=モデルを設定せずにjsonを作成する場合はy,設定する場合は何かのキーを押してください。
- set mat=0
- if %nomodel% == y goto npc
- echo -------------
  echo modelfileを決めてください。
  set /p modelFile=
  echo modelfileは %modelFile% に設定されました。
  echo -------------
  echo %modelFile% の材質数を設定してください。
- set /p mat=
- echo 材質数は %mat% に設定されました。
+ set /p matc=
+ echo 材質数は %matc% に設定されました。
  echo -------------
- echo 3Dモデルの材質,1つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat1=
- echo 材質,1つめの名前は %mat1% に設定されました。
- echo ------------------
- echo %mat1% のテクスチャへのパスを記述してください。
- set /p mat1texture=
- echo %mat1% のテクスチャパスは %mat1texture% に設定されました。
- echo ------------------
- if %mat% geq 2 goto nmat2
- goto npc
- :nmat2
-   echo 3Dモデルの材質,2つめの名前を決めてください。
+ set count=1
+ del %temp%\.Rtm_Json_Creator_json.tscf
+ :checkcountnpc
+ if %count% == %matc% goto lastnpcmat
+    echo ------------------
+   echo NPCの3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
-   set /p mat2=
-   echo 材質,2つめの名前は %mat2% に設定されました。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat2% のテクスチャへのパスを記述してください。
-   set /p mat2texture=
-   echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
- if %mat% geq 3 goto nmat3
- goto npc
- :nmat3
-   echo 3Dモデルの材質,3つめの名前を決めてください。
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> %temp%\.Rtm_Json_Creator_json.tscf 
+ set /a count=%count% + 1
+   goto checkcountnpc
+   :lastnpcmat
+   echo ------------------
+   echo NPCの3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
-   set /p mat3=
-   echo 材質,3つめの名前は %mat3% に設定されました。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat3% のテクスチャへのパスを記述してください。
-   set /p mat3texture=
-   echo %mat3% のテクスチャパスは %mat3texture% に設定されました。
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
- if %mat% geq 4 goto nmat4
- goto npc
- :nmat4
-   echo 3Dモデルの材質,4つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat4=
-   echo 材質,4つめの名前は %mat4% に設定されました。
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
-   echo %mat4% のテクスチャへのパスを記述してください。
-   set /p mat4texture=
-   echo %mat4% のテクスチャパスは %mat4texture% に設定されました。
- if %mat% geq 5 goto nmat5
- goto npc
- :nmat5
-   echo 3Dモデルの材質,5つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat5=
-   echo 材質,5つめの名前は %mat5% に設定されました。
-   echo ------------------
-   echo %mat5% のテクスチャへのパスを記述してください。 
-   set /p mat5texture=
-   echo %mat5% のテクスチャパスは %mat5texture% に設定されました。
-   echo ------------------
- if %mat% geq 6 goto nmat6
- goto npc
- :nmat6
-   echo 3Dモデルの材質,6つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat6=
-   echo 材質,6つめの名前は %mat6% に設定されました。
-   echo ------------------
-   echo %mat6% のテクスチャへのパスを記述してください。 
-   set /p mat6texture=
-   echo %mat6% のテクスチャパスは %mat6texture% に設定されました。
-   echo ------------------
- if %mat% geq 7 goto nmat7
- goto npc
- :nmat7
-   echo 3Dモデルの材質,7つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat7=
-   echo 材質,7つめの名前は %mat7% に設定されました。
-   echo ------------------
-   echo %mat7% のテクスチャへのパスを記述してください。 
-   set /p mat7texture=
-   echo %mat7% のテクスチャパスは %mat7texture% に設定されました。
-   echo ------------------
- if %mat% geq 8 goto nmat8
- goto npc
- :nmat8
-   echo 3Dモデルの材質,8つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat8=
-   echo 材質,8つめの名前は %mat8% に設定されました。
-   echo ------------------
-   echo %mat8% のテクスチャへのパスを記述してください。 
-   set /p mat8texture=
-   echo %mat8% のテクスチャパスは %mat8texture% に設定されました。
-   echo ------------------
- if %mat% geq 9 goto nmat9
- goto npc
- :nmat9
-   echo 3Dモデルの材質,9つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat9=
-   echo 材質,9つめの名前は %mat9% に設定されました。
-   echo ------------------
-   echo %mat9% のテクスチャへのパスを記述してください。 
-   set /p mat9texture=
-   echo %mat9% のテクスチャパスは %mat9texture% に設定されました。
-   echo ------------------
- if %mat% geq 10 goto nmat10
- goto npc
- :nmat10
-   echo 3Dモデルの材質,10つめの名前を決めてください。
-   echo 材質名を入力してください。
-   set /p mat10=
-   echo 材質,10つめの名前は %mat10% に設定されました。
-   echo ------------------
-   echo %mat10% のテクスチャへのパスを記述してください。 
-   set /p mat10texture=
-   echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
-   echo ------------------
- if %mat% geq 11 goto nmat11
- goto npc
-
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> %temp%\.Rtm_Json_Creator_json.tscf 
 :npc
  echo -------------
  echo roleを決めてください。
@@ -1161,28 +1078,12 @@ goto selectwelcome
  echo ------ファイル名:ModelNPC_%name%.json-------
  echo {
  echo   "name": %name%,
- if %mat% geq 1 echo   "model": {
- if %mat% geq 1 echo     "modelFile": "%modelFile%",
- if %mat% == 1 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"]] },
-  if %mat% == 2 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"]] },
-  if %mat% == 3 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"]] },
-  if %mat% == 4 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"]] },
-  if %mat% == 5 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"]] },
-  if %mat% == 6 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"]] },
-  if %mat% == 7 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"]] },
-  if %mat% == 8 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"]] },
-  if %mat% == 9 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"]] },
-  if %mat% == 10 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"]] },
-  if %mat% == 11 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"]] },
-  if %mat% == 12 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"]] },
-  if %mat% == 13 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"]] },
-  if %mat% == 14 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"]] },
-  if %mat% == 15 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"]] },
-  if %mat% == 16 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"]] },
-  if %mat% == 17 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"]] },
-  if %mat% == 18 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"],["%mat18%", "%mat18texture%", "%mat18a%"]] },
-  if %mat% == 19 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"],["%mat18%", "%mat18texture%", "%mat18a%"],["%mat19%", "%mat19texture%", "%mat19a%"]] },
-  if %mat% == 20 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"],["%mat18%", "%mat18texture%", "%mat18a%"],["%mat19%", "%mat19texture%", "%mat19a%"],["%mat20%", "%mat20texture%", "%mat20a%"]] },
+ echo   "model": {
+  echo     "modelFile": "%modelFile%",
+  echo     "textures":[
+  for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a )
+  echo     ]
+  echo     },
  echo   "role": %role%,
  echo   "doCulling": %doCulling%,
  echo   "smoothing": %smoothing%
@@ -1192,7 +1093,6 @@ goto selectwelcome
  echo ----------------------------------------
  echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     1              jsonを編集する       
  echo     2              終了させます。       
  echo     3         jsonを保存します。(beta)  
  echo ----------------------------------------
@@ -1212,26 +1112,12 @@ goto selectwelcome
  echo   "name": %name%, >> ModelNPC_%name%.json
  echo   "model": { >> ModelNPC_%name%.json
  echo     "modelFile": "%modelFile%", >> ModelNPC_%name%.json
- if %mat% == 1 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 2 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 3 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 4 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 5 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 6 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 7 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 8 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 9 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 10 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 11 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 12 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 13 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 14 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 15 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 16 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 17 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 18 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"],["%mat18%", "%mat18texture%", "%mat18a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 19 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"],["%mat18%", "%mat18texture%", "%mat18a%"],["%mat19%", "%mat19texture%", "%mat19a%"]] }, >> ModelNPC_%name%.json
-  if %mat% == 20 echo         "textures":[ ["%mat1%", "%mat1texture%", "%mat1a%"],["%mat2%", "%mat2texture%", "%mat2a%"],["%mat3%", "%mat3texture%", "%mat3a%"],["%mat4%", "%mat4texture%", "%mat4a%"],["%mat5%", "%mat5texture%", "%mat5a%"],["%mat6%", "%mat6texture%", "%mat6a%"],["%mat7%", "%mat7texture%", "%mat7a%"],["%mat8%", "%mat8texture%", "%mat8a%"],["%mat9%", "%mat9texture%", "%mat9a%"],["%mat10%", "%mat10texture%", "%mat10a%"],["%mat11%", "%mat11texture%", "%mat11a%"],["%mat12%", "%mat12texture%", "%mat12a%"],["%mat13%", "%mat13texture%", "%mat13a%"],["%mat14%", "%mat14texture%", "%mat14a%"],["%mat15%", "%mat15texture%", "%mat15a%"],["%mat16%", "%mat16texture%", "%mat16a%"],["%mat17%", "%mat17texture%", "%mat17a%"],["%mat18%", "%mat18texture%", "%mat18a%"],["%mat19%", "%mat19texture%", "%mat19a%"],["%mat20%", "%mat20texture%", "%mat20a%"]] }, >> ModelNPC_%name%.json
+ echo     "textures":[ >> ModelNPC_%name%.json
+ for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do (
+  echo    %%a >> ModelNPC_%name%.json
+ )
+ echo     ]  >> ModelNPC_%name%.json
+ echo     },  >> ModelNPC_%name%.json
  echo   "role": %role%, >> ModelNPC_%name%.json
  echo   "doCulling": %doCulling%, >> ModelNPC_%name%.json
  echo   "smoothing": %smoothing% >> ModelNPC_%name%.json
@@ -1247,190 +1133,6 @@ goto selectwelcome
  )
  goto %back%
 
-:npcedit
- echo どの部分を編集しますか?
- echo 次のどれかの名前を入力してください
- echo name,modelfile,role,doCulling,smoothing
- echo 材質関係を変更する場合は有効な数字を入力してください。
- echo;
- echo --有効な数字--
- if %mat% geq 1 echo %mat1% を編集する場合は 1 を押してください。
- if %mat% geq 2 echo %mat2% を編集する場合は 2 を押してください。
- if %mat% geq 3 echo %mat3% を編集する場合は 3 を押してください。
- if %mat% geq 4 echo %mat4% を編集する場合は 4 を押してください。
- if %mat% geq 5 echo %mat5% を編集する場合は 5 を押してください。
- if %mat% geq 6 echo %mat6% を編集する場合は 6 を押してください。
- if %mat% geq 7 echo %mat7% を編集する場合は 7 を押してください。
- if %mat% geq 8 echo %mat8% を編集する場合は 8 を押してください。
- if %mat% geq 9 echo %mat9% を編集する場合は 9 を押してください。
- if %mat% geq 10 echo %mat10% を編集する場合は 10 を押してください。
- set /p user=
- if %user% == name goto npcedit_name
- if %user% == modelfile goto npcedit_model
- if %user% == role goto npcedit_role
- if %user% == smoothing goto npcedit_smoo
- if %user% == doCulling goto npcedit_call
- if %user% == 1 goto npcedit_mat_1
- if %user% == 2 goto npcedit_mat_2
- if %user% == 3 goto npcedit_mat_3
- if %user% == 4 goto npcedit_mat_4
- if %user% == 5 goto npcedit_mat_5
- if %user% == 6 goto npcedit_mat_6
- if %user% == 7 goto npcedit_mat_7
- if %user% == 8 goto npcedit_mat_8
- if %user% == 9 goto npcedit_mat_9
- if %user% == 10 goto npcedit_mat_10
-
- :npcedit_name
- echo -------------
- echo nameを決めてください。
- set /p name=
- echo nameは %name% に設定されました。
- goto %back%
- :npcedit_role
- echo -------------
- echo roleを決めてください。
- set /p role=
- echo nameは %role% に設定されました。
- goto %back%
- :npcedit_model
- echo -------------
- echo modelfileを決めてください。
- set /p modelfile=
- echo modelfileは %modelfile% に設定されました。
- goto %back%
- :npcedit_smoo
- echo -------------
- echo smoothingを決めてください。
- set /p smoothing=
- echo smoothingは %smoothing% に設定されました。
- goto %back%
- :npcedit_call
- echo -------------
- echo docullingを決めてください。
- set /p doculling=
- echo docullingは %doculling% に設定されました。
- goto %back%
-
- :npcedit_mat_1
- echo -------------
- echo 3Dモデルの材質,1つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat1=
- echo 材質,1つめの名前は %mat1% に設定されました。
- echo ------------------
- echo %mat1% のテクスチャへのパスを記述してください。
- set /p mat1texture=
- echo %mat1% のテクスチャパスは %mat1texture% に設定されました。
- goto %back%
-
- :npcedit_mat_2
- echo -------------
- echo 3Dモデルの材質,2つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat2=
- echo 材質,2つめの名前は %mat2% に設定されました。
- echo ------------------
- echo %mat2% のテクスチャへのパスを記述してください。
- set /p mat2texture=
- echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
- goto %back%
-
- :npcedit_mat_3
- echo -------------
- echo 3Dモデルの材質,3つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat3=
- echo 材質,3つめの名前は %mat3% に設定されました。
- echo ------------------
- echo %mat3% のテクスチャへのパスを記述してください。
- set /p mat3texture=
- echo %mat3% のテクスチャパスは %mat3texture% に設定されました。
- goto %back%
-
- :npcedit_mat_4
- echo -------------
- echo 3Dモデルの材質,4つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat4=
- echo 材質,4つめの名前は %mat4% に設定されました。
- echo ------------------
- echo %mat4% のテクスチャへのパスを記述してください。
- set /p mat4texture=
- echo %mat4% のテクスチャパスは %mat4texture% に設定されました。
- goto %back%
-
- :npcedit_mat_5
- echo -------------
- echo 3Dモデルの材質,5つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat5=
- echo 材質,5つめの名前は %mat5% に設定されました。
- echo ------------------
- echo %mat5% のテクスチャへのパスを記述してください。
- set /p mat5texture=
- echo %mat5% のテクスチャパスは %mat5texture% に設定されました。
- goto %back%
-
- :npcedit_mat_6
- echo -------------
- echo 3Dモデルの材質,6つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat6=
- echo 材質,6つめの名前は %mat6% に設定されました。
- echo ------------------
- echo %mat6% のテクスチャへのパスを記述してください。
- set /p mat6texture=
- echo %mat6% のテクスチャパスは %mat6texture% に設定されました。
- goto %back%
-
- :npcedit_mat_7
- echo -------------
- echo 3Dモデルの材質,7つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat7=
- echo 材質,7つめの名前は %mat7% に設定されました。
- echo ------------------
- echo %mat7% のテクスチャへのパスを記述してください。
- set /p mat7texture=
- echo %mat7% のテクスチャパスは %mat7texture% に設定されました。
- goto %back%
-
- :npcedit_mat_8
- echo -------------
- echo 3Dモデルの材質,8つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat28=
- echo 材質,8つめの名前は %mat8% に設定されました。
- echo ------------------
- echo %mat8% のテクスチャへのパスを記述してください。
- set /p mat8texture=
- echo %mat8% のテクスチャパスは %mat8texture% に設定されました。
- goto %back%
-
- :npcedit_mat_9
- echo -------------
- echo 3Dモデルの材質,9つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat9=
- echo 材質,9つめの名前は %mat9% に設定されました。
- echo ------------------
- echo %mat2% のテクスチャへのパスを記述してください。
- set /p mat2texture=
- echo %mat2% のテクスチャパスは %mat2texture% に設定されました。
- goto %back%
- 
- :npcedit_mat_10
- echo -------------
- echo 3Dモデルの材質,10つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p mat10=
- echo 材質,10つめの名前は %mat10% に設定されました。
- echo ------------------
- echo %mat10% のテクスチャへのパスを記述してください。
- set /p mat10texture=
- echo %mat10% のテクスチャパスは %mat10texture% に設定されました。
- goto %back%
 
 :7
  cls
