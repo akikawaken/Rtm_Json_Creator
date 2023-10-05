@@ -14,17 +14,18 @@ echo  ----------------------------------------
 echo   行動の番号         行動の内容          
 echo  ----------------------------------------
 echo      1        列車のjsonを作成します。     
-echo      2              終了させます。       
+echo      2        終了させます。       
 echo      3        看板のjsonを作成します。 
 echo      4        スペシャルサンクスと作者  
-echo      5   機能あり設置物のjsonを作成します。 
-echo      6         NPCのjsonを作成します。 
-echo      7          旗のjsonを作成します。
+echo      5        機能あり設置物のjsonを作成します。 
+echo      6        NPCのjsonを作成します。 
+echo      7        旗のjsonを作成します。
 echo      8        sounds.jsonを作成します。
-echo      9      ディレクトリを構成します。
-echo     10  指定されたディレクトリをzip化します。(べーたばんです)
-echo    cmd         cmd.exeをコールします。
-echo setpath 指定したディレクトリにパスを通します。
+echo      9        ディレクトリを構成します。
+echo     10        指定されたディレクトリをzip化します。(べーたばんです)
+echo     11        pack.jsonを作成します。
+echo    cmd        cmd.exeをコールします。
+echo setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
@@ -39,9 +40,9 @@ if %start% == 7 goto 7
 if %start% == 8 goto 8
 if %start% == 9 goto 9
 if %start% == 10 goto zip
+if %start% == 11 goto pack
 if %start% == 999 goto soundcreate
-if %start% == setpath set /p setpath=Enter path here : 
-if %start% == setpath pushd %setpath%
+if %start% == setpath call :setpath
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
 echo エラー:不明な番号です。
@@ -1444,6 +1445,49 @@ goto selectwelcome
  echo Done.
  pause
  exit
+:pack
+ echo pack.jsonを作成します。
+ echo 現在のディレクトリ: %cd% .
+ set /p change=変更しますか?(y/n)
+ if %change% == y call :setpath
+ echo;
+ echo アドオン名(モデルパック名)を決めてください:
+ set /p modelpackname=
+ echo アドオン名は%modelpackname%に設定されました。
+ echo;
+ echo ホームページのURLを決めてください( 必須ではありません. 必要ない場合は空白のままエンターしてください。 )
+ set homepageurl=Null
+ set /p homepageurl=
+ echo ホームページのURLは %homepageurl% に設定されました。
+ echo;
+ echo "アップデート確認用テキストの URL"を決めてください。
+ set /p url=
+ echo "アップデート確認用テキストの URL"は %url% に設定されました。
+ echo;
+ echo バージョンを決めてください
+ set /p vers=
+ echo バージョンは %vers% に設定されました。
+ echo;
+ echo Done!
+ echo {
+ echo "name":"%modelpackname%",
+ if not '%homepageurl%''==''' echo "homepage":"%homepageurl%",
+ echo "updateURL":"%url%",
+ echo "version":"%vers%"
+ echo }
+ echo;
+ echo ファイルを保存しますか?
+ set /p confirm=y/n:
+ if %confirm% == n goto 2
+ echo { >>pack.json
+ echo "name":"%modelpackname%", >>pack.json
+ if not '%homepageurl%''==''' echo "homepage":"%homepageurl%", >>pack.json
+ echo "updateURL":"%url%", >>pack.json
+ echo "version":"%vers%" >>pack.json
+ echo } >>pack.json
+ echo;
+ pause
+ goto 2
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
@@ -1476,7 +1520,7 @@ goto selectwelcome
  set /p setpath=Enter path here :
  pushd %setpath%
  echo Done.
- goto welcome
+ exit /b
 rem ERROR CODE
  rem 33N 
   rem 看板のjsonを保存した後にそのファイルが見つかりませんでした。
