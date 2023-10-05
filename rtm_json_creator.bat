@@ -25,7 +25,7 @@ echo      9        ディレクトリを構成します。
 echo     10        指定されたディレクトリをzip化します。(べーたばんです)
 echo     11        pack.jsonを作成します。
 echo    cmd        cmd.exeをコールします。
-echo setpath       指定したディレクトリにパスを通します。
+echo  setpath      指定したディレクトリにパスを通します。
 echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
@@ -1481,7 +1481,7 @@ goto selectwelcome
  if %confirm% == n goto 2
  echo { >>pack.json
  echo "name":"%modelpackname%", >>pack.json
- if not '%homepageurl%''==''' echo "homepage":"%homepageurl%", >>pack.json
+ if not %homepageurl% == Null echo "homepage":"%homepageurl%", >>pack.json
  echo "updateURL":"%url%", >>pack.json
  echo "version":"%vers%" >>pack.json
  echo } >>pack.json
