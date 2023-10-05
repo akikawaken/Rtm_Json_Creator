@@ -2,7 +2,7 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.4.5(public)
+set version=0.9.4.6(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
