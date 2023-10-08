@@ -2,30 +2,30 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.4.6(public)
+set version=0.9.4.7(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :welcome
-echo rtm json createorへようこそ!
+echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
 :selectwelcome
 echo  ----------------------------------------
 echo   行動の番号         行動の内容          
 echo  ----------------------------------------
-echo      1        列車のjsonを作成します。     
-echo      2        終了させます。       
-echo      3        看板のjsonを作成します。 
-echo      4        スペシャルサンクスと作者  
-echo      5        機能あり設置物のjsonを作成します。 
-echo      6        NPCのjsonを作成します。 
-echo      7        旗のjsonを作成します。
-echo      8        sounds.jsonを作成します。
-echo      9        ディレクトリを構成します。
-echo     10        指定されたディレクトリをzip化します。(べーたばんです)
-echo     11        pack.jsonを作成します。
-echo    cmd        cmd.exeをコールします。
-echo  setpath      指定したディレクトリにパスを通します。
+echo       1         列車のjsonを作成します。     
+echo       2         終了させます。       
+echo       3         看板のjsonを作成します。 
+echo       4         スペシャルサンクスと作者  
+echo       5         機能あり設置物のjsonを作成します。 
+echo       6         NPCのjsonを作成します。 
+echo       7         旗のjsonを作成します。
+echo       8         sounds.jsonを作成します。
+echo       9         ディレクトリを構成します。
+echo      10         指定されたディレクトリをzip化します。(べーたばんです)
+echo      11         pack.jsonを作成します。
+echo     cmd         cmd.exeをコールします。
+echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
@@ -802,7 +802,6 @@ goto selectwelcome
  echo  デバッグ
  echo   -- akikawa9616
  echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
- echo thank you !
  echo;
  echo このプログラムはMITライセンスで公開されています。
  echo;
@@ -1411,7 +1410,6 @@ goto selectwelcome
  echo 注意: すでに指定されたディレクトリにRTMフォルダがあると多分バグります。
  echo;
  set /p directry=
- pushd c:\
  pushd %directry%
  md RTM\assets\minecraft\models\json
  md RTM\assets\minecraft\scripts
@@ -1470,21 +1468,23 @@ goto selectwelcome
  echo;
  echo Done!
  echo {
- echo "name":"%modelpackname%",
- if not '%homepageurl%''==''' echo "homepage":"%homepageurl%",
- echo "updateURL":"%url%",
- echo "version":"%vers%"
+ echo   "name":"%modelpackname%",
+ if not %homepageurl% == Null echo   "homepage":"%homepageurl%",
+ echo   "updateURL":"%url%",
+ echo   "version":"%vers%"
  echo }
  echo;
  echo ファイルを保存しますか?
  set /p confirm=y/n:
  if %confirm% == n goto 2
+ echo on
  echo { >>pack.json
- echo "name":"%modelpackname%", >>pack.json
- if not %homepageurl% == Null echo "homepage":"%homepageurl%", >>pack.json
- echo "updateURL":"%url%", >>pack.json
- echo "version":"%vers%" >>pack.json
+ echo   "name":"%modelpackname%", >>pack.json
+ if not %homepageurl% == Null echo   "homepage":"%homepageurl%", >>pack.json
+ echo   "updateURL":"%url%", >>pack.json
+ echo   "version":"%vers%" >>pack.json
  echo } >>pack.json
+ echo off
  echo;
  pause
  goto 2
