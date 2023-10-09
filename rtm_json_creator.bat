@@ -51,7 +51,7 @@ goto selectwelcome
  cls
  set tsw=t
  echo 列車のjsonを作成します。
- echo これはJSONが自動保存されます。 jsonは%cd%\ModelTrain_%%trainname%%.jsonにできるはずです。
+ echo これはJSONが自動保存されます。 jsonは %cd%\ModelTrain_%%trainname%%.json にできるはずです。
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  echo -----------------
  rem TrainName setting start
