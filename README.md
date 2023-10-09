@@ -17,6 +17,11 @@ windows(動作確認済み:win10home,win11home)
 **それ以外のバージョンは↓**  
 転轍機は10,その他は20まで設定できます。  
 
+# 看板jsonの作成がブラウザ上で体験できます!
+[![看板jsonを体験する](https://cdn.discordapp.com/attachments/1075375393764278332/1156172370839617556/image.png)](https://akikawaken.github.io/)
+*画像はイメージです。  
+*画像をクリックすると看板jsonの体験ができるページに飛びます。
+
 # LICENSE 
 **0.9.3.5(public)より先のバージョンのみMITです。**
 - - -
