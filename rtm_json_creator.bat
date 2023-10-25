@@ -2,7 +2,7 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.4.7(public)
+set version=0.9.4.8(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -24,6 +24,7 @@ echo       8         sounds.jsonを作成します。
 echo       9         ディレクトリを構成します。
 echo      10         指定されたディレクトリをzip化します。(べーたばんです)
 echo      11         pack.jsonを作成します。
+echo      12         信号のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
 echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
@@ -41,6 +42,7 @@ if %start% == 8 goto 8
 if %start% == 9 goto 9
 if %start% == 10 goto zip
 if %start% == 11 goto pack
+if %start% == 12 goto signal
 if %start% == 999 goto soundcreate
 if %start% == setpath call :setpath
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
@@ -1488,6 +1490,47 @@ goto selectwelcome
  echo;
  pause
  goto 2
+:signal
+ set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
+ echo 信号のjsonを作成します。
+ echo;
+ echo signalNameを決めてください。
+ set /p signalname=
+ echo signalNameは %signalname% に設定されました。
+ echo { >>%tempfile%
+ echo  "signalName": "%signalname%", >>%tempfile%
+ echo;
+ echo signalModelを決めてください。
+ set /p signalModel=
+ echo signalModelは %signalModel% に設定されました。
+ echo  "signalModel": "%signalModel%", >>%tempfile%
+ echo;
+ echo signalTextureを決めてください。
+ set /p signalTexture=
+ echo signalTextureは %signalTexture% に設定されました。
+ echo  "signalTexture": "%signalTexture%", >>%tempfile%
+ echo;
+ echo lightTextureを決めてください。
+ set /p lightTexture=
+ echo lightTextureは %lightTexture% に設定されました。
+ echo  "lightTexture": "%lightTexture%", >>%tempfile%
+ echo;
+ echo buttonTextureを決めてください。
+ set /p buttonTexture=
+ echo buttonTextureは %buttonTexture% に設定されました。
+ echo  "buttonTexture": "%buttonTexture%", >>%tempfile%
+ echo  "modelPartsFixture": { >>%tempfile%
+ echo;
+ echo modelPartsFixtureにおけるobjectsを決めてください。
+ echo これはパーツ(固定具)に使用するオブジェクトの名前です。
+ echo 複数設定する場合は%ESC%[7m"pole", "pole2", "pole3"%ESC%[0mの形式で指定してください。 文字列を使用する場合は%ESC%[7m"%ESC%[0mで囲う必要があります。
+ set /p objects_fixture=
+ echo   "objects": [%objects_fixture%], >>%tempfile%
+ echo modelPartsFixtureにおけるposを決めてください。
+ echo これは回転の中心位置の設定です。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p pos_fixture=
+ echo      "pos": [%pos_fixture%] >>%tempfile%
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
@@ -1538,9 +1581,7 @@ rem ERROR CODE
   rem 故意的に発生させたエラー。
 :ERROR
   echo 申し訳ありません。どこかでエラーが発生しました。
-  echo 可能であれば、作者に失敗した際の詳細情報を送信してください。
-  echo 今後の改良に情報を使用させていただきます。
-  echo (第三者への送信や、情報の公開は一切しません。)
+  echo 可能であれば、githubにissueを作成してください。 可能な限りサポートします。
   echo;
   echo --詳細情報--
   ver
