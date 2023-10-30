@@ -1547,7 +1547,7 @@ goto selectwelcome
  set /p pos_body=
  echo   "pos": [%pos_body%] >>%tempfile%
  echo  }, >>%tempfile%
- echo  "lights": [>>%tempfile%
+ echo  "lights": [ >>%tempfile%
  echo;
  set firstlight=1
  :lightsetting
