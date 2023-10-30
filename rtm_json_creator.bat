@@ -5,6 +5,7 @@ set user=
 set version=0.9.4.8(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
+set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :welcome
 echo Rtm_Json_Creatorへようこそ!
@@ -1526,11 +1527,86 @@ goto selectwelcome
  echo 複数設定する場合は%ESC%[7m"pole", "pole2", "pole3"%ESC%[0mの形式で指定してください。 文字列を使用する場合は%ESC%[7m"%ESC%[0mで囲う必要があります。
  set /p objects_fixture=
  echo   "objects": [%objects_fixture%], >>%tempfile%
+ echo;
  echo modelPartsFixtureにおけるposを決めてください。
  echo これは回転の中心位置の設定です。
  echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos_fixture=
- echo      "pos": [%pos_fixture%] >>%tempfile%
+ echo   "pos": [%pos_fixture%] >>%tempfile%
+ echo  }, >>%tempfile%
+ echo  "modelPartsBody": { >>%tempfile%
+ echo;
+ echo modelPartsBodyにおけるobjectsを決めてください。
+ echo これはパーツ(本体)に使用するオブジェクトの名前です。
+ echo 複数設定する場合は%ESC%[7m"doby", "light1", "light2", "light3"%ESC%[0mの形式で指定してください。 文字列を使用する場合は%ESC%[7m"%ESC%[0mで囲う必要があります。
+ set /p objects_body=
+ echo   "objects": [%objects_body%], >>%tempfile%
+ echo;
+ echo modelPartsBodyにおけるposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p pos_body=
+ echo   "pos": [%pos_body%] >>%tempfile%
+ echo  }, >>%tempfile%
+ echo  "lights": [>>%tempfile%
+ echo;
+ set firstlight=1
+ :lightsetting
+ echo ライトの設定を決めてください。
+ echo 設定を終えた場合はそのままenterしてください。
+ echo -----------------------------------------------------------
+ echo ^|項目^|                        説明                        ^|
+ echo ^|  S ^|どの信号が入力された時点灯するか(信号レベルは1~1024)^|
+ echo ^|  I ^|点滅間隔(0~1200 tick)                               ^|
+ echo ^|  P ^|使用するオブジェクト名(「,」で区切る)               ^|
+ echo -----------------------------------------------------------
+ echo;
+ echo 以下の形式で入力してください。: S([S項目の数値]) I([I項目の数値]) P(P項目の文字列)
+ echo e. g. S(1) I(0) P(LightYellow1, LightBlue4)
+ echo;
+ set light=Null
+ set /p light=
+ if %light% == Null goto rotate
+ if %firstlight% == 1 goto firstlight
+ echo   "%light%", >>%tempfile%
+ goto lightsetting
+ :firstlight
+ set lastlight=%light%
+ set firstlight=0
+ goto lightsetting
+ :rotate
+ echo   "%lastlight%" >>%tempfile%
+ echo  ], >>%tempfile%
+ echo rotateBodyを決めてください。
+ set /p rotateBody=(true/false) :
+ echo  "rotateBody": %rotateBody% >>%tempfile%
+ echo } >> %tempfile%
+ goto signal_json
+ :signal_json
+ echo jsonが完成しました!
+ echo;
+ echo -- filename: ModelSignal_%signalname%.json --
+ echo;
+ set back=signal_json_json
+ for /f "delims=@" %%a in (%tempfile%) do (
+  echo %%a
+ )
+ echo ----------------------------------------
+ echo 行動を選択してください
+ echo ----------------------------------------
+ echo  行動の番号         行動の内容          
+ echo ----------------------------------------
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。(beta)  
+ echo ----------------------------------------
+ set /p user=
+ if %user% == 2 goto 2
+ if %user% == 3 goto savesignaljson
+ echo エラー:不明な番号
+ goto signal_json
+ :savesignaljson
+ echo "F"を押してください。
+ xcopy %tempfile% %setpath%\ModelSignal_%signalname%.json /S /V /C /F /-Y
+ goto signal_json
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
