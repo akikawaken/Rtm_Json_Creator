@@ -2,7 +2,7 @@
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
 set user=
-set version=0.9.4.8(public)
+set version=0.9.5(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 set setpath=%cd%
