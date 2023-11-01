@@ -18,7 +18,7 @@ echo       1         列車のjsonを作成します。
 echo       2         終了させます。       
 echo       3         看板のjsonを作成します。 
 echo       4         スペシャルサンクスと作者  
-echo       5         機能あり設置物のjsonを作成します。 
+echo       5         機能あり/なし設置物のjsonを作成します。 
 echo       6         NPCのjsonを作成します。 
 echo       7         旗のjsonを作成します。
 echo       8         sounds.jsonを作成します。
@@ -824,23 +824,52 @@ goto selectwelcome
 :5
  cls
  set tsw=w
- echo 機能あり設置物のどれを作成しますか?
+ echo 機能あり/なし設置物のどれを作成しますか?
  echo 何も入力しない場合は強制終了します。
- echo 使用可能:遮断機,転轍機,改札機,券売機,照明,車止め,ATC,列車検出器,照明
+ echo 使用可能(機能あり):遮断機,転轍機,改札機,券売機,照明R,車止め,ATC,列車検出器,照明
+ echo 使用可能(機能なし):照明,階段,足場,架線柱,パイプ,植物
+ echo "照明R"と"照明"の違いはRS入力が可能かどうかです。 基本的には"照明"を選択することをお勧めします。
  echo ----------
  echo if u cant type japanese,pls type english machineType:
  echo Gate,Point,Turnstile,Vendor,Light,BumpingPost,Antenna_Send,Antenna_Receive
+ echo Lamp,Stair,Scaffold,Pole,Pipe,Plant
  echo (hint: "Antenna_Send"="Automatic Train Control","Antenna_Receive"="Train detector")
  set /p machineType=
  if %machineType% == "遮断機" set machineType=Gate
  if %machineType% == "転轍機" set machineType=Point
  if %machineType% == "改札機" set machineType=Turnstile
  if %machineType% == "券売機" set machineType=Vendor
- if %machineType% == "照明" set machineType=Light
+ if %machineType% == "照明R" set machineType=Light
  if %machineType% == "車止め" set machineType=BumpingPost
  if %machineType% == "ATC" set machineType=Antenna_Send
  if %machineType% == "列車検出器" set machineType=Antenna_Receive
  if %machineType% == "Train detector" set machineType=Antenna_Receive
+
+ if %machineType% == "照明" set machineType=Lamp
+ if %machineType% == "階段" set machineType=Stair
+ if %machineType% == "足場" set machineType=Scaffold
+ if %machineType% == "券売機" set machineType=Vendor
+ if %machineType% == "架線柱" set machineType=Pole
+ if %machineType% == "パイプ" set machineType=Pipe
+ if %machineType% == "植物" set machineType=Plant
+ 
+ if %machineType% == "Gate" set type=machineType
+ if %machineType% == "Point" set type=machineType
+ if %machineType% == "Turnstile" set type=machineType
+ if %machineType% == "Vendor" set type=machineType
+ if %machineType% == "Light" set type=machineType
+ if %machineType% == "BumpingPost" set type=machineType
+ if %machineType% == "Antenna_Send" set type=machineType
+ if %machineType% == "Antenna_Receive" set type=machineType
+ if %machineType% == "Antenna_Receive" set type=machineType
+
+ if %machineType% == "Lamp" set type=ornamentType
+ if %machineType% == "Stair" set type=ornamentType
+ if %machineType% == "Scaffold" set type=ornamentType
+ if %machineType% == "Vendor" set type=ornamentType
+ if %machineType% == "Pole" set type=ornamentType
+ if %machineType% == "Pipe" set type=ornamentType
+ if %machineType% == "Plant" set type=ornamentType
  goto 5-1
 
  :5-1
@@ -906,10 +935,10 @@ goto selectwelcome
  echo buttontextureを決めてください。
  set /p button=
  echo buttonTextureは %button% に設定されました。
- echo --------------------
- echo sound_onactivateを決めてください。
- set /p sound_onactivate=
- echo sound_onactivateは %sound_onactivate% に設定されました。
+ if %type% == machineType echo --------------------
+ if %type% == machineType echo sound_onactivateを決めてください。
+ if %type% == machineType set /p sound_onactivate=
+ if %type% == machineType echo sound_onactivateは %sound_onactivate% に設定されました。
  echo --------------------
  echo smoothingを決めてください。
  set /p smoothing=
@@ -918,10 +947,6 @@ goto selectwelcome
  echo doCullingを決めてください。
  set /p doCulling=
  echo doCullingは %doCulling% に設定されました。
- echo --------------------
- echo accuracyを決めてください。
- set /p accuracy=
- echo accuracyは %accuracy% に設定されました。
  echo --------------------
  echo tagsを決めてください。
  echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
@@ -946,11 +971,10 @@ goto selectwelcome
  echo     ]
  echo     },
  echo   "buttonTexture": "%button%",
- echo   "machineType": "%machinetype%",
- echo   "sound_OnActivate": "%sound_onactivate%",
+ echo   "%type%": "%machinetype%",
+ if %type% == machineType echo   "sound_OnActivate": "%sound_onactivate%",
  echo   "smoothing": %smoothing%,
  echo   "doCulling": %doCulling%,
- echo   "accuracy": "%accuracy%",
  echo   "tags": "%tags%"
  echo }
  echo ----------------------------------------
@@ -982,11 +1006,10 @@ goto selectwelcome
  echo     ]  >> ModelMachine_%name%.json
  echo     },  >> ModelMachine_%name%.json
  echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
- echo   "machineType": "%machinetype%", >> ModelMachine_%name%.json
- echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
+ echo   "%type%": "%machinetype%", >> ModelMachine_%name%.json
+ if %type% == machineType echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
  echo   "smoothing": %smoothing%, >> ModelMachine_%name%.json
  echo   "doCulling": %doCulling%, >> ModelMachine_%name%.json
- echo   "accuracy": "%accuracy%", >> ModelMachine_%name%.json
  echo   "tags": "%tags%" >> ModelMachine_%name%.json
  echo } >> ModelMachine_%name%.json
   if exist ModelMachine_%name%.json (
@@ -1144,16 +1167,16 @@ goto selectwelcome
  echo もし途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
  echo textureを決めてください。
- echo "textures/flag/flag_[texturename].png" のように設定してください。
+ echo textures/flag/flag_[texturename].png のように設定してください。
  set /p texture=
  echo textureは %texture% に設定されました。
  echo ------------
- echo heightを決めてください。 使用可能:整数と小数第三位まで(例:0.75) 
+ echo heightを決めてください。
  echo 単位は"メートル"です。
  set /p height=
  echo heightは %height% に設定されました。
  echo -------------
- echo widthを決めてください。  使用可能:整数と小数第三位まで(例:2.25)
+ echo widthを決めてください。
  echo 単位は"メートル"です。
  set /p width=
  echo widthは %width% に設定されました。
