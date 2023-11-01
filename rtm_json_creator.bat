@@ -31,6 +31,7 @@ rem echo      14         コンテナのjsonを作成します。
 rem echo      15         火器のjsonを作成します。
 rem echo      16         コネクターのjsonを作成します。
 rem echo      17         ワイヤーのjsonを作成します。
+rem echo      18         乗り物(自動車,航空機,船舶)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
 echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
@@ -801,7 +802,7 @@ goto selectwelcome
  goto signjson
 
 :4
- echo 作者:akikawa9616
+ echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
  echo ----
  echo スペシャルサンクス(敬称略)
  echo  jsonのデータ値の提供
@@ -1648,7 +1649,7 @@ goto selectwelcome
  set /p stopcount=
  :loo
  set /a count=%count% + 1
- set aa=%random%
+ set aa=%random%%random%
  echo sound\%aa%.ogg>> sound.log
  echo sound\%aa%.ogg
  echo %count%
