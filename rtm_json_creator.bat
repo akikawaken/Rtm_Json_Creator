@@ -1,8 +1,10 @@
 @echo off
 rem (c) 2022 - 2023 akikawa9616
 title Rtm_Json_Creator.bat
+if not exist %temp%\.RJC\rjc.tscf goto firstsetting
+pushd %temp%\.RJC\json
 set user=
-set version=0.9.5.1(public)
+set version=0.9.5.2(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 set setpath=%cd%
@@ -11,6 +13,7 @@ for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
 :selectwelcome
+pushd %temp%\.RJC\welcome
 echo  ----------------------------------------
 echo   行動の番号         行動の内容          
 echo  ----------------------------------------
@@ -35,8 +38,11 @@ rem echo      18         乗り物(自動車,航空機,船舶)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
 echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
+echo 現在のディレクトリ: %setpath%
+echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
+pushd %setpath%
 echo;
 if %start% == 1 goto 1
 if %start% == 2 goto 2
@@ -1695,3 +1701,34 @@ rem ERROR CODE
   echo TSW:%tsw%
   echo error-code:%error%
   pause
+  exit
+:firstsetting
+pushd %temp%
+md .RJC\json
+md .RJC\welcome
+pushd %temp%\.RJC
+echo;>>rjc.tscf
+pushd %temp%\.RJC\welcome
+echo;>>1
+echo;>>2
+echo;>>3
+echo;>>4
+echo;>>5
+echo;>>6
+echo;>>7
+echo;>>8
+echo;>>9
+echo;>>10
+echo;>>11
+echo;>>12
+echo;>>13
+echo;>>14
+echo;>>15
+echo;>>16
+echo;>>17
+echo;>>18
+echo;>>cmd
+echo;>>setpath
+echo;>>999
+echo Please restart RtmJsonCreator.
+pause
