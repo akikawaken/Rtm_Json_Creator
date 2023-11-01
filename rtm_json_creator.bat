@@ -1703,32 +1703,32 @@ rem ERROR CODE
   pause
   exit
 :firstsetting
-pushd %temp%
-md .RJC\json
-md .RJC\welcome
-pushd %temp%\.RJC
-echo;>>rjc.tscf
-pushd %temp%\.RJC\welcome
-echo;>>1
-echo;>>2
-echo;>>3
-echo;>>4
-echo;>>5
-echo;>>6
-echo;>>7
-echo;>>8
-echo;>>9
-echo;>>10
-echo;>>11
-echo;>>12
-echo;>>13
-echo;>>14
-echo;>>15
-echo;>>16
-echo;>>17
-echo;>>18
-echo;>>cmd
-echo;>>setpath
-echo;>>999
-echo Please restart RtmJsonCreator.
-pause
+ pushd %temp%
+ md .RJC\json
+ md .RJC\welcome
+ pushd %temp%\.RJC
+ echo;>>rjc.tscf
+ pushd %temp%\.RJC\welcome
+ echo;>>1
+ echo;>>2
+ echo;>>3
+ echo;>>4
+ echo;>>5
+ echo;>>6
+ echo;>>7
+ echo;>>8
+ echo;>>9
+ echo;>>10
+ echo;>>11
+ echo;>>12
+ echo;>>13
+ echo;>>14
+ echo;>>15
+ echo;>>16
+ echo;>>17
+ echo;>>18
+ echo;>>cmd
+ echo;>>setpath
+ echo;>>999
+ echo Please restart RtmJsonCreator.
+ pause
