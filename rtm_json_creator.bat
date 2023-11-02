@@ -338,31 +338,31 @@ goto selectwelcome
  echo あと40個でjsonが表示されます。
  set /p sound_DoorClose=
  echo sound_DoorCloseは %sound_DoorClose% に設定されました。
- if not "%sound_DoorClose%" == "" echo  "sound_DoorClose": %sound_DoorClose%, >> ModelTrain_%trainname%.json
+ if not "%sound_DoorClose%" == "" echo  "sound_DoorClose": "%sound_DoorClose%", >> ModelTrain_%trainname%.json
  echo ------------------
  echo sound_Stopを決めてください。
  echo あと39個でjsonが表示されます。
  set /p sound_Stop=
  echo sound_Stopは %sound_Stop% に設定されました。
- if not "%sound_Stop%" == "" echo  "sound_Stop": %sound_Stop%, >> ModelTrain_%trainname%.json
+ if not "%sound_Stop%" == "" echo  "sound_Stop": "%sound_Stop%", >> ModelTrain_%trainname%.json
  echo ------------------
  echo sound_S_Aを決めてください。
  echo あと38個でjsonが表示されます。
  set /p sound_S_A=
  echo sound_S_Aは %sound_S_A% に設定されました。
- if not "%sound_S_A%" == "" echo  "sound_S_A": %sound_S_A%, >> ModelTrain_%trainname%.json
+ if not "%sound_S_A%" == "" echo  "sound_S_A": "%sound_S_A%", >> ModelTrain_%trainname%.json
  echo ------------------
  echo sound_Decelerationを決めてください。
  echo あと37個でjsonが表示されます。
  set /p sound_Deceleration=
  echo sound_Decelerationは %sound_Deceleration% に設定されました。
- if not "%Deceleration%" == "" echo  "sound_Deceration": %sound_Deceleration%, >> ModelTrain_%trainname%.json
+ if not "%Deceleration%" == "" echo  "sound_Deceration": "%sound_Deceleration%", >> ModelTrain_%trainname%.json
  echo ------------------
  echo sound_D_Sを決めてください。
  echo あと36個でjsonが表示されます。
  set /p sound_D_S=
  echo sound_D_Sは %sound_D_S% に設定されました。
- if not "%sound_D_S%" == "" echo  "sound_D_S": %sound_D_S%, >> ModelTrain_%trainname%.json
+ if not "%sound_D_S%" == "" echo  "sound_D_S": "%sound_D_S%", >> ModelTrain_%trainname%.json
  echo ------------------
  echo rollingを決めてください。 使用可能:0.0~10.0
  echo あと35個でjsonが表示されます。
@@ -409,7 +409,7 @@ goto selectwelcome
  echo あと29個でjsonが表示されます。
  set /p defaultData=
  echo defaultDataは %defaultData% に設定されました。
- if not "%defaultData%" == "" echo  "defaultData": %defaultData%, >> ModelTrain_%trainname%.json
+ if not "%defaultData%" == "" echo  "defaultData": "%defaultData%", >> ModelTrain_%trainname%.json
  echo -------------------
  echo scaleを決めてください。
  echo ngtoモデルの場合は設定した方がよいでしょう
@@ -450,19 +450,19 @@ goto selectwelcome
  echo あと22個でjsonが表示されます。
  set /p serverScriptPath=
  echo serverScriptPathは %serverScriptPath% に設定されました。
- if not "%serverScriptPath%" == "" echo  "serverScriptPath": %serverScriptPath%, >> ModelTrain_%trainname%.json
+ if not "%serverScriptPath%" == "" echo  "serverScriptPath": "%serverScriptPath%", >> ModelTrain_%trainname%.json
  echo -------------------
  echo guiScriptPathを決めてください。
  echo あと21個でjsonが表示されます。
  set /p guiScriptPath=
  echo guiScriptPathは %guiScriptPath% に設定されました。
- if not "%guiScriptPath%" == "" echo  "guiScriptPath": %guiScriptPath%, >> ModelTrain_%trainname%.json
+ if not "%guiScriptPath%" == "" echo  "guiScriptPath": "%guiScriptPath%", >> ModelTrain_%trainname%.json
  echo -------------------
  echo guiTextureを決めてください。
  echo あと20個でjsonが表示されます。
  set /p guiTexture=
  echo guiTextureは %guiTexture% に設定されました。
- if not "%guiTexture%" == "" echo  "guitexture": %guiTexture%, >> ModelTrain_%trainname%.json
+ if not "%guiTexture%" == "" echo  "guitexture": "%guiTexture%", >> ModelTrain_%trainname%.json
  echo -------------------
  echo renderAABBの1つめを決めてください。
  echo あと19個でjsonが表示されます。
@@ -510,7 +510,7 @@ goto selectwelcome
  echo あと11個でjsonが表示されます。
  set /p soundScriptPath=
  echo soundScriptPathは %soundScriptPath% に設定されました。
- if not "%soundScriptPath%" == "" echo  "soundScriptPath": %soundScriptPath%, >> ModelTrain_%trainname%.json
+ if not "%soundScriptPath%" == "" echo  "soundScriptPath": "%soundScriptPath%", >> ModelTrain_%trainname%.json
  echo --------------------
  echo smokeの出るx座標を決めてください。
  echo あと10個でjsonが表示されます。
