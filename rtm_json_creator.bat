@@ -4,11 +4,12 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.5.2(public)
+set version=0.9.5.3(public)
 set tsw=NONE
 del %temp%\.Rtm_Json_Creator_json.tscf
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+cls
 :welcome
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
@@ -57,6 +58,7 @@ if %start% == 10 goto zip
 if %start% == 11 goto pack
 if %start% == 12 goto signal
 if %start% == 999 goto soundcreate
+if %start% == explorer start explorer.exe %cd%
 if %start% == setpath call :setpath
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
@@ -1707,7 +1709,7 @@ rem ERROR CODE
  md .RJC\json
  md .RJC\welcome
  pushd %temp%\.RJC
- echo;>>rjc.tscf
+ echo If you need regenerate action number file. Please delete this file.>>rjc.tscf
  pushd %temp%\.RJC\welcome
  echo;>>1
  echo;>>2
@@ -1727,6 +1729,7 @@ rem ERROR CODE
  echo;>>16
  echo;>>17
  echo;>>18
+ echo;>>explorer
  echo;>>cmd
  echo;>>setpath
  echo;>>999
