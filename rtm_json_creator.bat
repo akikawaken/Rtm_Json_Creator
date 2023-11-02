@@ -596,7 +596,7 @@ goto selectwelcome
  echo 選択なし:%back%
  goto %back%
  :21
-  exit
+  goto welcome
 :3
  cls
  set tsw=S
@@ -1115,14 +1115,14 @@ goto selectwelcome
  set back=npcjson
  echo ------ファイル名:ModelNPC_%name%.json-------
  echo {
- echo   "name": %name%,
+ echo   "name": "%name%",
  echo   "model": {
   echo     "modelFile": "%modelFile%",
   echo     "textures":[
   for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a )
   echo     ]
   echo     },
- echo   "role": %role%,
+ echo   "role": "%role%",
  echo   "doCulling": %doCulling%,
  echo   "smoothing": %smoothing%
  echo }
@@ -1147,7 +1147,7 @@ goto selectwelcome
  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > ModelNPC_%name%.json
- echo   "name": %name%, >> ModelNPC_%name%.json
+ echo   "name": "%name%", >> ModelNPC_%name%.json
  echo   "model": { >> ModelNPC_%name%.json
  echo     "modelFile": "%modelFile%", >> ModelNPC_%name%.json
  echo     "textures":[ >> ModelNPC_%name%.json
@@ -1156,7 +1156,7 @@ goto selectwelcome
  )
  echo     ]  >> ModelNPC_%name%.json
  echo     },  >> ModelNPC_%name%.json
- echo   "role": %role%, >> ModelNPC_%name%.json
+ echo   "role": "%role%", >> ModelNPC_%name%.json
  echo   "doCulling": %doCulling%, >> ModelNPC_%name%.json
  echo   "smoothing": %smoothing% >> ModelNPC_%name%.json
  echo }  >> ModelNPC_%name%.json
