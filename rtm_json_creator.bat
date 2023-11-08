@@ -4,13 +4,13 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.5.3(public)
+set version=0.9.5.4(public)
 set tsw=NONE
-del %temp%\.Rtm_Json_Creator_json.tscf
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
-cls
 :welcome
+del %temp%\.Rtm_Json_Creator_json.tscf
+cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
 :selectwelcome
@@ -30,7 +30,7 @@ echo       9         ディレクトリを構成します。
 echo      10         指定されたディレクトリをzip化します。(べーたばんです)
 echo      11         pack.jsonを作成します。
 echo      12         信号機のjsonを作成します。
-rem echo      13         レールのjsonを作成します。
+echo      13         レールのjsonを作成します。
 rem echo      14         コンテナのjsonを作成します。
 rem echo      15         火器のjsonを作成します。
 rem echo      16         コネクターのjsonを作成します。
@@ -57,6 +57,7 @@ if %start% == 9 goto 9
 if %start% == 10 goto zip
 if %start% == 11 goto pack
 if %start% == 12 goto signal
+if %start% == 13 goto rail
 if %start% == 999 goto soundcreate
 if %start% == explorer start explorer.exe %cd%
 if %start% == setpath call :setpath
@@ -1644,6 +1645,147 @@ goto selectwelcome
  echo "F"を押してください。
  xcopy %tempfile% %setpath%\ModelSignal_%signalname%.json /S /V /C /F /-Y
  goto signal_json
+:rail
+ echo レールのjsonを作成します。
+ set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
+ echo;
+ echo レールは2種類の記述方法があります。 どちらを使用しますか?
+ echo 1: 基本の設定方法 2: 簡易的な設定方法(材質数制限:1)
+ echo 数字の後に"pre"を付けることでプレビューが可能です。
+ set railjson=Null
+ set /p railjson=
+ if %railjson% == 1 goto railjson1
+ if %railjson% == 2 goto railjson2
+ if %railjson% == 1pre goto railjson1pre
+ if %railjson% == 2pre goto railjson2pre
+ goto welcome
+:railjson1
+  echo;
+  echo レール名を決めてください。
+  set /p railname=
+  echo railName: %railname%
+  echo { >>%tempfile%
+  echo  "railName": "%railname%", >>%tempfile%
+  echo  "model": { >>%tempfile%
+  echo;
+  echo レールのモデルを決めてください。(ファイル名)
+  set /p modelfile=
+  echo   "modelFile": "%modelfile%", >>%tempfile%
+  echo modelFile: %modelfile%
+  echo;
+  echo レールの材質数を決めてください。
+  set /p mat=
+  echo 材質数は %mat% です。
+  echo   "textures": [ >>%tempfile%
+  :matfirst
+   echo 材質の名前を入力してください。
+   set /p matname=
+   echo 材質名は %matname% です。
+   echo;
+   echo 材質のテクスチャパスを入力してください。
+   echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
+   set /p texturepath=
+   echo テクスチャパスは %texturepath% です。
+   set matcount=1
+  :matcounter
+  if %mat% == %matcount% goto railbutton
+   set /a matcount= %matcount% + 1
+   echo %matcount% つめの材質名を入力してください。
+   set /p matname1=
+   echo 材質名は %matname1% です。
+   echo;
+   echo %matname1% のテクスチャパスを入力してください。
+   set /p texturep=
+   echo テクスチャパスは %texturep% です。
+   echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
+   goto matcounter
+  :railbutton
+  echo   ["%matname%", "%texturepath%", ""]], >>%tempfile%
+  echo rendererPathを設定する場合は以下に入力してください。
+  echo 指定しない場合はscripts/RenderRailStandard.jsにしてください。
+  set rendererPath=Null
+  set /p rendererPath=
+  if %rendererPath% == Null echo   "rendererPath": "scripts/RenderRailStandard.js" >>%tempfile%
+  if not %rendererPath% == Null echo   "rendererPath": "%rendererPath%" >>%tempfile%
+  echo  }, >>%tempfile%
+  :gouryu
+  echo;
+  echo ボタンテクスチャのパスを設定してください。
+  set /p button=
+  echo  "burronTexture": "%button%", >>%tempfile%
+  echo;
+  echo ballastWidthを決めてください。
+  echo 1以上の奇数かつ整数の値を入力してください。 これは道床ブロックの幅です。
+  set /p ballast=
+  echo  "ballastWidth": %ballast%, >>%tempfile%
+  echo;
+  echo allowCrossingを決めてください。
+  echo これはMobが通り抜けられるようにするかの設定です。
+  set /p crossing=(true/false): 
+  echo  "allowCrossing": %crossing%, >>%tempfile%
+  echo;
+  echo 道床ブロックを決めてください。
+  echo e. g. gravel
+  set /p blockname=
+  echo  "defaultBallast": [{ >>%tempfile%
+  echo   "blockName": "%blockname%", >>%tempfile%
+  echo;
+  echo %blockname% のメタデータを設定してください。
+  echo 通常は0を入力してください。
+  set /p meta=
+  echo   "blockMetadata": %meta%, >>%tempfile%
+  echo;
+  echo 道床の高さを決めてください。
+  echo 1で1mになります。
+  set /p height=
+  echo   "height": %height% >>%tempfile%
+  echo  }], >>%tempfile%
+  echo  "polygonType": 3 >>%tempfile%
+  echo } >>%tempfile%
+:rail_json
+  set back=rail_json
+  echo jsonが完成しました!
+  echo -- filename: ModelRail_%railname%.json --
+  echo;
+  for /f "delims=@" %%a in (%tempfile%) do (
+   echo %%a
+  )
+  echo ----------------------------------------
+  echo 行動を選択してください
+  echo ----------------------------------------
+  echo  行動の番号         行動の内容          
+  echo ----------------------------------------
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。(beta)  
+  echo ----------------------------------------
+  set /p user=
+  if %user% == 2 goto 2
+  if %user% == 3 goto saverailjson
+  echo エラー:不明な番号
+  goto rail_json
+  :saverailjson
+  echo "F"を押してください。
+  xcopy %tempfile% %setpath%\ModelRail_%railname%.json /V /C /F /-Y
+  goto rail_json
+:railjson2
+  echo;
+  echo レール名を決めてください。
+  set /p railname=
+  echo railName: %railname%
+  echo { >>%tempfile%
+  echo  "railName": "%railname%", >>%tempfile%
+  echo;
+  echo レールのモデルを決めてください。(ファイル名)
+  set /p modelfile=
+  echo  "railModel": "%modelfile%", >>%tempfile%
+  echo modelFile: %modelfile%
+  echo;
+  echo レールのテクスチャパスを決めてください。
+  set /p railTexture=
+  echo  "railTexture": "%railTexture%", >>%tempfile%
+  echo;
+  goto gouryu
+rem temp
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
@@ -1692,6 +1834,46 @@ rem ERROR CODE
   rem sounds.jsonを保存した後にそのファイルが見つかりませんでした。
  rem 0-00
   rem 故意的に発生させたエラー。
+:railjson1pre
+ echo プレビューが表示されます:
+ pause
+ cls
+ echo { 
+ echo   "railName": "keburukacon", 
+ echo   "model": { 
+ echo       "modelFile": "ModelRail_keburukacon.mqo", 
+ echo       "textures": [["mat", "textures/rail/ke-buruka.png", ""]], 
+ echo       "rendererPath": "scripts/RenderRailStandard.js" 
+ echo   }, 
+ echo   "buttonTexture": "textures/rail/button_ke-burukacon.png", 
+ echo   "polygonType": 4, 
+ echo   "ballastWidth": 3, 
+ echo   "allowCrossing": true, 
+ echo   "defaultBallast": [{ 
+ echo     "blockName": "air", 
+ echo     "blockMetadata": 0, 
+ echo     "height": 0.0625 
+ echo   }] 
+ echo } 
+ goto rail
+:railjson2pre
+ echo プレビューが表示されます:
+ pause
+ cls
+ echo {
+ echo   "railName": "keburukacon",
+ echo   "railModel": "ModelRail_keburukacon.mqo",
+ echo   "railTexture": "textures/rail/ke-buruka.png",
+ echo 	"buttonTexture": "textures/rail/button_ke-burukacon.png",
+ echo 	"polygonType": 4,
+ echo 	"defaultBallast": [{
+ echo 		"blockName": "air",
+ echo 		"blockMetadata": 0,
+ echo 		"height": 0.0625
+ echo 	}],
+ echo 	"allowCrossing": true
+ echo }
+ goto rail
 :ERROR
   echo 申し訳ありません。どこかでエラーが発生しました。
   echo 可能であれば、githubにissueを作成してください。 可能な限りサポートします。
