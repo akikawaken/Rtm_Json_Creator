@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.5.4(public)
+set version=0.9.6(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -58,6 +58,7 @@ if %start% == 10 goto zip
 if %start% == 11 goto pack
 if %start% == 12 goto signal
 if %start% == 13 goto rail
+if %start% == 14 goto contami
 if %start% == 999 goto soundcreate
 if %start% == explorer start explorer.exe %cd%
 if %start% == setpath call :setpath
@@ -684,7 +685,7 @@ goto selectwelcome
  echo ----------------------------------------
  echo     1              jsonを編集する       
  echo     2              終了させます。       
- echo     3         jsonを保存します。(beta)  
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set user=
  set /p user=
@@ -998,7 +999,7 @@ goto selectwelcome
  echo  行動の番号         行動の内容          
  echo ----------------------------------------
  echo     2              終了させます。       
- echo     3         jsonを保存します。(beta)  
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set /p user=
  if %user% == 2 goto 2
@@ -1135,7 +1136,7 @@ goto selectwelcome
  echo  行動の番号         行動の内容          
  echo ----------------------------------------
  echo     2              終了させます。       
- echo     3         jsonを保存します。(beta)  
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set user=
  set /p user=
@@ -1229,7 +1230,7 @@ goto selectwelcome
  echo ----------------------------------------
  echo     1              jsonを編集する       
  echo     2              終了させます。       
- echo     3           jsonを保存します。(beta)  
+ echo     3           jsonを保存します。  
  echo ----------------------------------------
  set user=
  set /p user=
@@ -1634,7 +1635,7 @@ goto selectwelcome
  echo  行動の番号         行動の内容          
  echo ----------------------------------------
  echo     2              終了させます。       
- echo     3         jsonを保存します。(beta)  
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set /p user=
  if %user% == 2 goto 2
@@ -1756,7 +1757,7 @@ goto selectwelcome
   echo  行動の番号         行動の内容          
   echo ----------------------------------------
   echo     2              終了させます。       
-  echo     3         jsonを保存します。(beta)  
+  echo     3         jsonを保存します。  
   echo ----------------------------------------
   set /p user=
   if %user% == 2 goto 2
@@ -1785,7 +1786,84 @@ goto selectwelcome
   echo  "railTexture": "%railTexture%", >>%tempfile%
   echo;
   goto gouryu
-rem temp
+:contami
+ echo コンテナのjsonを作成します。
+ echo;
+ echo コンテナの名前を決めてください。
+ set /p name=
+ echo コンテナ名: %name%
+ echo;
+ echo モデルを指定してください。
+ set /p model=
+ echo モデル名: %model%
+ echo;
+ echo テクスチャパスを指定してください。
+ set /p texture=
+ echo テクスチャパス: %texture%
+ echo;
+ echo ボタンテクスチャのパスを設定してください。
+ set /p buttontexture=
+ echo ボタンテクスチャパス: %buttontexture%
+ echo;
+ echo コンテナの幅を決めてください。
+ echo これはモデルに適用されるわけではなく、当たり判定の計算用として扱われます。
+ set /p width=
+ echo 幅: %width%
+ echo;
+ echo コンテナの高さを決めてください。
+ echo これはモデルに適用されるわけではなく、当たり判定の計算用として扱われます。
+ set /p height=
+ echo 高崎: %height%
+ echo;
+ echo コンテナの長さを決めてください。
+ echo これはモデルに適用されるわけではなく、貨車に載せた時の位置調整用として扱われます。
+ set /p length=
+ echo 長さ: %length%
+ echo;
+ :container_json
+ set back=container_json
+ echo -- filename: ModelContainer_%name%.json --
+ echo {
+ echo  "containerName": "%name%",
+ echo  "containerModel": "%model%",
+ echo  "containerTexture": "%texture%",
+ echo  "containerWidth": %width%,
+ echo  "containerHeight": %height%,
+ echo  "containerLength": %length%,
+ echo  "buttonTexture": "%buttontexture%"
+ echo }
+ echo ----------------------------------------
+ echo 行動を選択してください
+ echo ----------------------------------------
+ echo  行動の番号         行動の内容          
+ echo ----------------------------------------
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。  
+ echo ----------------------------------------
+ set /p user=
+ if %user% == 2 goto 2
+ if %user% == 3 goto savecontami
+ echo エラー:不明な番号
+ goto %back%
+ :savecontami
+ echo { >>%setpath%\ModelContainer_%name%.json
+ echo  "containerName": "%name%", >>%setpath%\ModelContainer_%name%.json
+ echo  "containerModel": "%model%", >>%setpath%\ModelContainer_%name%.json
+ echo  "containerTexture": "%texture%", >>%setpath%\ModelContainer_%name%.json
+ echo  "containerWidth": %width%, >>%setpath%\ModelContainer_%name%.json
+ echo  "containerHeight": %height%, >>%setpath%\ModelContainer_%name%.json
+ echo  "containerLength": %length%, >>%setpath%\ModelContainer_%name%.json
+ echo  "buttonTexture": "%buttontexture%" >>%setpath%\ModelContainer_%name%.json
+ echo } >>%setpath%\ModelContainer_%name%.json
+ echo;
+ echo ファイルの保存が完了しました。
+ echo ファイルパス:"%setpath%\ModelContainer_%name%.json"
+ echo;
+ goto %back%
+:gun
+:connector
+:wire
+:car
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
