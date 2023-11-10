@@ -1810,7 +1810,7 @@ goto selectwelcome
  echo コンテナの高さを決めてください。
  echo これはモデルに適用されるわけではなく、当たり判定の計算用として扱われます。
  set /p height=
- echo 高崎: %height%
+ echo 高さ: %height%
  echo;
  echo コンテナの長さを決めてください。
  echo これはモデルに適用されるわけではなく、貨車に載せた時の位置調整用として扱われます。
