@@ -2048,7 +2048,6 @@ rem ERROR CODE
 :railjson1pre
  echo プレビューが表示されます:
  pause
- cls
  echo { 
  echo   "railName": "keburukacon", 
  echo   "model": { 
@@ -2070,7 +2069,6 @@ rem ERROR CODE
 :railjson2pre
  echo プレビューが表示されます:
  pause
- cls
  echo {
  echo   "railName": "keburukacon",
  echo   "railModel": "ModelRail_keburukacon.mqo",
