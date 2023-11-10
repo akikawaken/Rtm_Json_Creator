@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.6.1(public)
+set version=0.9.7(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -32,7 +32,7 @@ echo      11         pack.jsonを作成します。
 echo      12         信号機のjsonを作成します。
 echo      13         レールのjsonを作成します。
 echo      14         コンテナのjsonを作成します。
-rem echo      15         火器のjsonを作成します。
+echo      15         火器のjsonを作成します。
 rem echo      16         コネクターのjsonを作成します。
 rem echo      17         ワイヤーのjsonを作成します。
 rem echo      18         乗り物(自動車,航空機,船舶)のjsonを作成します。
@@ -59,6 +59,10 @@ if %start% == 11 goto pack
 if %start% == 12 goto signal
 if %start% == 13 goto rail
 if %start% == 14 goto contami
+if %start% == 15 goto gun
+if %start% == 16 goto connector
+if %start% == 17 goto wire
+if %start% == 18 goto car
 if %start% == 999 goto soundcreate
 if %start% == explorer start explorer.exe %cd%
 if %start% == setpath call :setpath
@@ -1861,6 +1865,135 @@ goto selectwelcome
  echo;
  goto %back%
 :gun
+ echo 火器のjsonを作成します。
+ set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
+ echo;
+ echo { >>%tempfile%
+ echo 火器の名前を決めてください。
+ set /p name=
+ echo 名前: %name%
+ echo  "firearmName": "%name%", >>%tempfile%
+ echo;
+ echo モデルファイル名を入力してください。
+ set /p model=
+ echo モデル: %model%
+ echo  "firearmModel": "%model%", >>%tempfile%
+ echo;
+ echo テクスチャパスを入力してください
+ set /p texture=
+ echo テクスチャ: %texture%
+ echo  "firearmTexture": "%texture%", >>%tempfile%
+ echo;
+ echo ボタンテクスチャのパスを入力してください。
+ set /p button=
+ echo ボタン: %button%
+ echo  "buttonTexture": "%button%", >>%tempfile%
+ echo;
+ echo パーツ(回転なし)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
+ set /p object=
+ echo;
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p pos=
+ echo  "modelPartsN": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
+ echo;
+ echo パーツ(Y軸回転)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
+ set /p object=
+ echo;
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p pos=
+ echo  "modelPartsY": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
+ echo;
+ echo パーツ(X軸回転)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
+ set /p object=
+ echo;
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p pos=
+ echo  "modelPartsX": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
+ echo;
+ echo パーツ(バレル)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
+ set /p object=
+ echo;
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p pos=
+ echo  "modelPartsBarrel": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
+ echo;
+ echo 砲口の位置を決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p muzzle=
+ echo 砲口: %muzzle%
+ echo  "muzzlePos": [%muzzle%], >>%tempfile%
+ echo;
+ echo 砲手の位置を決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
+ set /p player=
+ echo 砲手: %player%
+ echo  "playerPos": [%player%], >>%tempfile%
+ echo;
+ echo 旋回角度の最大,最小値を決めてください。
+ echo %ESC%[7m180.0, -180.0%ESC%[0mの形式で指定してください。
+ set /p yaw=
+ echo 旋回角度: %yaw%
+ echo  "yaw": [%yaw%], >>%tempfile%
+ echo;
+ echo 仰俯角の最大,最小値を決めてください。
+ echo %ESC%[7m180.0, -180.0%ESC%[0mの形式で指定してください。
+ set /p pitch=
+ echo 仰俯角: %pitch%
+ echo  "pitch": [%pitch%], >>%tempfile%
+ echo;
+ echo Y軸回転の速度を決めてください。
+ set /p speedy=
+ echo 速度: %speedy%
+ echo  "rotationSpeedY": %speedy%, >>%tempfile%
+ echo;
+ echo X軸回転の速度を決めてください。
+ set /p speedtwitter=
+ echo 速度: %speedtwitter%
+ echo  "rotationSpeedX": %speedtwitter%, >>%tempfile%
+ echo;
+ echo リコイルの大きさを決めてください。
+ set /p recoil=
+ echo リコイル: %recoil%
+ echo  "recoil": %recoil%, >>%tempfile%
+ echo;
+ echo 一人称の時にモデルを描画しないかどうかを決めてください。
+ set /p fpv=(true/false): 
+ echo  "fpvMode": %fpv% >>%tempfile%
+ echo } >>%tempfile%
+ :gun_json
+  set back=gun_json
+  echo jsonが完成しました!
+  echo -- filename: ModelFirearm_%name%.json --
+  echo;
+  for /f "delims=@" %%a in (%tempfile%) do (
+   echo %%a
+  )
+  echo ----------------------------------------
+  echo 行動を選択してください
+  echo ----------------------------------------
+  echo  行動の番号         行動の内容          
+  echo ----------------------------------------
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
+  echo ----------------------------------------
+  set /p user=
+  if %user% == 2 goto 2
+  if %user% == 3 goto savegunjson
+  echo エラー:不明な番号
+  goto rail_json
+  :savegunjson
+  echo "F"を押してください。
+  xcopy %tempfile% %setpath%\ModelFirearm_%name%.json /V /C /F /-Y
+  goto %back%
+ 
 :connector
 :wire
 :car
