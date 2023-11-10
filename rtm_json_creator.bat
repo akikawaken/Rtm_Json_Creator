@@ -75,7 +75,6 @@ goto selectwelcome
  set tsw=t
  echo 列車のjsonを作成します。
  echo これはJSONが自動保存されます。 jsonは %cd%\ModelTrain_%%trainname%%.json にできるはずです。
- echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  echo -----------------
  rem TrainName setting start
  echo trainNameを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)
@@ -701,7 +700,6 @@ goto selectwelcome
 
 :savesignjson
  echo jsonを保存します。 jsonは%cd%\SignBoard_%texture%.jsonにできるはずです。
- echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > SignBoard_%texture%.json
  echo   "texture": "%texture%", >> SignBoard_%texture%.json
@@ -1013,7 +1011,6 @@ goto selectwelcome
 
 :saveswitcherjson
  echo jsonを保存します。 jsonは%cd%\ModelMachine_%name%.jsonにできるはずです。
- echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > ModelMachine_%name%.json
  echo   "name": "%name%", >> ModelMachine_%name%.json
@@ -1152,7 +1149,6 @@ goto selectwelcome
 
 :savenpcjson
  echo jsonを保存します。 jsonは%cd%\ModelNPC_%name%.jsonにできるはずです。
- echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > ModelNPC_%name%.json
  echo   "name": "%name%", >> ModelNPC_%name%.json
@@ -1245,7 +1241,6 @@ goto selectwelcome
  goto %back%
 :saveflagjson
  echo jsonを保存します。 jsonは%cd%\ModelNPC_%texture:~19%.jsonにできるはずです。
- echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
  pause
  echo { > Flag_%texture:~19%.json
  echo   "texture": "%texture%", >> Flag_%texture:~19%.json
@@ -1342,7 +1337,6 @@ goto selectwelcome
   if %user% == y goto savesounds
   :savesounds
   echo jsonを保存します。 jsonは%cd%\sounds.jsonにできるはずです。
-  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
   set soundpath=%soundpath:/=.%
   pause
   echo { > sounds.json
@@ -1369,7 +1363,6 @@ goto selectwelcome
  :sound_two
   echo 注意:
   echo jsonを自動保存します。 jsonは%cd%\sounds.jsonにできるはずです。
-  echo ダブルクリック起動の場合はbatchファイルがある場所にjsonファイルが作成されます。
   echo --------
   set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   set soundpath=%soundpath:\=.%
