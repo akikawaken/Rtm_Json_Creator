@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.7(public)
+set version=0.9.7.1(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -35,7 +35,7 @@ echo      14         コンテナのjsonを作成します。
 echo      15         火器のjsonを作成します。
 rem echo      16         コネクターのjsonを作成します。
 rem echo      17         ワイヤーのjsonを作成します。
-rem echo      18         乗り物(自動車,航空機,船舶)のjsonを作成します。
+rem echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
 echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
