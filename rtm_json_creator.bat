@@ -33,7 +33,7 @@ echo      12         信号機のjsonを作成します。
 echo      13         レールのjsonを作成します。
 echo      14         コンテナのjsonを作成します。
 echo      15         火器のjsonを作成します。
-rem echo      16         コネクターのjsonを作成します。
+echo      16         コネクターのjsonを作成します。
 rem echo      17         ワイヤーのjsonを作成します。
 rem echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
