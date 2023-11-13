@@ -1988,6 +1988,114 @@ goto selectwelcome
   goto %back%
  
 :connector
+ echo コネクターのjsonを作成します。
+ set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
+ echo;
+ echo コネクター名を決めてください。
+ set /p name=
+ echo Name: %name%
+ echo { >>%tempfile%
+ echo  "name": "%name%", >>%tempfile%
+ echo  "model": { >>%tempfile%
+ echo;
+ echo コネクターのモデルを決めてください。(ファイル名)
+ set /p modelfile=
+ echo   "modelFile": "%modelfile%", >>%tempfile%
+ echo modelFile: %modelfile%
+ echo;
+ echo コネクターの材質数を決めてください。
+ set /p mat=
+ echo 材質数は %mat% です。
+ echo   "textures": [ >>%tempfile%
+ :matfirst
+ echo 材質の名前を入力してください。
+ set /p matname=
+ echo 材質名は %matname% です。
+ echo;
+ echo 材質のテクスチャパスを入力してください。
+ echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
+ set /p texturepath=
+ echo テクスチャパスは %texturepath% です。
+ set matcount=1
+ :cocounter
+  if %mat% == %matcount% goto cobutton
+ set /a matcount= %matcount% + 1
+ echo %matcount% つめの材質名を入力してください。
+ set /p matname1=
+ echo 材質名は %matname1% です。
+ echo;
+ echo %matname1% のテクスチャパスを入力してください。
+ set /p texturep=
+ echo テクスチャパスは %texturep% です。
+ echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
+ goto cocounter
+ :cobutton
+ echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
+ echo;
+ echo ボタンテクスチャのパスを設定してください。
+ set /p button=
+ echo  "burronTexture": "%button%", >>%tempfile%
+ echo ボタン: %button%
+ echo;
+ echo connectorTypeを決めてください。
+ echo Relay,Input,Outputの中から選んでください。
+ echo タイプは以下の通りです。: Relay:"中継コネクタ",Input:"入力コネクタ",Output:"出力コネクタ"
+ set /p type=(Relay/Input/Output): 
+ echo  "connectorType":"%type%", >>%tempfile%
+ echo コネクタ: %connector%
+ echo;
+ echo wirePosを決めてください。
+ echo これはワイヤ接続時の接続位置です。(ブロック中心が%ESC%[41m0.0,0.0,0.0%ESC%[0mになります。)
+ echo %ESC%[41m0.0, 0.0, 0.0%ESC%[0mの形式で入力してください。 それぞれx,y,zの順です。
+ set /p pos=
+ echo pos: %pos%
+ echo  "wirePos": [%pos%], >>%tempfile%
+ echo;
+ echo smoothingを決めてください。
+ set /p smooz=(true/false): 
+ echo smoothing: %smooz%
+ echo  "smoothing": %smooz%, >>%tempfile%
+ echo;
+ echo doCullingを決めてください。
+ set /p doCulling=(true/false): 
+ echo doCulling: %doCulling%
+ echo  "doCulling": %doCulling%, >>%tempfile%
+ echo;
+ echo accuracyを決めてください。
+ set /p accuracy=(LOW,MEDIUM): 
+ echo accuracy: %accuracy%
+ echo  "accuracy": %accuracy%, >>%tempfile%
+ echo;
+ echo tagsを決めてください。
+ set /p tag=
+ echo tag: %tag%
+ echo  "tags": "%tag%" >>%tempfile%
+ echo } >>%tempfile%
+ :co_json
+  set back=co_json
+  echo jsonが完成しました!
+  echo -- filename: ModelConnector_%name%.json --
+  echo;
+  for /f "delims=@" %%a in (%tempfile%) do (
+   echo %%a
+  )
+  echo ----------------------------------------
+  echo 行動を選択してください
+  echo ----------------------------------------
+  echo  行動の番号         行動の内容          
+  echo ----------------------------------------
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
+  echo ----------------------------------------
+  set /p user=
+  if %user% == 2 goto 2
+  if %user% == 3 goto savecojson
+  echo エラー:不明な番号
+  goto %back%
+  :savecojson
+  echo "F"を押してください。
+  xcopy %tempfile% %setpath%\ModelConnector_%name%.json /V /C /F /-Y
+  goto %back%
 :wire
 :car
 :soundcreate
