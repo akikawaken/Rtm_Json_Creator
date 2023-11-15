@@ -2407,3 +2407,4 @@ rem ERROR CODE
  echo;>>999
  echo Please restart RtmJsonCreator.
  pause
+ exit /b
