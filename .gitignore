@@ -4,3 +4,4 @@ dev*
 *.json
 *.mqo
 *.mqoz
+rjc.*
