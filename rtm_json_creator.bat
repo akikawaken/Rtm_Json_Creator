@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.8.1(public)
+set version=0.9.8.2(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -108,6 +108,7 @@ rem trainmodel setting start
  echo モデルファイルのパスを入力してください。
  echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo"の形式で入力してください。
  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_old
@@ -129,6 +130,7 @@ rem trainmodel setting start
  set /p texturedir=
  echo dir: %texturedir%
  echo ------------------
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
  echo 材質設定の行: %lnnum%
@@ -2406,5 +2408,12 @@ rem ERROR CODE
  echo;>>setpath
  echo;>>999
  echo Please restart RtmJsonCreator.
+ pause
+ exit /b
+
+:cantload_Noise
+ echo [ERROR] TrialNoiseチャンクが検出されました。
+ echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+ echo 続行すると終了します。
  pause
  exit /b
