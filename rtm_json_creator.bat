@@ -104,7 +104,7 @@ goto selectwelcome
  echo    "tags":"%tags%", >> ModelTrain_%trainname%.json
  rem tags setting end
  echo ------------------
-rem trainmodel setting start
+ rem trainmodel setting start
  echo モデルファイルのパスを入力してください。
  echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo"の形式で入力してください。
  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
