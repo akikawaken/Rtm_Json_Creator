@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.8.2(public)
+set version=0.9.9(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -34,7 +34,7 @@ echo      13         レールのjsonを作成します。
 echo      14         コンテナのjsonを作成します。
 echo      15         火器のjsonを作成します。
 echo      16         コネクターのjsonを作成します。
-rem echo      17         ワイヤーのjsonを作成します。
+echo      17         ワイヤーのjsonを作成します。
 rem echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
 echo   setpath       指定したディレクトリにパスを通します。
@@ -1822,8 +1822,7 @@ goto selectwelcome
  echo エラー:不明な番号
  goto signal_json
  :savesignaljson
- echo "F"を押してください。
- xcopy %tempfile% %setpath%\ModelSignal_%signalname%.json /S /V /C /F /-Y
+  echo F | xcopy %tempfile% %setpath%\ModelSignal_%signalname%.json /S /V /C /F /-Y
  goto signal_json
 :rail
  echo レールのjsonを作成します。
@@ -1944,8 +1943,7 @@ goto selectwelcome
   echo エラー:不明な番号
   goto rail_json
   :saverailjson
-  echo "F"を押してください。
-  xcopy %tempfile% %setpath%\ModelRail_%railname%.json /V /C /F /-Y
+  echo F | xcopy %tempfile% %setpath%\ModelRail_%railname%.json /V /C /F /-Y
   goto rail_json
 :railjson2
   echo;
@@ -2165,8 +2163,7 @@ goto selectwelcome
   echo エラー:不明な番号
   goto rail_json
   :savegunjson
-  echo "F"を押してください。
-  xcopy %tempfile% %setpath%\ModelFirearm_%name%.json /V /C /F /-Y
+  echo F | xcopy %tempfile% %setpath%\ModelFirearm_%name%.json /V /C /F /-Y
   goto %back%
  
 :connector
@@ -2189,7 +2186,6 @@ goto selectwelcome
  set /p mat=
  echo 材質数は %mat% です。
  echo   "textures": [ >>%tempfile%
- :matfirst
  echo 材質の名前を入力してください。
  set /p matname=
  echo 材質名は %matname% です。
@@ -2275,10 +2271,116 @@ goto selectwelcome
   echo エラー:不明な番号
   goto %back%
   :savecojson
-  echo "F"を押してください。
   echo F | xcopy %tempfile% %setpath%\ModelConnector_%name%.json /V /C /F /-Y
   goto %back%
 :wire
+ echo;
+ echo ワイヤーのjsonを作成します。
+ echo;
+ set back=wire_json
+ set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
+ echo nameを決めてください。
+ set /p name=
+ echo name: %name%
+ echo { >>%tempfile%
+ echo  "name": "%name%" >>%tempfile%
+ echo;
+ echo ワイヤーのモデルを決めてください。(ファイル名)
+ set /p modelfile=
+ echo  "model": { >>%tempfile%
+ echo   "modelFile": "%modelfile%" >>%tempfile%
+ echo model: %modelfile%
+ echo;
+ echo %modelfile%の材質数を設定してください。
+ set /p mat=
+ echo 材質数は %mat% です。
+ echo;
+ echo 材質のテクスチャパスを入力してください。
+ echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
+ set /p texturepath=
+ echo テクスチャパスは %texturepath% です。
+ set matcount=1
+ :wicounter
+  if %mat% == %matcount% goto wibutton
+ set /a matcount= %matcount% + 1
+ echo %matcount% つめの材質名を入力してください。
+ set /p matname1=
+ echo 材質名は %matname1% です。
+ echo;
+ echo %matname1% のテクスチャパスを入力してください。
+ set /p texturep=
+ echo テクスチャパスは %texturep% です。
+ echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
+ goto wicounter
+ :wibutton
+ echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
+ echo;
+ echo ボタンテクスチャのパスを設定してください。
+ set /p button=
+ echo  "burronTexture": "%button%", >>%tempfile%
+ echo ボタン: %button%
+ echo;
+ echo deflectionCoefficientを決めてください。
+ echo これはカテナリー曲線の係数に関する設定です。
+ set /p deflection=
+ echo deflectionCoefficient: %deflection%
+ echo  "deflectionCoefficient": %deflection%, >>%tempfile%
+ echo;
+ echo lengthCoefficientを決めてください。
+ echo これはカテナリー曲線の係数に関する設定です。
+ set /p length=
+ echo lengthCoefficient: %length%
+ echo  "lengthCoefficient": %length%, >>%tempfile%
+ echo;
+ echo sectionLengthを決めてください。
+ echo これは曲線の1分割の長さに関する設定です。
+ set /p section=
+ echo sectionLength: %section%
+ echo  "sectionLength": %section%, >>%tempfile%
+ echo;
+ echo useCustomColorを決めてください。
+ set useCustomColor=true
+ set /p useCustomColor=
+ echo useCustomColorは %useCustomColor% に設定されました。
+ echo  "useCustomColor": %useCustomColor%, >>%tempfile%
+ echo;
+ echo doCullingを決めてください。
+ set doCulling=true
+ set /p doCulling=
+ echo doCullingは%doCulling%に設定されました。
+ echo  "doCulling": %doCulling%, >>%tempfile%
+ echo;
+ echo smoothingを決めてください。
+ set /p smoothing=
+ echo smoothingは%smoothing%に設定されました。
+ echo  "smoothing": %smoothing%, >>%tempfile%
+ echo } >%tempfile%
+ echo;
+ :wire_json
+ echo jsonが完成しました!
+  echo -- filename: ModelWire_%name%.json --
+  echo;
+  for /f "delims=@" %%a in (%tempfile%) do (
+   echo %%a
+  )
+  echo ----------------------------------------
+  echo 行動を選択してください
+  echo ----------------------------------------
+  echo  行動の番号         行動の内容          
+  echo ----------------------------------------
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
+  echo ----------------------------------------
+  set /p user=
+  if %user% == 2 goto 2
+  if %user% == 3 goto savewijson
+  echo エラー:不明な番号
+  goto %back%
+  :savewijson
+  echo F | xcopy %tempfile% %setpath%\ModelWire_%name%.json /V /C /F /-Y
+  goto %back%
+ 
+
 :car
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
