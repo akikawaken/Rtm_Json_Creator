@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.9(public)
+set version=0.9.9.1(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -68,6 +68,7 @@ if %start% == explorer start explorer.exe %setpath%
 if %start% == setpath call :setpath
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
+if %start% == deljson goto deljson
 echo エラー:不明な番号です。
 goto selectwelcome
 :1
@@ -2517,5 +2518,9 @@ rem ERROR CODE
  echo [ERROR] TrialNoiseチャンクが検出されました。
  echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
  echo 続行すると終了します。
+ pause
+ exit /b
+:deljson
+ del /Q %temp%\.RJC\json\*
  pause
  exit /b
