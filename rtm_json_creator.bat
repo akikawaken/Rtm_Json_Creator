@@ -2486,7 +2486,7 @@ rem ERROR CODE
  md .RJC\json
  md .RJC\welcome
  pushd %temp%\.RJC
- echo If you need regenerate action number file. Please delete this file.>>rjc.tscf
+ echo If you need regenerate action number file, Please delete this file.>>rjc.tscf
  pushd %temp%\.RJC\welcome
  echo;>>1
  echo;>>2
