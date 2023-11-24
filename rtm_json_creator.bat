@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.9.1(public)
+set version=0.9.9.2(public)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -159,6 +159,8 @@ goto selectwelcome
  )
  set texture=!texture:~1,-1!
  echo テクスチャ名を取得: !texture!
+ set hoge=!texture:~1,2!
+ if !hoge! == :\ goto PathError
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
  endlocal
@@ -269,7 +271,7 @@ goto selectwelcome
  rem format end
  setlocal enabledelayedexpansion
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
- echo "bogieModel2":{ >> ModelTrain_%trainname%.json
+ echo  "bogieModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "!filename:~0,-4!", >> ModelTrain_%trainname%.json
  echo     "textures": [ >> ModelTrain_%trainname%.json
  endlocal
@@ -308,6 +310,8 @@ goto selectwelcome
  )
  set texture=!texture:~1,-1!
  echo テクスチャ名を取得: !texture!
+ set hoge=!texture:~1,2!
+ if !hoge! == :\ goto PathError
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
  endlocal
@@ -768,6 +772,10 @@ goto selectwelcome
  goto train_json
  :train_json
  echo jsonが完成しました!
+ echo;
+ echo 以下のタイムアウトはオプション未設定時の事故を防止する目的で導入されました。
+ timeout /t 3
+ echo ファイルパス: %setpath%\ModelTrain_%trainname%.json
  echo;
  echo -- filename: ModelTrain_%trainname%.json --
  echo;
@@ -2518,6 +2526,18 @@ rem ERROR CODE
  echo [ERROR] TrialNoiseチャンクが検出されました。
  echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
  echo 続行すると終了します。
+ pause
+ exit /b
+:PathError
+ echo;
+ echo %ESC%[41m------------------------------------%ESC%[0m
+ echo %ESC%[41mパス文字列の構文が間違っている可能性があります!%ESC%[0m
+ echo;
+ echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
+ echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
+ echo %ESC%[41mまた、このテクスチャパスにはUsers配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
+ echo %ESC%[41m------------------------------------%ESC%[0m
+ echo;
  pause
  exit /b
 :deljson
