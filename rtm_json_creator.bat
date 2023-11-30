@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=0.9.9.2(public)
+set version=1.0.0.0-alpha
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -35,7 +35,7 @@ echo      14         コンテナのjsonを作成します。
 echo      15         火器のjsonを作成します。
 echo      16         コネクターのjsonを作成します。
 echo      17         ワイヤーのjsonを作成します。
-rem echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
+echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
 echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
@@ -69,6 +69,7 @@ if %start% == setpath call :setpath
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
 if %start% == deljson goto deljson
+if %start% == License goto License
 echo エラー:不明な番号です。
 goto selectwelcome
 :1
@@ -107,7 +108,7 @@ goto selectwelcome
  echo ------------------
  rem trainmodel setting start
  echo モデルファイルのパスを入力してください。
- echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo"の形式で入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
  echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
@@ -197,7 +198,7 @@ goto selectwelcome
  endlocal
  goto matroop
  rem format: ["matname", "texturepath", ""],
- rem format(last): ["matname", "texturepath", ""]},
+ rem format(last): ["matname", "texturepath", ""]]},
  
  :mat_old
  echo modelFileを決めてください。
@@ -1015,17 +1016,12 @@ goto selectwelcome
  echo   -- akikawa9616
  echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
  echo;
+ echo  一部機能発案者
+ echo   -- K.kirikoto ^| https://twitter.com/mikawa8002
+ echo;
  echo このプログラムはMITライセンスで公開されています。
+ echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
- echo -----------------------------
- echo Copyright (c) 2022-2023 akikawa9616
- echo;
- echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- echo;
- echo The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- echo;
- echo THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- echo -----------------------------
  echo version: %version%
  pause
  cls
@@ -1900,7 +1896,7 @@ goto selectwelcome
   echo;
   echo ボタンテクスチャのパスを設定してください。
   set /p button=
-  echo  "burronTexture": "%button%", >>%tempfile%
+  echo  "buttonTexture": "%button%", >>%tempfile%
   echo;
   echo ballastWidthを決めてください。
   echo 1以上の奇数かつ整数の値を入力してください。 これは道床ブロックの幅です。
@@ -2221,7 +2217,7 @@ goto selectwelcome
  echo;
  echo ボタンテクスチャのパスを設定してください。
  set /p button=
- echo  "burronTexture": "%button%", >>%tempfile%
+ echo  "buttonTexture": "%button%", >>%tempfile%
  echo ボタン: %button%
  echo;
  echo connectorTypeを決めてください。
@@ -2304,6 +2300,11 @@ goto selectwelcome
  set /p mat=
  echo 材質数は %mat% です。
  echo;
+ echo   "textures": [ >>%tempfile%
+ echo 1 つめの材質名を入力してください。
+ set /p matname=
+ echo 材質名は %matname% です。
+ echo;
  echo 材質のテクスチャパスを入力してください。
  echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
  set /p texturepath=
@@ -2326,7 +2327,7 @@ goto selectwelcome
  echo;
  echo ボタンテクスチャのパスを設定してください。
  set /p button=
- echo  "burronTexture": "%button%", >>%tempfile%
+ echo  "buttonTexture": "%button%", >>%tempfile%
  echo ボタン: %button%
  echo;
  echo deflectionCoefficientを決めてください。
@@ -2391,6 +2392,199 @@ goto selectwelcome
  
 
 :car
+ echo;
+ echo 乗り物のjsonを作成します。
+ echo;
+ set back=car_json
+ set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
+ echo nameを決めてください。
+ set /p name=
+ echo name: %name%
+ echo { >>%tempfile%
+ echo  "name": "%name%", >>%tempfile%
+ echo;
+ echo 乗り物のモデルを決めてください。(ファイル名)
+ set /p modelfile=
+ echo  "model": { >>%tempfile%
+ echo   "modelFile": "%modelfile%", >>%tempfile%
+ echo model: %modelfile%
+ echo;
+ echo %modelfile%の材質数を設定してください。
+ set /p mat=
+ echo 材質数は %mat% です。
+ echo;
+ echo   "textures": [ >>%tempfile%
+ echo 1 つめの材質名を入力してください。
+ set /p matname=
+ echo 材質名は %matname% です。
+ echo;
+ echo 材質のテクスチャパスを入力してください。
+ echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
+ set /p texturepath=
+ echo テクスチャパスは %texturepath% です。
+ set matcount=1
+ :cacounter
+  if %mat% == %matcount% goto cabutton
+ set /a matcount= %matcount% + 1
+ echo %matcount% つめの材質名を入力してください。
+ set /p matname1=
+ echo 材質名は %matname1% です。
+ echo;
+ echo %matname1% のテクスチャパスを入力してください。
+ set /p texturep=
+ echo テクスチャパスは %texturep% です。
+ echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
+ goto cacounter
+ :cabutton
+ echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
+ echo;
+ echo 乗り物のタイプを設定してください。
+ echo 使用可能: Car,Ship,Plane,Lift
+ echo それぞれ自動車,船舶,航空機,リフトです。
+ set /p Type=
+ echo  "vehicleType": "%Type%", >>%tempfile%
+ echo タイプ: %Type%
+ if %Type% == Lift goto Lift
+ echo;
+ echo 滑りやすさ,地面を設定してください。
+ echo デフォルトは 0.9 です。
+ set friction1=null
+ set /p friction1=
+ echo;
+ echo 滑りやすさ,空中を設定してください。
+ echo デフォルトは 0.9 です。
+ set /p friction2=
+ echo;
+ echo  "friction": [%friction1%, %friction2%], >>%tempfile%
+ echo 加速度,地面を設定してください。
+ set /p acceleration1=
+ echo;
+ echo 加速度,空中を設定してください。
+ set /p acceleration2=
+ echo  "acceleration": [%acceleration1%, %acceleration2%], >>%tempfile%
+ echo;
+ echo 最大速度,地面を設定してください。
+ set /p maxSpeed1=
+ echo;
+ echo 最大速度,空中を設定してください。
+ set /p maxSpeed2=
+ echo  "maxSpeed": [%maxSpeed1%, %maxSpeed2%], >>%tempfile%
+ echo;
+ echo 最大Yaw,地面を設定してください。
+ set /p yaw1=
+ echo;
+ echo 最大Yaw,空中を設定してください。
+ set /p yaw2=
+ echo  "maxYaw": [%yaw1%, %yaw2%], >>%tempfile%
+ echo;
+ echo Yaw係数,地面を設定してください。
+ set /p yaw1k=
+ echo;
+ echo Yaw係数,空中を設定してください。
+ set /p yaw2k=
+ echo  "yawCoefficient": [%yaw1k%, %yaw2k%], >>%tempfile%
+ echo;
+ echo pitch係数,地面を設定してください。
+ set /p pitch1=
+ echo;
+ echo pitch係数,空中を設定してください。
+ set /p pitch2=
+ echo  "pitchCoefficient": [%pitch1%, %pitch2%], >>%tempfile%
+ echo;
+ echo roll係数,地面を設定してください。
+ set /p roll1k=
+ echo;
+ echo roll係数,空中を設定してください。
+ set /p roll2k=
+ echo  "rollCoefficient": [%roll1k%, %roll2k%], >>%tempfile%
+ echo;
+ echo 停車中に旋回できるかどうかを設定してください。
+ set /p stop=(true/false) : 
+ echo  "changeYawOnStopping": %stop% >>%tempfile%
+ echo } >>%tempfile%
+ goto car_json
+
+ :Lift
+ echo;
+ echo ボタンテクスチャのパスを設定してください。
+ set /p button=
+ echo  "buttonTexture": "%button%", >>%tempfile%
+ echo ボタン: %button%
+ echo;
+ echo sizeの1つめを決めてください。
+ set /p size1=
+ echo sizeの1つめは %size1% に設定されました。
+ echo;
+ echo sizeの2つめを決めてください。
+ set /p size2=
+ echo sizeの2つめは %size2% に設定されました。
+ echo  "size": [%size1% , %size2%], >>%tempfile%
+ echo;
+ echo playerPosを決めてください。
+ echo 0.0, 0.48, 0.0 の形式で入力してください。
+ set /p playerPos=
+ echo  "playerPos": [[%playerPos%]], >>%tempfile%
+ echo;
+ echo vibrationを決めてください。
+ echo 0.0, 0.0 の形式で入力してください。
+ set /p vibration=
+ echo  "vibration":[%vibration%], >>%tempfile%
+ echo;
+ echo gripPosを決めてください。
+ echo これはリフトとワイヤーの接点をx,y,zのメートル単位で指定してください。
+ echo 0.0, 3.5, 0.0 の形式で入力してください。
+ echo ヒント: RTMにプリインストールされているリフトは 0.0, 3.5, 0.0 です。
+ set /p gripPos=
+ echo  "gripPos": [%gripPos%], >>%tempfile%
+ echo;
+ echo useCustomColorを決めてください。
+ set /p useCustomColor=(true/false): 
+ echo  "useCustomColor": %useCustomColor% >>%tempfile%
+ echo;
+ echo smoothingを決めてください。
+ set /p smooz=(true/false) : 
+ echo  "smoothing": %smooz%, >>%tempfile%
+ echo;
+ echo doCullingを決めてください。
+ set /p doCulling=(true/false) : 
+ echo  "doCulling": %doCulling%, >>%tempfile%
+ echo  "changeYawOnStopping": false, >>%tempfile%
+ echo;
+ echo accuracyを決めてください。
+ set /p accuracy=(LOW/MIDIUM): 
+ echo  "accuracy": "%accuracy%", >>%tempfile%
+ echo;
+ echo collisionPartsを決めてください。
+ echo "seat1" の形式で入力してください。 複数指定の場合は "seat1", "seat2", "seat3" の形式で入力してください。
+ set /p collisionParts=
+ echo  "collisionParts": [%collisionParts%], >>%tempfile%
+ echo;
+ echo tagsを決めてください。
+ echo 複数指定する場合は,で区切って入力してください。
+ set /p tags=
+ echo  "tags": "%tags%" >>%tempfile%
+ echo } >>%tempfile%
+ echo;
+ :car_json
+  echo jsonが完成しました!
+  echo -- filename: ModelVehicle_%name%.json --
+  echo;
+  for /f "delims=@" %%a in (%tempfile%) do (
+   echo %%a
+  )
+  echo ----------------------------------------
+  echo 行動を選択してください
+  echo ----------------------------------------
+  echo  行動の番号         行動の内容          
+  echo ----------------------------------------
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
+  echo ----------------------------------------
+  set /p user=
+  if %user% == 2 goto 2
+  if %user% == 3 echo F | xcopy %tempfile% %setpath%\ModelVehicle_%name%.json /V /C /F /-Y
+  goto car_json
+ 
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
@@ -2490,6 +2684,7 @@ rem ERROR CODE
   pause
   exit
 :firstsetting
+ echo 初期設定を行っています...
  pushd %temp%
  md .RJC\json
  md .RJC\welcome
@@ -2518,6 +2713,7 @@ rem ERROR CODE
  echo;>>cmd
  echo;>>setpath
  echo;>>999
+ echo;>>License
  echo Please restart RtmJsonCreator.
  pause
  exit /b
@@ -2544,3 +2740,16 @@ rem ERROR CODE
  del /Q %temp%\.RJC\json\*
  pause
  exit /b
+:License
+ echo;
+ echo -----------------------------
+ echo Copyright (c) 2022-2023 akikawa9616
+ echo;
+ echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ echo;
+ echo The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ echo;
+ echo THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ echo -----------------------------
+ pause
+ goto selectwelcome
