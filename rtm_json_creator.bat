@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.1-alpha
+set version=1.0.0.2-alpha
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -54,7 +54,6 @@ if %start% == 6 goto 6
 if %start% == 7 goto 7
 if %start% == 8 goto 8
 if %start% == 9 goto 9
-if %start% == 10 goto zip
 if %start% == 11 goto pack
 if %start% == 12 goto signal
 if %start% == 13 goto rail
@@ -63,13 +62,17 @@ if %start% == 15 goto gun
 if %start% == 16 goto connector
 if %start% == 17 goto wire
 if %start% == 18 goto car
-if %start% == 999 goto soundcreate
-if %start% == explorer start explorer.exe %setpath%
 if %start% == setpath call :setpath
+if %start% == explorer start explorer.exe %setpath%
+if %start% == License goto License
+rem 以下の機能は将来、削除されるか変更となる可能性があります。
+if %start% == 10 goto zip
+if %start% == 999 goto soundcreate
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
 if %start% == deljson goto deljson
-if %start% == License goto License
+if %start% == ams goto useams
+rem 試験的機能の終焉
 echo エラー:不明な番号です。
 goto selectwelcome
 :1
@@ -1148,7 +1151,7 @@ goto selectwelcome
  echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
  endlocal
  set matcount=1
- :matroop
+ :matroop5
  if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >> ModelMachine_%name%.json )
  if %mat% == %matcount% goto switcher
  set /a matcount=%matcount% + 1
@@ -1178,7 +1181,7 @@ goto selectwelcome
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""], >> ModelMachine_%name%.json
  endlocal
- goto matroop
+ goto matroop5
  :mat_old5
  echo modelfileを決めてください。
  set /p modelFile=
@@ -1346,7 +1349,7 @@ goto selectwelcome
  echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
  endlocal
  set matcount=1
- :matroop
+ :matroop6
  if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >> ModelNPC_%name% )
  if %mat% == %matcount% goto npc
  set /a matcount=%matcount% + 1
@@ -1376,7 +1379,7 @@ goto selectwelcome
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""], >> ModelNPC_%name%
  endlocal
- goto matroop
+ goto matroop6
  :mat_old6
  echo -------------
  echo modelfileを決めてください。
@@ -2713,21 +2716,6 @@ goto selectwelcome
  pushd %setpath%
  echo Done.
  exit /b
-rem ERROR CODE
- rem 33N 
-  rem 看板のjsonを保存した後にそのファイルが見つかりませんでした。
- rem 13N
-  rem 列車のjsonを保存した後にそのファイルが見つかりませんでした。
- rem 53N
-  rem 機能あり設置物のjsonを保存した後にそのファイルが見つかりませんでした。
- rem 63N
-  rem NPCのjsonを保存した後にそのファイルが見つかりませんでした。
- rem 73N
-  rem 旗のjsonを保存した後にそのファイルが見つかりませんでした。
- rem 8N
-  rem sounds.jsonを保存した後にそのファイルが見つかりませんでした。
- rem 0-00
-  rem 故意的に発生させたエラー。
 :railjson1pre
  echo プレビューが表示されます:
  pause
@@ -2795,7 +2783,6 @@ rem ERROR CODE
  echo;>>explorer
  echo;>>cmd
  echo;>>setpath
- echo;>>999
  echo;>>License
  echo Please restart RtmJsonCreator.
  pause
@@ -2836,3 +2823,80 @@ rem ERROR CODE
  echo -----------------------------
  pause
  goto selectwelcome
+:useams
+ echo これは自動材質設定機能のテストです。
+ echo 材質数,材質名,材質テクスチャパスを出力します。
+ set /p modelFile=(ここにmqo形式のモデルファイルフルパスを入力:) 
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ endlocal
+ echo modelFilePathは %modelFile% に設定されました。
+ echo ------------------
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
+ for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
+ echo;
+ echo 材質設定の行: %lnnum%
+ echo;
+ for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
+ set mat=%mat:~9%
+ set mat=%mat:~0,-2%
+ echo 材質数を取得: %mat%
+ echo;
+ setlocal enabledelayedexpansion
+ set /a "count=0"
+ for /f "delims=" %%a in (%modelFile%) do (
+     set /a "count+=1"
+     if !count!==%lnnum% (
+         set "line=%%a"
+     )
+ )
+ for /f "tokens=1* delims= " %%a in ("!line!") do (
+    set "mat1=%%a"
+ )
+ set matname=!mat1:~1!
+ echo 材質名を取得: !matname!
+ for /f "delims=" %%a in ("!line!") do (
+    set "texture=%%a"
+    set "texture=!texture:*tex(=!"
+    set "texture=!texture:)=!"
+ )
+ set texture=!texture:~1,-1!
+ echo テクスチャ名を取得: !texture!
+ echo 材質名: !matname! , !matname!のテクスチャ: !texture!
+ endlocal
+ set matcount=1
+ echo;
+ :matroop1
+ if %mat% == %matcount% goto end
+ set /a matcount=%matcount% + 1
+ set /a lnnum=%lnnum% + 1
+ set count=0
+ setlocal enabledelayedexpansion
+ set /a "count=0"
+ for /f "delims=" %%a in (%modelFile%) do (
+     set /a "count+=1"
+     if !count!==%lnnum% (
+         set "line=%%a"
+     )
+ )
+
+ for /f "tokens=1* delims= " %%a in ("!line!") do (
+    set "mat1=%%a"
+ )
+ set matname=!mat1:~1!
+ echo 材質名を取得: !matname!
+ for /f "delims=" %%a in ("!line!") do (
+    set "texture=%%a"
+    set "texture=!texture:*tex(=!"
+    set "texture=!texture:)=!"
+ )
+ set texture=!texture:~1,-1!
+ echo テクスチャ名を取得: !texture!
+ echo name: !matname! ,texturename: !texture!
+ echo;
+ endlocal
+ goto matroop1
+ :end
+ pause
+ goto welcome
