@@ -33,8 +33,6 @@ echo      15         火器のjsonを作成します。
 echo      16         コネクターのjsonを作成します。
 echo      17         ワイヤーのjsonを作成します。
 echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
-echo     cmd         cmd.exeをコールします。
-echo   setpath       指定したディレクトリにパスを通します。
 echo;
 echo 現在のディレクトリ: %setpath%
 echo;
