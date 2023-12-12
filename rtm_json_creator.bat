@@ -4,12 +4,14 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.3-alpha
+set version=1.0.0.4
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :welcome
 del %temp%\.Rtm_Json_Creator_json.tscf
+del %temp%\.ams1.tscf
+del %temp%\.ams2.tscf
 cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
@@ -18,26 +20,26 @@ pushd %temp%\.RJC\welcome
 echo  ----------------------------------------
 echo   行動の番号         行動の内容          
 echo  ----------------------------------------
-echo       1         列車のjsonを作成します。                             o
-echo       2         終了させます。                                       x
-echo       3         看板のjsonを作成します。                             x
-echo       4         スペシャルサンクスと作者                             x
-echo       5         機能あり/なし設置物のjsonを作成します。              o
-echo       6         NPCのjsonを作成します。                              o
-echo       7         旗のjsonを作成します。                               x
-echo       8         sounds.jsonを作成します。                            x
-echo       9         ディレクトリを構成します。                           x
-echo      10         指定されたディレクトリをzip化します。(べーたばんです)x
-echo      11         pack.jsonを作成します。                              x
-echo      12         信号機のjsonを作成します。                           x
-echo      13         レールのjsonを作成します。                           o
-echo      14         コンテナのjsonを作成します。                         -
-echo      15         火器のjsonを作成します。                             -
-echo      16         コネクターのjsonを作成します。                       -
-echo      17         ワイヤーのjsonを作成します。                         -
-echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。-
-echo     cmd         cmd.exeをコールします。                              x
-echo   setpath       指定したディレクトリにパスを通します。               x
+echo       1         列車のjsonを作成します。                             
+echo       2         終了させます。                                       
+echo       3         看板のjsonを作成します。                             
+echo       4         スペシャルサンクスと作者                             
+echo       5         機能あり/なし設置物のjsonを作成します。              
+echo       6         NPCのjsonを作成します。                              
+echo       7         旗のjsonを作成します。                               
+echo       8         sounds.jsonを作成します。                            
+echo       9         ディレクトリを構成します。                           
+echo      10         指定されたディレクトリをzip化します。(べーたばんです)
+echo      11         pack.jsonを作成します。                              
+echo      12         信号機のjsonを作成します。                           
+echo      13         レールのjsonを作成します。                           
+echo      14         コンテナのjsonを作成します。                         
+echo      15         火器のjsonを作成します。                             
+echo      16         コネクターのjsonを作成します。                       
+echo      17         ワイヤーのjsonを作成します。                         
+echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
+echo     cmd         cmd.exeをコールします。                              
+echo   setpath       指定したディレクトリにパスを通します。               
 echo  ----------------------------------------
 echo 現在のディレクトリ: %setpath%
 echo  ----------------------------------------
@@ -120,89 +122,14 @@ goto selectwelcome
  if %modelfile:~-3% == obj goto mat_old
  if %modelfile:~-4% == ngto goto mat_old
  if %modelfile:~-4% == ngtz goto mat_old
- rem format end
  setlocal enabledelayedexpansion
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
  echo    "trainModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "!filename:~0,-4!", >> ModelTrain_%trainname%.json
  endlocal
- echo modelFilePathは %modelFile% に設定されました。
- echo          "textures":[ >> ModelTrain_%trainname%.json
- echo ------------------
- echo このモデルのテクスチャフォルダパスを入力してください。
- echo これは変数を使用せず、"textures/train"の形式で入力してください。
- echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
- set /p texturedir=
- echo dir: %texturedir%
- echo ------------------
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
- for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
- set mat=%mat:~9%
- set mat=%mat:~0,-2%
- echo 材質数を取得: %mat%
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- set hoge=!texture:~1,2!
- if !hoge! == :\ goto PathError
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
- endlocal
- set matcount=1
- :matroop
- if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >>ModelTrain_%trainname%.json )
- if %mat% == %matcount% goto bogi
- set /a matcount=%matcount% + 1
- set /a lnnum=%lnnum% + 1
- set count=0
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
-
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >>ModelTrain_%trainname%.json
- endlocal
- goto matroop
- rem format: ["matname", "texturepath", ""],
- rem format(last): ["matname", "texturepath", ""]]},
- 
+ set return=bogi
+ set filename=ModelTrain_%trainname%.json
+ goto ams
  :mat_old
  echo modelFileを決めてください。
  echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
@@ -262,7 +189,6 @@ goto selectwelcome
 :bogi
  rem bogiemodel setting start
  echo;
- del %temp%\.Rtm_Json_Creator_json.tscf
  echo ボギーモデルファイルのパスを入力してください。
  echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\bogie.mqo"の形式で入力してください。
  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
@@ -277,128 +203,64 @@ goto selectwelcome
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
  echo  "bogieModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "!filename:~0,-4!", >> ModelTrain_%trainname%.json
- echo     "textures": [ >> ModelTrain_%trainname%.json
  endlocal
- echo modelFilePathは %modelFile% に設定されました。
- echo ------------------
- echo このモデルのテクスチャフォルダパスを入力してください。
- echo これは変数を使用せず、"textures/train"の形式で入力してください。
- echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
- set /p texturedir=
- echo dir: %texturedir%
- echo ------------------
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
- for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
- set mat=%mat:~9%
- set mat=%mat:~0,-2%
- echo 材質数を取得: %mat%
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- set hoge=!texture:~1,2!
- if !hoge! == :\ goto PathError
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
- endlocal
- set matcount=1
- :matroop1
- if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >>ModelTrain_%trainname%.json )
- if %mat% == %matcount% goto 1222
- set /a matcount=%matcount% + 1
- set /a lnnum=%lnnum% + 1
- set count=0
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
-
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >>ModelTrain_%trainname%.json
- endlocal
- goto matroop1
+ set return=1222
+ goto ams
  :mat_oldb
- echo modelfileを決めてください。
- echo ボギーの3Dモデルのファイル名を"拡張子あり"で入力してください。
- set /p modelFileb=
- echo modelFileは %modelFileb% に設定されました。
- echo "bogieModel2":{ >> ModelTrain_%trainname%.json
- echo     "modelFile": "%modelfileb%", >> ModelTrain_%trainname%.json
- echo     "textures": [>> ModelTrain_%trainname%.json
+ echo modelFileを決めてください。
+ echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
+ set /p modelFile=
+ echo modelFileは %modelFile% に設定されました。
+ echo "trainModel2":{ >> ModelTrain_%trainname%.json
+ echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
+ echo          "textures":[>> ModelTrain_%trainname%.json
  echo ------------------
- set count=1
- :bogiematcountsetting
- set /p matcount=ボギーモデルの材質数を入力してください。
- echo 材質数は %matcount% に設定してください。
- :bogiematcheck
- if %matcount% equ %count% ( goto bogiematlast ) ELSE ( goto bogiematsetting )
- :bogiematsetting
+ set count=0
+ :matcountsetting
+ set /p matcount=列車モデルの材質数を入力してください
+ echo 材質数は %matcount% に設定されました。
+ :matchecks
+ if %matcount% equ %count% ( goto matlasts ) ELSE ( goto matsettings )
+ :matsettings
  set /a count=%count%+1
- echo ------------------
- echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p bogie1=
- echo 材質,%count%つめの名前は %bogie1% に設定されました。
- echo ------------------
- echo %bogie1% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
- echo オプションは次で設定します。
- set /p bogie1texture=
- echo %bogie1% のテクスチャパスは %bogie1texture% に設定されました。
- echo ------------------
- echo                   ["%bogie1%", "%bogie1texture%",""], >> ModelTrain_%trainname%.json
- goto bogiematcheck
- :bogiematlast
- echo ------------------
- echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p bogie1=
- echo 材質,%count%つめの名前は %bogie1% に設定されました。
- echo ------------------
- echo %bogie1% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
- echo オプションは次で設定します。
- set /p bogie1texture=
- echo %bogie1% のテクスチャパスは %bogie1texture% に設定されました。
- echo ------------------
- echo                   ["%bogie1%", "%bogie1texture%",""] >> ModelTrain_%trainname%.json
- echo                 ] >> ModelTrain_%trainname%.json
- echo               }, >> ModelTrain_%trainname%.json
- goto 1222
- 
-
+   echo ------------------
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
+   echo ------------------
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
+   echo ------------------
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
+ goto matchecks
+ :matlasts
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
+   echo ------------------
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
+   echo ------------------
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
+   echo                     ] >> ModelTrain_%trainname%.json
+   echo               }, >> ModelTrain_%trainname%.json
+   goto 1222
 :1222
  rem buttontexture setting start
   echo buttontextureを決めてください。
@@ -778,7 +640,7 @@ goto selectwelcome
  echo jsonが完成しました!
  echo;
  echo 以下のタイムアウトはオプション未設定時の事故を防止する目的で導入されました。
- timeout /t 3
+ timeout /t 3 /NOBREAK
  echo ファイルパス: %setpath%\ModelTrain_%trainname%.json
  echo;
  echo -- filename: ModelTrain_%trainname%.json --
@@ -1105,83 +967,11 @@ goto selectwelcome
  rem format end
  setlocal enabledelayedexpansion
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
- echo    "model":{ >> ModelMachine_%name%.json
  echo     "modelFile": "!filename:~0,-4!", >> ModelMachine_%name%.json
  endlocal
- echo modelFilePathは %modelFile% に設定されました。
- echo          "textures":[ >> ModelMachine_%name%.json
- echo ------------------
- echo このモデルのテクスチャフォルダパスを入力してください。
- echo これは変数を使用せず、"textures/train"の形式で入力してください。
- echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
- set /p texturedir=
- echo dir: %texturedir%
- echo ------------------
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
- for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
- set mat=%mat:~9%
- set mat=%mat:~0,-2%
- echo 材質数を取得: %mat%
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- set hoge=!texture:~1,2!
- if !hoge! == :\ goto PathError
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
- endlocal
- set matcount=1
- :matroop5
- if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >> ModelMachine_%name%.json )
- if %mat% == %matcount% goto switcher
- set /a matcount=%matcount% + 1
- set /a lnnum=%lnnum% + 1
- set count=0
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
-
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >> ModelMachine_%name%.json
- endlocal
- goto matroop5
+ set return=switcher
+ set filename=ModelMachine_%name%.json
+ goto ams
  :mat_old5
  echo modelfileを決めてください。
  set /p modelFile=
@@ -1303,83 +1093,11 @@ goto selectwelcome
  rem format end
  setlocal enabledelayedexpansion
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
- echo    "model":{ >> ModelNPC_%name%
  echo     "modelFile": "!filename:~0,-4!", >> ModelNPC_%name%
  endlocal
- echo modelFilePathは %modelFile% に設定されました。
- echo          "textures":[ >> ModelNPC_%name%
- echo ------------------
- echo このモデルのテクスチャフォルダパスを入力してください。
- echo これは変数を使用せず、"textures/train"の形式で入力してください。
- echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
- set /p texturedir=
- echo dir: %texturedir%
- echo ------------------
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
- for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
- set mat=%mat:~9%
- set mat=%mat:~0,-2%
- echo 材質数を取得: %mat%
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- set hoge=!texture:~1,2!
- if !hoge! == :\ goto PathError
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
- endlocal
- set matcount=1
- :matroop6
- if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >> ModelNPC_%name% )
- if %mat% == %matcount% goto npc
- set /a matcount=%matcount% + 1
- set /a lnnum=%lnnum% + 1
- set count=0
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
-
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >> ModelNPC_%name%
- endlocal
- goto matroop6
+ set return=npc
+ set filename=ModelNPC_%name%
+ goto ams
  :mat_old6
  echo -------------
  echo modelfileを決めてください。
@@ -1962,82 +1680,11 @@ goto selectwelcome
   rem format end
   setlocal enabledelayedexpansion
   for %%a in ("%modelFile%") do set "filename=%%~nxa"
-  echo  "bogieModel2":{ >> %tempfile%
   echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
-  echo     "textures": [ >> %tempfile%
   endlocal
-  echo modelFilePathは %modelFile% に設定されました。
-  echo ------------------
-  echo このモデルのテクスチャフォルダパスを入力してください。
-  echo これは変数を使用せず、"textures/train"の形式で入力してください。
-  echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
-  set /p texturedir=
-  echo dir: %texturedir%
-  echo ------------------
-  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
-  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
-  echo 材質設定の行: %lnnum%
-  for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
-  set mat=%mat:~9%
-  set mat=%mat:~0,-2%
-  echo 材質数を取得: %mat%
-  setlocal enabledelayedexpansion
-  set /a "count=0"
-  for /f "delims=" %%a in (%modelFile%) do (
-      set /a "count+=1"
-      if !count!==%lnnum% (
-          set "line=%%a"
-      )
-  )
-  for /f "tokens=1* delims= " %%a in ("!line!") do (
-     set "mat1=%%a"
-  )
-  set matname=!mat1:~1!
-  echo 材質名を取得: !matname!
-  for /f "delims=" %%a in ("!line!") do (
-     set "texture=%%a"
-     set "texture=!texture:*tex(=!"
-     set "texture=!texture:)=!"
-  )
-  set texture=!texture:~1,-1!
-  echo テクスチャ名を取得: !texture!
-  set hoge=!texture:~1,2!
-  if !hoge! == :\ goto PathError
-  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
-  echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.RJC\signal.tscf
-  endlocal
-  set matcount=1
-  :matroopsig
-  if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.RJC\signal.tscf) do ( echo %%a >>%tempfile% )
-  if %mat% == %matcount% goto 1222
-  set /a matcount=%matcount% + 1
-  set /a lnnum=%lnnum% + 1
-  set count=0
-  setlocal enabledelayedexpansion
-  set /a "count=0"
-  for /f "delims=" %%a in (%modelFile%) do (
-      set /a "count+=1"
-      if !count!==%lnnum% (
-          set "line=%%a"
-      )
-  )
- 
-  for /f "tokens=1* delims= " %%a in ("!line!") do (
-     set "mat1=%%a"
-  )
-  set matname=!mat1:~1!
-  echo 材質名を取得: !matname!
-  for /f "delims=" %%a in ("!line!") do (
-     set "texture=%%a"
-     set "texture=!texture:*tex(=!"
-     set "texture=!texture:)=!"
-  )
-  set texture=!texture:~1,-1!
-  echo テクスチャ名を取得: !texture!
-  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
-  echo       [!matname!, "%texturedir%/!texture!", ""], >>%tempfile%
-  endlocal
-  goto matroopsig
+  set return=gouryu
+  set filename=%tempfile%
+  goto ams
   :mat_oldsignal
   set /p modelfile=
   echo   "modelFile": "%modelfile%", >>%tempfile%
@@ -2368,6 +2015,24 @@ goto selectwelcome
  echo  "name": "%name%", >>%tempfile%
  echo  "model": { >>%tempfile%
  echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ rem check format
+ if %modelfile:~-4% == mqoz goto mat_oldco
+ if %modelfile:~-3% == obj goto mat_oldco
+ if %modelfile:~-4% == ngto goto mat_oldco
+ if %modelfile:~-4% == ngtz goto mat_oldco
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+ endlocal
+ set return=csgo
+ set filename=%tempfile%
+ goto ams
+ :mat_oldco
  echo コネクターのモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo   "modelFile": "%modelfile%", >>%tempfile%
@@ -2400,6 +2065,7 @@ goto selectwelcome
  goto cocounter
  :cobutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
+ :csgo
  echo;
  echo ボタンテクスチャのパスを設定してください。
  set /p button=
@@ -2408,7 +2074,7 @@ goto selectwelcome
  echo;
  echo connectorTypeを決めてください。
  echo Relay,Input,Outputの中から選んでください。
- echo タイプは以下の通りです。: Relay:"中継コネクタ",Input:"入力コネクタ",Output:"出力コネクタ"
+ echo タイプは以下の通りです: Relay:"中継コネクタ",Input:"入力コネクタ",Output:"出力コネクタ"
  set /p type=(Relay/Input/Output): 
  echo  "connectorType":"%type%", >>%tempfile%
  echo コネクタ: %connector%
@@ -2476,6 +2142,24 @@ goto selectwelcome
  echo { >>%tempfile%
  echo  "name": "%name%" >>%tempfile%
  echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ rem check format
+ if %modelfile:~-4% == mqoz goto mat_oldwire
+ if %modelfile:~-3% == obj goto mat_oldwire
+ if %modelfile:~-4% == ngto goto mat_oldwire
+ if %modelfile:~-4% == ngtz goto mat_oldwire
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+ endlocal
+ set return=wifi
+ set filename=%tempfile%
+ goto ams
+ :mat_oldwire
  echo ワイヤーのモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo  "model": { >>%tempfile%
@@ -2511,6 +2195,7 @@ goto selectwelcome
  :wibutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  echo;
+ :wifi
  echo ボタンテクスチャのパスを設定してください。
  set /p button=
  echo  "buttonTexture": "%button%", >>%tempfile%
@@ -2588,10 +2273,28 @@ goto selectwelcome
  echo name: %name%
  echo { >>%tempfile%
  echo  "name": "%name%", >>%tempfile%
+ echo  "model": { >>%tempfile%
  echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ rem check format
+ if %modelfile:~-4% == mqoz goto mat_oldcar
+ if %modelfile:~-3% == obj goto mat_oldcar
+ if %modelfile:~-4% == ngto goto mat_oldcar
+ if %modelfile:~-4% == ngtz goto mat_oldcar
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+ endlocal
+ set return=cartype
+ set filename=%tempfile%
+ goto ams
+ :mat_oldcar
  echo 乗り物のモデルを決めてください。(ファイル名)
  set /p modelfile=
- echo  "model": { >>%tempfile%
  echo   "modelFile": "%modelfile%", >>%tempfile%
  echo model: %modelfile%
  echo;
@@ -2624,6 +2327,7 @@ goto selectwelcome
  :cabutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  echo;
+ :cartype
  echo 乗り物のタイプを設定してください。
  echo 使用可能: Car,Ship,Plane,Lift
  echo それぞれ自動車,船舶,航空機,リフトです。
@@ -2889,7 +2593,7 @@ goto selectwelcome
  echo;
  echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
  echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
- echo %ESC%[41mまた、このテクスチャパスにはUsers配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
+ echo %ESC%[41mまた、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
  echo %ESC%[41m------------------------------------%ESC%[0m
  echo;
  pause
@@ -2988,3 +2692,81 @@ goto selectwelcome
  :end
  pause
  goto welcome
+:ams
+ echo modelFilePathは %modelFile% に設定されました。
+ echo          "textures":[ >> %filename%
+ echo ------------------
+ echo このモデルのテクスチャフォルダパスを入力してください。
+ echo これは変数を使用せず、 textures/train の形式で入力してください。
+ echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
+ set /p texturedir=
+ echo dir: %texturedir%
+ echo ------------------
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
+ for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
+ echo 材質設定の行: %lnnum%
+ for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
+ set mat=%mat:~9%
+ set mat=%mat:~0,-2%
+ echo 材質数を取得: %mat%
+ setlocal enabledelayedexpansion
+ set /a "count=0"
+ for /f "delims=" %%a in (%modelFile%) do (
+     set /a "count+=1"
+     if !count!==%lnnum% (
+         set "line=%%a"
+     )
+ )
+ for /f "tokens=1* delims= " %%a in ("!line!") do (
+    set "mat1=%%a"
+ )
+ set matname=!mat1:~1!
+ echo 材質名を取得: !matname!
+ for /f "delims=" %%a in ("!line!") do (
+    set "texture=%%a"
+    set "texture=!texture:*tex(=!"
+    set "texture=!texture:)=!"
+ )
+ set texture=!texture:~1,-1!
+ echo テクスチャ名を取得: !texture!
+ set hoge=!texture:~1,2!
+ if !hoge! == :\ goto PathError
+ echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
+ echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams2.tscf
+ endlocal
+ set matcount=1
+ :matroop
+ if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.ams1.tscf) do ( echo %%a >>%filename% )
+ if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.ams2.tscf) do ( echo %%a >>%filename% )
+ if %mat% == %matcount% del %temp%\.ams1.tscf
+ if %mat% == %matcount% del %temp%\.ams2.tscf
+ if %mat% == %matcount% goto %return%
+ set /a matcount=%matcount% + 1
+ set /a lnnum=%lnnum% + 1
+ set count=0
+ setlocal enabledelayedexpansion
+ set /a "count=0"
+ for /f "delims=" %%a in (%modelFile%) do (
+     set /a "count+=1"
+     if !count!==%lnnum% (
+         set "line=%%a"
+     )
+ )
+
+ for /f "tokens=1* delims= " %%a in ("!line!") do (
+    set "mat1=%%a"
+ )
+ set matname=!mat1:~1!
+ echo 材質名を取得: !matname!
+ for /f "delims=" %%a in ("!line!") do (
+    set "texture=%%a"
+    set "texture=!texture:*tex(=!"
+    set "texture=!texture:)=!"
+ )
+ set texture=!texture:~1,-1!
+ echo テクスチャ名を取得: !texture!
+ echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
+ echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
+ endlocal
+ goto matroop
