@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.4
+set version=1.0.0.5
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -20,26 +20,26 @@ pushd %temp%\.RJC\welcome
 echo  ----------------------------------------
 echo   行動の番号         行動の内容          
 echo  ----------------------------------------
-echo       1         列車のjsonを作成します。                             
-echo       2         終了させます。                                       
-echo       3         看板のjsonを作成します。                             
-echo       4         スペシャルサンクスと作者                             
-echo       5         機能あり/なし設置物のjsonを作成します。              
-echo       6         NPCのjsonを作成します。                              
-echo       7         旗のjsonを作成します。                               
-echo       8         sounds.jsonを作成します。                            
-echo       9         ディレクトリを構成します。                           
+echo       1         列車のjsonを作成します。
+echo       2         終了させます。
+echo       3         看板のjsonを作成します。
+echo       4         スペシャルサンクスと作者
+echo       5         機能あり/なし設置物のjsonを作成します。
+echo       6         NPCのjsonを作成します。
+echo       7         旗のjsonを作成します。
+echo       8         sounds.jsonを作成します。
+echo       9         ディレクトリを構成します。
 echo      10         指定されたディレクトリをzip化します。(べーたばんです)
-echo      11         pack.jsonを作成します。                              
-echo      12         信号機のjsonを作成します。                           
-echo      13         レールのjsonを作成します。                           
-echo      14         コンテナのjsonを作成します。                         
-echo      15         火器のjsonを作成します。                             
-echo      16         コネクターのjsonを作成します。                       
-echo      17         ワイヤーのjsonを作成します。                         
+echo      11         pack.jsonを作成します。
+echo      12         信号機のjsonを作成します。
+echo      13         レールのjsonを作成します。
+echo      14         コンテナのjsonを作成します。
+echo      15         火器のjsonを作成します。
+echo      16         コネクターのjsonを作成します。
+echo      17         ワイヤーのjsonを作成します。
 echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
-echo     cmd         cmd.exeをコールします。                              
-echo   setpath       指定したディレクトリにパスを通します。               
+echo     cmd         cmd.exeをコールします。
+echo   setpath       指定したディレクトリにパスを通します。
 echo  ----------------------------------------
 echo 現在のディレクトリ: %setpath%
 echo  ----------------------------------------
