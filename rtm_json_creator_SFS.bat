@@ -1,38 +1,41 @@
 @echo off
 rem (c) 2022 - 2023 akikawa9616
+if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
-set version=1.0.0.0-alpha-SmallFileSize(SFS)
+set user=
+set version=1.0.0.4-SmallFileSize(SFS)
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :welcome
 del %temp%\.Rtm_Json_Creator_json.tscf
+del %temp%\.ams1.tscf
+del %temp%\.ams2.tscf
 cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
 :selectwelcome
-pushd %temp%\.RJC\welcome
 echo;
 echo   行動の番号         行動の内容          
 echo;
-echo       1         列車のjsonを作成します。     
-echo       2         終了させます。       
-echo       3         看板のjsonを作成します。 
-echo       4         スペシャルサンクスと作者  
-echo       5         機能あり/なし設置物のjsonを作成します。 
-echo       6         NPCのjsonを作成します。 
-echo       7         旗のjsonを作成します。
-echo       8         sounds.jsonを作成します。
-echo       9         ディレクトリを構成します。
+echo       1         列車のjsonを作成します。                             
+echo       2         終了させます。                                       
+echo       3         看板のjsonを作成します。                             
+echo       4         スペシャルサンクスと作者                             
+echo       5         機能あり/なし設置物のjsonを作成します。              
+echo       6         NPCのjsonを作成します。                              
+echo       7         旗のjsonを作成します。                               
+echo       8         sounds.jsonを作成します。                            
+echo       9         ディレクトリを構成します。                           
 echo      10         指定されたディレクトリをzip化します。(べーたばんです)
-echo      11         pack.jsonを作成します。
-echo      12         信号機のjsonを作成します。
-echo      13         レールのjsonを作成します。
-echo      14         コンテナのjsonを作成します。
-echo      15         火器のjsonを作成します。
-echo      16         コネクターのjsonを作成します。
-echo      17         ワイヤーのjsonを作成します。
-echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
+echo      11         pack.jsonを作成します。                              
+echo      12         信号機のjsonを作成します。                           
+echo      13         レールのjsonを作成します。                           
+echo      14         コンテナのjsonを作成します。                         
+echo      15         火器のjsonを作成します。                             
+echo      16         コネクターのjsonを作成します。                       
+echo      17         ワイヤーのjsonを作成します。                         
+echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。   
 echo;
 echo 現在のディレクトリ: %setpath%
 echo;
@@ -49,7 +52,6 @@ if %start% == 6 goto 6
 if %start% == 7 goto 7
 if %start% == 8 goto 8
 if %start% == 9 goto 9
-if %start% == 10 goto zip
 if %start% == 11 goto pack
 if %start% == 12 goto signal
 if %start% == 13 goto rail
@@ -103,81 +105,9 @@ goto selectwelcome
  echo    "trainModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "!filename:~0,-4!", >> ModelTrain_%trainname%.json
  endlocal
- echo modelFilePathは %modelFile% に設定されました。
- echo          "textures":[ >> ModelTrain_%trainname%.json
- echo;
- echo このモデルのテクスチャフォルダパスを入力してください。
- echo これは変数を使用せず、"textures/train"の形式で入力してください。
- echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
- set /p texturedir=
- echo dir: %texturedir%
- echo;
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
- for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
- set mat=%mat:~9%
- set mat=%mat:~0,-2%
- echo 材質数を取得: %mat%
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- set hoge=!texture:~1,2!
- if !hoge! == :\ goto PathError
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
- endlocal
- set matcount=1
- :matroop
- if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >>ModelTrain_%trainname%.json )
- if %mat% == %matcount% goto bogi
- set /a matcount=%matcount% + 1
- set /a lnnum=%lnnum% + 1
- set count=0
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
-
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >>ModelTrain_%trainname%.json
- endlocal
- goto matroop
- 
+ set return=bogi
+ set filename=ModelTrain_%trainname%.json
+ goto ams
  :mat_old
  echo modelFileを決めてください。
  echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
@@ -236,511 +166,446 @@ goto selectwelcome
 
 :bogi
  echo;
- del %temp%\.Rtm_Json_Creator_json.tscf
  echo ボギーモデルファイルのパスを入力してください。
  echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\bogie.mqo"の形式で入力してください。
  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
  set /p modelFile=
- if %modelfile:~-4% == mqoz goto mat_old
- if %modelfile:~-3% == obj goto mat_old
- if %modelfile:~-4% == ngto goto mat_old
- if %modelfile:~-4% == ngtz goto mat_old
+ if %modelfile:~-4% == mqoz goto mat_oldb
+ if %modelfile:~-3% == obj goto mat_oldb
+ if %modelfile:~-4% == ngto goto mat_oldb
+ if %modelfile:~-4% == ngtz goto mat_oldb
  setlocal enabledelayedexpansion
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
  echo  "bogieModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "!filename:~0,-4!", >> ModelTrain_%trainname%.json
- echo     "textures": [ >> ModelTrain_%trainname%.json
  endlocal
- echo modelFilePathは %modelFile% に設定されました。
+ set return=1222
+ goto ams
+ :mat_oldb
+ echo modelFileを決めてください。
+ echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
+ set /p modelFile=
+ echo modelFileは %modelFile% に設定されました。
+ echo "trainModel2":{ >> ModelTrain_%trainname%.json
+ echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
+ echo          "textures":[>> ModelTrain_%trainname%.json
  echo;
- echo このモデルのテクスチャフォルダパスを入力してください。
- echo これは変数を使用せず、"textures/train"の形式で入力してください。
- echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
- set /p texturedir=
- echo dir: %texturedir%
- echo;
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
- for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
- set mat=%mat:~9%
- set mat=%mat:~0,-2%
- echo 材質数を取得: %mat%
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- set hoge=!texture:~1,2!
- if !hoge! == :\ goto PathError
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.Rtm_Json_Creator_json.tscf
- endlocal
- set matcount=1
- :matroop1
- if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a >>ModelTrain_%trainname%.json )
- if %mat% == %matcount% goto 1222
- set /a matcount=%matcount% + 1
- set /a lnnum=%lnnum% + 1
  set count=0
- setlocal enabledelayedexpansion
- set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
-     set /a "count+=1"
-     if !count!==%lnnum% (
-         set "line=%%a"
-     )
- )
-
- for /f "tokens=1* delims= " %%a in ("!line!") do (
-    set "mat1=%%a"
- )
- set matname=!mat1:~1!
- echo 材質名を取得: !matname!
- for /f "delims=" %%a in ("!line!") do (
-    set "texture=%%a"
-    set "texture=!texture:*tex(=!"
-    set "texture=!texture:)=!"
- )
- set texture=!texture:~1,-1!
- echo テクスチャ名を取得: !texture!
- echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >>ModelTrain_%trainname%.json
- endlocal
- goto matroop1
-
- echo modelfileを決めてください。
- echo ボギーの3Dモデルのファイル名を"拡張子あり"で入力してください。
- set /p modelFileb=
- echo modelFileは %modelFileb% に設定されました。
- echo "bogieModel2":{ >> ModelTrain_%trainname%.json
- echo     "modelFile": "%modelfileb%", >> ModelTrain_%trainname%.json
- echo     "textures": [>> ModelTrain_%trainname%.json
- echo;
- set count=1
-:bogiematcountsetting
- set /p matcount=ボギーモデルの材質数を入力してください。
- echo 材質数は %matcount% に設定してください。
-:bogiematcheck
- if %matcount% equ %count% ( goto bogiematlast ) ELSE ( goto bogiematsetting )
-:bogiematsetting
+ :matcountsetting
+ set /p matcount=列車モデルの材質数を入力してください
+ echo 材質数は %matcount% に設定されました。
+ :matchecks
+ if %matcount% equ %count% ( goto matlasts ) ELSE ( goto matsettings )
+ :matsettings
  set /a count=%count%+1
- echo;
- echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p bogie1=
- echo 材質,%count%つめの名前は %bogie1% に設定されました。
- echo;
- echo %bogie1% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
- echo オプションは次で設定します。
- set /p bogie1texture=
- echo %bogie1% のテクスチャパスは %bogie1texture% に設定されました。
- echo;
- echo                   ["%bogie1%", "%bogie1texture%",""], >> ModelTrain_%trainname%.json
- goto bogiematcheck
- :bogiematlast
- echo;
- echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
- echo 材質名を入力してください。
- set /p bogie1=
- echo 材質,%count%つめの名前は %bogie1% に設定されました。
- echo;
- echo %bogie1% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/bogietexture.png などになります。)
- echo オプションは次で設定します。
- set /p bogie1texture=
- echo %bogie1% のテクスチャパスは %bogie1texture% に設定されました。
- echo;
- echo                   ["%bogie1%", "%bogie1texture%",""] >> ModelTrain_%trainname%.json
- echo                 ] >> ModelTrain_%trainname%.json
- echo               }, >> ModelTrain_%trainname%.json
- goto 1222
- 
-
+   echo;
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
+   echo;
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
+   echo;
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo;
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
+ goto matchecks
+ :matlasts
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
+   echo;
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
+   echo;
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
+   set /p mata=
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo;
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
+   echo                     ] >> ModelTrain_%trainname%.json
+   echo               }, >> ModelTrain_%trainname%.json
+   goto 1222
 :1222
- echo buttontextureを決めてください。
- echo 車輌選択画面のボタンのテクスチャへのパスを記述してください。(普通であれば、 textures/train/button_train.png などになります。)
- set /p button=
- echo ボタンテクスチャへのパスは %button% に設定されました。
- echo  "buttonTexture": "%button%", >> ModelTrain_%trainname%.json
- echo;
- echo playerposの1つめを決めてください。
- echo ヒント:運転席の位置は実際に読み込ませてそれを元にだんだん理想に近づけるのが一番良い方法です。
- echo これは運転席の位置(ボギーを右クリックし、運転状態になったときに固定される座標)を設定します。
- echo 車輌の中心からの位置で、単位は"メートル"です。
- echo まずは x です。
- set /p playerPosx=
- echo 次に y です。 現在の座標: [ x=%playerPosx% , y=未設定 , z=未設定 ]
- set /p playerPosy=
- echo 次に z です。 現在の座標: [ x=%playerPosx% , y=%playerPosy% , z=未設定 ]
- set /p playerPosz=
- echo;
- echo playerposの2つめを決めてください。
- echo 1つめの座標: [ x=%playerPosx% , y=%playerPosy% , z=%playerPosz% ]
- echo 2つめは大体の場合、xとz両方の数字を反転?(例えばxが1ならば-1にするなど)をすることで完了します。 同じ数字でも動作します。
- echo まずは x です。
- set /p playerPos2x=
- echo 次に y です。 現在の座標: [ x=%playerPos2x% , y=未設定 , z=未設定 ]
- set /p playerPos2y=
- echo 次に z です。 現在の座標: [ x=%playerPos2x% , y=%playerPos2y% , z=未設定 ]
- set /p playerPos2z=
- echo  "playerPos": [[%playerPosx%, %playerPosy%, %playerPosz%], [%playerPos2x%, %playerPos2y%, %playerPos2z%]], >> ModelTrain_%trainname%.json
- echo;
- echo bogiePosの1つめを決めてください。
- echo ヒント:台車の位置は実際に読み込ませてそれを元にだんだん理想に近づけるのが一番良い方法です。
- echo これは台車の位置を設定します。
- echo 車輌の中心からの位置で、単位は"メートル"です。
- echo まずは x です。
- set /p bogieposx=
- echo 次に y です。 現在の座標: [ x=%bogieposx% , y=未設定 , z=未設定 ]
- set /p bogieposy=
- echo 次に z です。 現在の座標: [ x=%bogieposx% , y=%bogieposy% , z=未設定 ]
- set /p bogieposz=
- echo;
- echo bogieposの2つめを決めてください。 使用可能:int値のすべての数字
- echo 1つめの座標: [ x=%bogieposx% , y=%bogieposy% , z=%bogieposz% ]
- echo 2つめは大体の場合、xとz両方の数字を反転?(例えばxが1ならば-1にするなど)をすることで完了します。 同じ数字でも動作します。
- echo まずは x です。
- set /p bogiepos2x=
- echo 次に y です。 現在の座標: [ x=%bogiepos2x% , y=未設定 , z=未設定 ]
- set /p bogiepos2y=
- echo 次に z です。 現在の座標: [ x=%bogiepos2x% , y=%bogiepos2y% , z=未設定 ]
- set /p bogiepos2z=
- echo  "bogiePos": [[%bogieposx%, %bogieposy%, %bogieposz%], [%bogiepos2x%, %bogiepos2y%, %bogiepos2z%]], >> ModelTrain_%trainname%.json
- echo;
- echo trainDistanceを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo これは車両の長さの2分の1にするといいでしょう。
- set /p trainDistance=
- echo trainDistanceは %trainDistance% に設定されました。
- echo  "trainDistance": %trainDistance%,  >> ModelTrain_%trainname%.json
- echo;
- echo accuracyを決めてください。 使用可能:LOW,MEDIUM
- echo 大文字で入力してください。
- set /p accuracy=
- echo accuracyは %accuracy% に設定されました。
- echo;
- echo この先はすべてオプションです。必要ない場合はjsonが表示されるまでの個数を見ながら長押ししてください。
- echo  %ESC%[41mjsonが完成したとき、enterを押していると作成したjsonが消滅します。%ESC%[0m
- pause
- echo;
- echo accelerateionを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo  -- N km/h/s の場合 N x 0.0006944 の値を書く
- echo あと48個でjsonが表示されます。
- set /p accelerateion=
- echo accelerateionは %accelerateion% に設定されました。
- if not "%accelerateion%" == "" echo  "accelerateion" : %accelerateion%, >> ModelTrain_%trainname%.json
- echo;
- echo maxSpeedの1つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo 0.1につき13km/h(たぶん)
- echo あと47個でjsonが表示されます。
- set /p maxSpeed1=
- echo maxSpeedの1つめは %maxSpeed1% に設定されました。
- echo;
- echo maxSpeedの2つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo 0.1につき13km/h(たぶん)
- echo 現在の設定: 1:%maxSpeed1%
- echo あと46個でjsonが表示されます。
- set /p maxSpeed2=
- echo maxSpeedの2つめは %maxSpeed2% に設定されました。
- echo;
- echo maxSpeedの3つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo 0.1につき13km/h(たぶん)
- echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2%
- echo あと45個でjsonが表示されます。
- set /p maxSpeed3=
- echo maxSpeedの3つめは %maxSpeed3% に設定されました。
- echo;
- echo maxSpeedの4つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo 0.1につき13km/h(たぶん)
- echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3%
- echo あと44個でjsonが表示されます。
- set /p maxSpeed4=
- echo maxSpeedの4つめは %maxSpeed4% に設定されました。
- echo;
- echo maxSpeedの5つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
- echo 0.1につき13km/h(たぶん)
- echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3% 4:%maxSpeed4%
- echo あと43個でjsonが表示されます。
- set /p maxSpeed5=
- echo maxSpeedの5つめは %maxSpeed5% に設定されました。
- if not "%maxspeed1%" == "" echo  "maxSpeed": [%maxSpeed1% , %maxSpeed2% , %maxSpeed3% , %maxSpeed4% , %maxSpeed5%], >> ModelTrain_%trainname%.json
- echo;
- echo sound_Hornを決めてください。
- echo あと42個でjsonが表示されます。
- set /p sound_horn=
- echo sound_hornは %sound_horn% に設定されました。
- if not "%sound_horn%" == "" echo  "sound_Horn": "%sound_horn%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_DoorOpenを決めてください。
- echo あと41個でjsonが表示されます。
- set /p sound_DoorOpen=
- echo sound_DoorOpenは %sound_DoorOpen% に設定されました。
- if not "%sound_DoorOpen%" == "" echo  "sound_DoorOpen": "%sound_DoorOpen%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_DoorCloseを決めてください。
- echo あと40個でjsonが表示されます。
- set /p sound_DoorClose=
- echo sound_DoorCloseは %sound_DoorClose% に設定されました。
- if not "%sound_DoorClose%" == "" echo  "sound_DoorClose": "%sound_DoorClose%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_Stopを決めてください。
- echo あと39個でjsonが表示されます。
- set /p sound_Stop=
- echo sound_Stopは %sound_Stop% に設定されました。
- if not "%sound_Stop%" == "" echo  "sound_Stop": "%sound_Stop%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_S_Aを決めてください。
- echo あと38個でjsonが表示されます。
- set /p sound_S_A=
- echo sound_S_Aは %sound_S_A% に設定されました。
- if not "%sound_S_A%" == "" echo  "sound_S_A": "%sound_S_A%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_Decelerationを決めてください。
- echo あと37個でjsonが表示されます。
- set /p sound_Deceleration=
- echo sound_Decelerationは %sound_Deceleration% に設定されました。
- if not "%Deceleration%" == "" echo  "sound_Deceration": "%sound_Deceleration%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_D_Sを決めてください。
- echo あと36個でjsonが表示されます。
- set /p sound_D_S=
- echo sound_D_Sは %sound_D_S% に設定されました。
- if not "%sound_D_S%" == "" echo  "sound_D_S": "%sound_D_S%", >> ModelTrain_%trainname%.json
- echo;
- echo rollingを決めてください。 使用可能:0.0~10.0
- echo あと35個でjsonが表示されます。
- set /p rolling=
- echo rollingは %rolling% に設定されました。
- if not "%rolling%" == "" echo  "rolling": %rolling%, >> ModelTrain_%trainname%.json
- echo;
- echo mutejointsoundを決めてください。 使用可能:false,true
- set /p mutejointsound=
- echo mutejointsoundは %mutejointsound% に設定されました。
- if not "%mutejointsound%" == "" echo  "mutejointsound": %mutejointsound%, >> ModelTrain_%trainname%.json
- echo;
- echo rollSpeedCoefficientを決めてください。
- echo あと34個でjsonが表示されます。
- set /p rollSpeedCoefficient=
- echo rollSpeedCoefficientは %rollSpeedCoefficient% に設定されました。
- if not "%rollSpeedCoefficient%" == "" echo  "rollSpeedCoefficient": %rollSpeedCoefficient%, >> ModelTrain_%trainname%.json
- echo;
- echo rollCoefficientを決めてください。
- echo あと33個でjsonが表示されます。
- set /p rollCoefficient=
- echo rollCoefficientは %rollCoefficient% に設定されました。
- if not "%rollCoefficient%" == "" echo  "rollCoefficient": %rollCoefficient%, >> ModelTrain_%trainname%.json
- echo;
- echo rollVariationCoefficientを決めてください。
- echo あと32個でjsonが表示されます。
- set /p rollVariationCoefficient=
- echo rollVariationCoefficientは %rollVariationCoefficient% に設定されました。
- if not "%rollVariationCoefficient%" == "" echo  "rollVariationCoefficient": %rollVariationCoefficient%, >> ModelTrain_%trainname%.json
- echo;
- echo rollWidthCoefficientを決めてください。
- echo あと31個でjsonが表示されます。
- set /p rollWidthCoefficient=
- echo rollWidthCoefficientは %rollWidthCoefficient% に設定されました。
- if not "%rollWidthCoefficient%" == "" echo  "rollWidthCoefficient": %rollWidthCoefficient%, >> ModelTrain_%trainname%.json
- echo;
- echo useCustomColorを決めてください。
- echo あと30個でjsonが表示されます。
- set /p useCustomColor=
- echo useCustomColorは %useCustomColor% に設定されました。
- if not "%usecustomcolor%" == "" echo  "useCustomColor": %useCustomColor%, >> ModelTrain_%trainname%.json
- echo;
- echo defaultDataを決めてください。
- echo あと29個でjsonが表示されます。
- set /p defaultData=
- echo defaultDataは %defaultData% に設定されました。
- if not "%defaultData%" == "" echo  "defaultData": "%defaultData%", >> ModelTrain_%trainname%.json
- echo;
- echo scaleを決めてください。
- echo ngtoモデルの場合は設定した方がよいでしょう
- echo あと28個でjsonが表示されます。
- set /p scale=
- echo scaleは %scale% に設定されました。
- if not "%scale%" == "" echo  "scale": %scale%, >> ModelTrain_%trainname%.json
- echo;
- echo offsetの1つめを決めてください。
- echo あと27個でjsonが表示されます。
- set /p offset=
- echo offsetの1つめは %offset% に設定されました。
- echo;
- echo offsetの2つめを決めてください。 (offsetの1つめは %offset% です)
- echo あと26個でjsonが表示されます。
- set /p offset2=
- echo offsetの2つめは %offset2% に設定されました。
- echo;
- echo offsetの3つめを決めてください。 (offset1:%offset% , offset2:%offset2%)
- echo あと25個でjsonが表示されます。
- set /p offset3=
- echo offsetの3つめは %offset3% に設定されました。
- if not "%offset%" == "" echo  "offset": [%offset% , %offset2% , %offset3%], >> ModelTrain_%trainname%.json
- echo;
- echo smoothingを決めてください。 使用可能:false/true
- echo あと24個でjsonが表示されます。
- set /p smoothing=
- echo smoothingは %smoothing% に設定されました。
- if not "%smoothing%" == "" echo  "smoothing": %smoothing%, >> ModelTrain_%trainname%.json
- echo;
- echo doCullingを決めてください。 使用可能:false/true
- echo あと23個でjsonが表示されます。
- set /p doCulling=
- echo doCullingは %doCulling% に設定されました。
- if not "%doCulling%" == "" echo  "doCulling": %doCulling%, >> ModelTrain_%trainname%.json
- echo;
- echo serverScriptPathを決めてください。
- echo あと22個でjsonが表示されます。
- set /p serverScriptPath=
- echo serverScriptPathは %serverScriptPath% に設定されました。
- if not "%serverScriptPath%" == "" echo  "serverScriptPath": "%serverScriptPath%", >> ModelTrain_%trainname%.json
- echo;
- echo guiScriptPathを決めてください。
- echo あと21個でjsonが表示されます。
- set /p guiScriptPath=
- echo guiScriptPathは %guiScriptPath% に設定されました。
- if not "%guiScriptPath%" == "" echo  "guiScriptPath": "%guiScriptPath%", >> ModelTrain_%trainname%.json
- echo;
- echo guiTextureを決めてください。
- echo あと20個でjsonが表示されます。
- set /p guiTexture=
- echo guiTextureは %guiTexture% に設定されました。
- if not "%guiTexture%" == "" echo  "guitexture": "%guiTexture%", >> ModelTrain_%trainname%.json
- echo;
- echo renderAABBの1つめを決めてください。
- echo あと19個でjsonが表示されます。
- set /p renderAABB1=
- echo renderAABBの1つめは %renderAABB1% です。
+  echo buttontextureを決めてください。
+  echo 車輌選択画面のボタンのテクスチャへのパスを記述してください。(普通であれば、 textures/train/button_train.png などになります。)
+  set /p button=
+  echo ボタンテクスチャへのパスは %button% に設定されました。
+  echo  "buttonTexture": "%button%", >> ModelTrain_%trainname%.json
   echo;
- echo renderAABBの2つめを決めてください。
- echo あと18個でjsonが表示されます。
- set /p renderAABB2=
- echo renderAABBの2つめは %renderAABB2% です。
+  echo playerposの1つめを決めてください。
+  echo ヒント:運転席の位置は実際に読み込ませてそれを元にだんだん理想に近づけるのが一番良い方法です。
+  echo これは運転席の位置(ボギーを右クリックし、運転状態になったときに固定される座標)を設定します。
+  echo 車輌の中心からの位置で、単位は"メートル"です。
+  echo まずは x です。
+  set /p playerPosx=
+  echo 次に y です。 現在の座標: [ x=%playerPosx% , y=未設定 , z=未設定 ]
+  set /p playerPosy=
+  echo 次に z です。 現在の座標: [ x=%playerPosx% , y=%playerPosy% , z=未設定 ]
+  set /p playerPosz=
   echo;
- echo renderAABBの3つめを決めてください。
- echo あと17個でjsonが表示されます。
- set /p renderAABB3=
- echo renderAABBの3つめは %renderAABB3% です。
+  echo playerposの2つめを決めてください。
+  echo 1つめの座標: [ x=%playerPosx% , y=%playerPosy% , z=%playerPosz% ]
+  echo 2つめは大体の場合、xとz両方の数字を反転?(例えばxが1ならば-1にするなど)をすることで完了します。 同じ数字でも動作します。
+  echo まずは x です。
+  set /p playerPos2x=
+  echo 次に y です。 現在の座標: [ x=%playerPos2x% , y=未設定 , z=未設定 ]
+  set /p playerPos2y=
+  echo 次に z です。 現在の座標: [ x=%playerPos2x% , y=%playerPos2y% , z=未設定 ]
+  set /p playerPos2z=
+  echo  "playerPos": [[%playerPosx%, %playerPosy%, %playerPosz%], [%playerPos2x%, %playerPos2y%, %playerPos2z%]], >> ModelTrain_%trainname%.json
   echo;
- echo renderAABBの4つめを決めてください。
- echo あと16個でjsonが表示されます。
- set /p renderAABB4=
- echo renderAABBの4つめは %renderAABB4% です。
+  echo bogiePosの1つめを決めてください。
+  echo ヒント:台車の位置は実際に読み込ませてそれを元にだんだん理想に近づけるのが一番良い方法です。
+  echo これは台車の位置を設定します。
+  echo 車輌の中心からの位置で、単位は"メートル"です。
+  echo まずは x です。
+  set /p bogieposx=
+  echo 次に y です。 現在の座標: [ x=%bogieposx% , y=未設定 , z=未設定 ]
+  set /p bogieposy=
+  echo 次に z です。 現在の座標: [ x=%bogieposx% , y=%bogieposy% , z=未設定 ]
+  set /p bogieposz=
   echo;
- echo renderAABBの5つめを決めてください。
- echo あと15個でjsonが表示されます。
- set /p renderAABB5=
- echo renderAABBの5つめは %renderAABB5% です。
+  echo bogieposの2つめを決めてください。 使用可能:int値のすべての数字
+  echo 1つめの座標: [ x=%bogieposx% , y=%bogieposy% , z=%bogieposz% ]
+  echo 2つめは大体の場合、xとz両方の数字を反転?(例えばxが1ならば-1にするなど)をすることで完了します。 同じ数字でも動作します。
+  echo まずは x です。
+  set /p bogiepos2x=
+  echo 次に y です。 現在の座標: [ x=%bogiepos2x% , y=未設定 , z=未設定 ]
+  set /p bogiepos2y=
+  echo 次に z です。 現在の座標: [ x=%bogiepos2x% , y=%bogiepos2y% , z=未設定 ]
+  set /p bogiepos2z=
+  echo  "bogiePos": [[%bogieposx%, %bogieposy%, %bogieposz%], [%bogiepos2x%, %bogiepos2y%, %bogiepos2z%]], >> ModelTrain_%trainname%.json
   echo;
- echo renderAABBの6つめを決めてください。
- echo あと14個でjsonが表示されます。
- set /p renderAABB6=
- echo renderAABBの6つめは %renderAABB6% です。
- if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ], >> ModelTrain_%trainname%.json
- echo;
- echo sizeの1つめを決めてください。
- echo あと13個でjsonが表示されます。
- set /p size1=
- echo sizeの1つめは %size1% に設定されました。
- echo;
- echo sizeの2つめを決めてください。
- echo あと12個でjsonが表示されます。
- set /p size2=
- echo sizeの2つめは %size2% に設定されました。
- if not "%size1%" == "" echo  "size": [%size1% , %size2%], >> ModelTrain_%trainname%.json
- echo;
- echo soundScriptPathを決めてください。
- echo あと11個でjsonが表示されます。
- set /p soundScriptPath=
- echo soundScriptPathは %soundScriptPath% に設定されました。
- if not "%soundScriptPath%" == "" echo  "soundScriptPath": "%soundScriptPath%", >> ModelTrain_%trainname%.json
- echo;
- echo smokeの出るx座標を決めてください。
- echo あと10個でjsonが表示されます。
- set /p smoke1=
- echo smokeは %smoke1% に設定されました。
- echo;
- echo smokeの出るy座標を決めてください。
- echo あと9個でjsonが表示されます。
- set /p smoke2=
- echo smokeは %smoke2% に設定されました。
- echo;
- echo smokeの出るz座標を決めてください。
- echo あと8個でjsonが表示されます。
- set /p smoke3=
- echo smokeは %smoke3% に設定されました。
- echo;
- echo smokeのパーティクルを決めてください。
- echo あと7個でjsonが表示されます。
- set /p smoke4=
- echo smokeは %smoke4% に設定されました。
- echo;
- echo smokeを決めてください。
- echo あと6個でjsonが表示されます。
- set /p smoke5=
- echo smokeは %smoke5% に設定されました。
- echo;
- echo smokeを決めてください。
- echo あと5個でjsonが表示されます。
- set /p smoke6=
- echo smokeは %smoke6% に設定されました。
- if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]], >> ModelTrain_%trainname%.json
- echo;
- echo notDisplayCabを決めてください。
- echo あと4個でjsonが表示されます。
- set /p notDisplayCab=
- echo notDisplayCabは %notDisplayCab% に設定されました。
- if not "%notdisplaycab%" == "" echo  "notDisplayCab": %notDisplayCab%, >> ModelTrain_%trainname%.json
- echo;
- echo wheelRotationSpeedを決めてください。
- echo あと3個でjsonが表示されます。
- set /p wheelRotationSpeed=
- echo wheelRotationSpeedは %wheelRotationSpeed% に設定されました。
- if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%, >> ModelTrain_%trainname%.json
- echo;
- echo sound_BrakeReleaseを決めてください。
- echo あと2個でjsonが表示されます。
- set /p sound_BrakeRelease=
- echo sound_BrakeReleaseは %sound_BrakeRelease% に設定されました。
- if not "%sound_BrakeRelease%" == "" echo  "sound_BrakeRelease": "%sound_BrakeRelease%", >> ModelTrain_%trainname%.json
- echo;
- echo sound_BrakeRelease2を決めてください。
- echo あと1個でjsonが表示されます。
- set /p sound_BrakeRelease2=
- echo sound_BrakeRelease2は %sound_BrakeRelease2% に設定されました。
- if not "%sound_BrakeRelease2%" == "" echo  "sound_BrakeRelease2": "%sound_BrakeRelease2%", >> ModelTrain_%trainname%.json
- echo;
- echo isSingleTrainを決めてください。
- echo あと0個でjsonが表示されます。
- set /p isSingleTrain=
- echo isSingleTrainは %isSingleTrain% に設定されました。
- if not "%isSingleTrain%" == "" echo  "isSingleTrain": %isSingleTrain%, >> ModelTrain_%trainname%.json
- echo;
- echo "accuracy": "%accuracy%" >> ModelTrain_%trainname%.json
- echo } >> ModelTrain_%trainname%.json
- goto train_json
+  echo trainDistanceを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo これは車両の長さの2分の1にするといいでしょう。
+  set /p trainDistance=
+  echo trainDistanceは %trainDistance% に設定されました。
+  echo  "trainDistance": %trainDistance%,  >> ModelTrain_%trainname%.json
+  echo;
+  echo accuracyを決めてください。 使用可能:LOW,MEDIUM
+  echo 大文字で入力してください。
+  set /p accuracy=
+  echo accuracyは %accuracy% に設定されました。
+  echo;
+  echo この先はすべてオプションです。必要ない場合はjsonが表示されるまでの個数を見ながら長押ししてください。
+  echo  %ESC%[41mjsonが完成したとき、enterを押していると作成したjsonが消滅します。%ESC%[0m
+  pause
+  echo;
+  echo accelerateionを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo  -- N km/h/s の場合 N x 0.0006944 の値を書く
+  echo あと48個でjsonが表示されます。
+  set /p accelerateion=
+  echo accelerateionは %accelerateion% に設定されました。
+  if not "%accelerateion%" == "" echo  "accelerateion" : %accelerateion%, >> ModelTrain_%trainname%.json
+  echo;
+  echo maxSpeedの1つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo あと47個でjsonが表示されます。
+  set /p maxSpeed1=
+  echo maxSpeedの1つめは %maxSpeed1% に設定されました。
+  echo;
+  echo maxSpeedの2つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1%
+  echo あと46個でjsonが表示されます。
+  set /p maxSpeed2=
+  echo maxSpeedの2つめは %maxSpeed2% に設定されました。
+  echo;
+  echo maxSpeedの3つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2%
+  echo あと45個でjsonが表示されます。
+  set /p maxSpeed3=
+  echo maxSpeedの3つめは %maxSpeed3% に設定されました。
+  echo;
+  echo maxSpeedの4つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3%
+  echo あと44個でjsonが表示されます。
+  set /p maxSpeed4=
+  echo maxSpeedの4つめは %maxSpeed4% に設定されました。
+  echo;
+  echo maxSpeedの5つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3% 4:%maxSpeed4%
+  echo あと43個でjsonが表示されます。
+  set /p maxSpeed5=
+  echo maxSpeedの5つめは %maxSpeed5% に設定されました。
+  if not "%maxspeed1%" == "" echo  "maxSpeed": [%maxSpeed1% , %maxSpeed2% , %maxSpeed3% , %maxSpeed4% , %maxSpeed5%], >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_Hornを決めてください。
+  echo あと42個でjsonが表示されます。
+  set /p sound_horn=
+  echo sound_hornは %sound_horn% に設定されました。
+  if not "%sound_horn%" == "" echo  "sound_Horn": "%sound_horn%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_DoorOpenを決めてください。
+  echo あと41個でjsonが表示されます。
+  set /p sound_DoorOpen=
+  echo sound_DoorOpenは %sound_DoorOpen% に設定されました。
+  if not "%sound_DoorOpen%" == "" echo  "sound_DoorOpen": "%sound_DoorOpen%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_DoorCloseを決めてください。
+  echo あと40個でjsonが表示されます。
+  set /p sound_DoorClose=
+  echo sound_DoorCloseは %sound_DoorClose% に設定されました。
+  if not "%sound_DoorClose%" == "" echo  "sound_DoorClose": "%sound_DoorClose%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_Stopを決めてください。
+  echo あと39個でjsonが表示されます。
+  set /p sound_Stop=
+  echo sound_Stopは %sound_Stop% に設定されました。
+  if not "%sound_Stop%" == "" echo  "sound_Stop": "%sound_Stop%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_S_Aを決めてください。
+  echo あと38個でjsonが表示されます。
+  set /p sound_S_A=
+  echo sound_S_Aは %sound_S_A% に設定されました。
+  if not "%sound_S_A%" == "" echo  "sound_S_A": "%sound_S_A%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_Decelerationを決めてください。
+  echo あと37個でjsonが表示されます。
+  set /p sound_Deceleration=
+  echo sound_Decelerationは %sound_Deceleration% に設定されました。
+  if not "%Deceleration%" == "" echo  "sound_Deceration": "%sound_Deceleration%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_D_Sを決めてください。
+  echo あと36個でjsonが表示されます。
+  set /p sound_D_S=
+  echo sound_D_Sは %sound_D_S% に設定されました。
+  if not "%sound_D_S%" == "" echo  "sound_D_S": "%sound_D_S%", >> ModelTrain_%trainname%.json
+  echo;
+  echo rollingを決めてください。 使用可能:0.0~10.0
+  echo あと35個でjsonが表示されます。
+  set /p rolling=
+  echo rollingは %rolling% に設定されました。
+  if not "%rolling%" == "" echo  "rolling": %rolling%, >> ModelTrain_%trainname%.json
+  echo;
+  echo mutejointsoundを決めてください。 使用可能:false,true
+  set /p mutejointsound=
+  echo mutejointsoundは %mutejointsound% に設定されました。
+  if not "%mutejointsound%" == "" echo  "mutejointsound": %mutejointsound%, >> ModelTrain_%trainname%.json
+  echo;
+  echo rollSpeedCoefficientを決めてください。
+  echo あと34個でjsonが表示されます。
+  set /p rollSpeedCoefficient=
+  echo rollSpeedCoefficientは %rollSpeedCoefficient% に設定されました。
+  if not "%rollSpeedCoefficient%" == "" echo  "rollSpeedCoefficient": %rollSpeedCoefficient%, >> ModelTrain_%trainname%.json
+  echo;
+  echo rollCoefficientを決めてください。
+  echo あと33個でjsonが表示されます。
+  set /p rollCoefficient=
+  echo rollCoefficientは %rollCoefficient% に設定されました。
+  if not "%rollCoefficient%" == "" echo  "rollCoefficient": %rollCoefficient%, >> ModelTrain_%trainname%.json
+  echo;
+  echo rollVariationCoefficientを決めてください。
+  echo あと32個でjsonが表示されます。
+  set /p rollVariationCoefficient=
+  echo rollVariationCoefficientは %rollVariationCoefficient% に設定されました。
+  if not "%rollVariationCoefficient%" == "" echo  "rollVariationCoefficient": %rollVariationCoefficient%, >> ModelTrain_%trainname%.json
+  echo;
+  echo rollWidthCoefficientを決めてください。
+  echo あと31個でjsonが表示されます。
+  set /p rollWidthCoefficient=
+  echo rollWidthCoefficientは %rollWidthCoefficient% に設定されました。
+  if not "%rollWidthCoefficient%" == "" echo  "rollWidthCoefficient": %rollWidthCoefficient%, >> ModelTrain_%trainname%.json
+  echo;
+  echo useCustomColorを決めてください。
+  echo あと30個でjsonが表示されます。
+  set /p useCustomColor=
+  echo useCustomColorは %useCustomColor% に設定されました。
+  if not "%usecustomcolor%" == "" echo  "useCustomColor": %useCustomColor%, >> ModelTrain_%trainname%.json
+  echo;
+  echo defaultDataを決めてください。
+  echo あと29個でjsonが表示されます。
+  set /p defaultData=
+  echo defaultDataは %defaultData% に設定されました。
+  if not "%defaultData%" == "" echo  "defaultData": "%defaultData%", >> ModelTrain_%trainname%.json
+  echo;
+  echo scaleを決めてください。
+  echo ngtoモデルの場合は設定した方がよいでしょう
+  echo あと28個でjsonが表示されます。
+  set /p scale=
+  echo scaleは %scale% に設定されました。
+  if not "%scale%" == "" echo  "scale": %scale%, >> ModelTrain_%trainname%.json
+  echo;
+  echo offsetの1つめを決めてください。
+  echo あと27個でjsonが表示されます。
+  set /p offset=
+  echo offsetの1つめは %offset% に設定されました。
+  echo;
+  echo offsetの2つめを決めてください。 (offsetの1つめは %offset% です)
+  echo あと26個でjsonが表示されます。
+  set /p offset2=
+  echo offsetの2つめは %offset2% に設定されました。
+  echo;
+  echo offsetの3つめを決めてください。 (offset1:%offset% , offset2:%offset2%)
+  echo あと25個でjsonが表示されます。
+  set /p offset3=
+  echo offsetの3つめは %offset3% に設定されました。
+  if not "%offset%" == "" echo  "offset": [%offset% , %offset2% , %offset3%], >> ModelTrain_%trainname%.json
+  echo;
+  echo smoothingを決めてください。 使用可能:false/true
+  echo あと24個でjsonが表示されます。
+  set /p smoothing=
+  echo smoothingは %smoothing% に設定されました。
+  if not "%smoothing%" == "" echo  "smoothing": %smoothing%, >> ModelTrain_%trainname%.json
+  echo;
+  echo doCullingを決めてください。 使用可能:false/true
+  echo あと23個でjsonが表示されます。
+  set /p doCulling=
+  echo doCullingは %doCulling% に設定されました。
+  if not "%doCulling%" == "" echo  "doCulling": %doCulling%, >> ModelTrain_%trainname%.json
+  echo;
+  echo serverScriptPathを決めてください。
+  echo あと22個でjsonが表示されます。
+  set /p serverScriptPath=
+  echo serverScriptPathは %serverScriptPath% に設定されました。
+  if not "%serverScriptPath%" == "" echo  "serverScriptPath": "%serverScriptPath%", >> ModelTrain_%trainname%.json
+  echo;
+  echo guiScriptPathを決めてください。
+  echo あと21個でjsonが表示されます。
+  set /p guiScriptPath=
+  echo guiScriptPathは %guiScriptPath% に設定されました。
+  if not "%guiScriptPath%" == "" echo  "guiScriptPath": "%guiScriptPath%", >> ModelTrain_%trainname%.json
+  echo;
+  echo guiTextureを決めてください。
+  echo あと20個でjsonが表示されます。
+  set /p guiTexture=
+  echo guiTextureは %guiTexture% に設定されました。
+  if not "%guiTexture%" == "" echo  "guitexture": "%guiTexture%", >> ModelTrain_%trainname%.json
+  echo;
+  echo renderAABBの1つめを決めてください。
+  echo あと19個でjsonが表示されます。
+  set /p renderAABB1=
+  echo renderAABBの1つめは %renderAABB1% です。
+  echo;
+  echo renderAABBの2つめを決めてください。
+  echo あと18個でjsonが表示されます。
+  set /p renderAABB2=
+  echo renderAABBの2つめは %renderAABB2% です。
+  echo;
+  echo renderAABBの3つめを決めてください。
+  echo あと17個でjsonが表示されます。
+  set /p renderAABB3=
+  echo renderAABBの3つめは %renderAABB3% です。
+  echo;
+  echo renderAABBの4つめを決めてください。
+  echo あと16個でjsonが表示されます。
+  set /p renderAABB4=
+  echo renderAABBの4つめは %renderAABB4% です。
+  echo;
+  echo renderAABBの5つめを決めてください。
+  echo あと15個でjsonが表示されます。
+  set /p renderAABB5=
+  echo renderAABBの5つめは %renderAABB5% です。
+  echo;
+  echo renderAABBの6つめを決めてください。
+  echo あと14個でjsonが表示されます。
+  set /p renderAABB6=
+  echo renderAABBの6つめは %renderAABB6% です。
+  if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ], >> ModelTrain_%trainname%.json
+  echo;
+  echo sizeの1つめを決めてください。
+  echo あと13個でjsonが表示されます。
+  set /p size1=
+  echo sizeの1つめは %size1% に設定されました。
+  echo;
+  echo sizeの2つめを決めてください。
+  echo あと12個でjsonが表示されます。
+  set /p size2=
+  echo sizeの2つめは %size2% に設定されました。
+  if not "%size1%" == "" echo  "size": [%size1% , %size2%], >> ModelTrain_%trainname%.json
+  echo;
+  echo soundScriptPathを決めてください。
+  echo あと11個でjsonが表示されます。
+  set /p soundScriptPath=
+  echo soundScriptPathは %soundScriptPath% に設定されました。
+  if not "%soundScriptPath%" == "" echo  "soundScriptPath": "%soundScriptPath%", >> ModelTrain_%trainname%.json
+  echo;
+  echo smokeの出るx座標を決めてください。
+  echo あと10個でjsonが表示されます。
+  set /p smoke1=
+  echo smokeは %smoke1% に設定されました。
+  echo;
+  echo smokeの出るy座標を決めてください。
+  echo あと9個でjsonが表示されます。
+  set /p smoke2=
+  echo smokeは %smoke2% に設定されました。
+  echo;
+  echo smokeの出るz座標を決めてください。
+  echo あと8個でjsonが表示されます。
+  set /p smoke3=
+  echo smokeは %smoke3% に設定されました。
+  echo;
+  echo smokeのパーティクルを決めてください。
+  echo あと7個でjsonが表示されます。
+  set /p smoke4=
+  echo smokeは %smoke4% に設定されました。
+  echo;
+  echo smokeを決めてください。
+  echo あと6個でjsonが表示されます。
+  set /p smoke5=
+  echo smokeは %smoke5% に設定されました。
+  echo;
+  echo smokeを決めてください。
+  echo あと5個でjsonが表示されます。
+  set /p smoke6=
+  echo smokeは %smoke6% に設定されました。
+  if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]], >> ModelTrain_%trainname%.json
+  echo;
+  echo notDisplayCabを決めてください。
+  echo あと4個でjsonが表示されます。
+  set /p notDisplayCab=
+  echo notDisplayCabは %notDisplayCab% に設定されました。
+  if not "%notdisplaycab%" == "" echo  "notDisplayCab": %notDisplayCab%, >> ModelTrain_%trainname%.json
+  echo;
+  echo wheelRotationSpeedを決めてください。
+  echo あと3個でjsonが表示されます。
+  set /p wheelRotationSpeed=
+  echo wheelRotationSpeedは %wheelRotationSpeed% に設定されました。
+  if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%, >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_BrakeReleaseを決めてください。
+  echo あと2個でjsonが表示されます。
+  set /p sound_BrakeRelease=
+  echo sound_BrakeReleaseは %sound_BrakeRelease% に設定されました。
+  if not "%sound_BrakeRelease%" == "" echo  "sound_BrakeRelease": "%sound_BrakeRelease%", >> ModelTrain_%trainname%.json
+  echo;
+  echo sound_BrakeRelease2を決めてください。
+  echo あと1個でjsonが表示されます。
+  set /p sound_BrakeRelease2=
+  echo sound_BrakeRelease2は %sound_BrakeRelease2% に設定されました。
+  if not "%sound_BrakeRelease2%" == "" echo  "sound_BrakeRelease2": "%sound_BrakeRelease2%", >> ModelTrain_%trainname%.json
+  echo;
+  echo isSingleTrainを決めてください。
+  echo あと0個でjsonが表示されます。
+  set /p isSingleTrain=
+  echo isSingleTrainは %isSingleTrain% に設定されました。
+  if not "%isSingleTrain%" == "" echo  "isSingleTrain": %isSingleTrain%, >> ModelTrain_%trainname%.json
+  echo;
+  echo "accuracy": "%accuracy%" >> ModelTrain_%trainname%.json
+  echo } >> ModelTrain_%trainname%.json
+  goto train_json
  :train_json
  echo jsonが完成しました!
  echo;
  echo 以下のタイムアウトはオプション未設定時の事故を防止する目的で導入されました。
- timeout /t 3
+ timeout /t 3 /NOBREAK
  echo ファイルパス: %setpath%\ModelTrain_%trainname%.json
  echo;
- echo -- filename: ModelTrain_%trainname%.json --
+ echo; filename: ModelTrain_%trainname%.json --
  echo;
  set back=train_json
  for /f "delims=" %%a in (ModelTrain_%trainname%.json) do (
@@ -752,10 +617,12 @@ goto selectwelcome
  echo 続行してもよろしいですか?
  set user=
  set /p user=(y / n)
- if %user% == y goto welcome
+ if %user% == y goto 21
  if %user% == n goto %back%
  echo 選択なし:%back%
  goto %back%
+ :21
+  goto welcome
 :3
  cls
  set tsw=S
@@ -821,7 +688,8 @@ goto selectwelcome
  goto signjson
 :signjson
  set back=signjson
- echo;ファイル名:SignBoard_%texture%.json-------
+ echo;
+ echo ファイル名:SignBoard_%texture%.json
  echo {
  echo   "texture": "%texture%",
  echo   "backTexture": %backTexture%,
@@ -836,11 +704,14 @@ goto selectwelcome
  echo;
  echo 行動を選択してください
  echo;
- echo  行動の番号         行動の内容        
+ echo  行動の番号         行動の内容          
+ echo;
  echo     2              終了させます。       
  echo     3         jsonを保存します。  
  echo;
+ set user=
  set /p user=
+ if %user% == 1 goto signedit
  if %user% == 2 goto 2
  if %user% == 3 goto savesignjson
  echo エラー:不明な番号
@@ -860,10 +731,15 @@ goto selectwelcome
  echo   "color" : %color%, >> SignBoard_%texture%.json
  echo   "lightValue": %lightValue% >> SignBoard_%texture%.json
  echo } >> SignBoard_%texture%.json
+ if exist SignBoard_%texture%.json (
   echo;
   echo ファイルの保存が完了しました。
   echo ファイル名:"SignBoard_%texture%.json"
   echo;
+ ) ELSE (
+  set error=33N
+  goto ERROR
+ )
  goto %back%
 :4
  echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
@@ -888,6 +764,7 @@ goto selectwelcome
  goto selectwelcome
 :5
  cls
+ set tsw=w
  echo 機能あり/なし設置物のどれを作成しますか?
  echo 何も入力しない場合は強制終了します。
  echo 使用可能(機能あり):遮断機,転轍機,改札機,券売機,照明R,車止め,ATC,列車検出器,照明
@@ -945,6 +822,26 @@ goto selectwelcome
  set /p name=
  echo nameは %name% に設定されました。
  echo;
+ echo { >> ModelMachine_%name%.json
+ echo   "name": "%name%", >> ModelMachine_%name%.json
+ echo   "model": { >> ModelMachine_%name%.json
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelMachine_%name%.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ if %modelfile:~-4% == mqoz goto mat_old5
+ if %modelfile:~-3% == obj goto mat_old5
+ if %modelfile:~-4% == ngto goto mat_old5
+ if %modelfile:~-4% == ngtz goto mat_old5
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> ModelMachine_%name%.json
+ endlocal
+ set return=switcher
+ set filename=ModelMachine_%name%.json
+ goto ams
+ :mat_old5
  echo modelfileを決めてください。
  set /p modelFile=
  echo modelfileは %modelFile% に設定されました。
@@ -956,6 +853,8 @@ goto selectwelcome
  echo;
  set count=1
  del %temp%\.Rtm_Json_Creator_json.tscf
+ echo     "modelFile": "%modelFile%", >> ModelMachine_%name%.json
+ echo     "textures":[ >> ModelMachine_%name%.json
  :madamada
   if %matc% == %count% goto saigo
    echo;
@@ -994,15 +893,17 @@ goto selectwelcome
    set /p mata=
    echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo;
-   echo                      ["%mat%", "%mattexture%", "%mata%"] >> %temp%\.Rtm_Json_Creator_json.tscf 
+   echo                      ["%mat%", "%mattexture%", "%mata%"]]}, >> %temp%\.Rtm_Json_Creator_json.tscf 
  :switcher
  echo buttontextureを決めてください。
  set /p button=
  echo buttonTextureは %button% に設定されました。
+ echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
  if %type% == machineType echo;
  if %type% == machineType echo sound_onactivateを決めてください。
  if %type% == machineType set /p sound_onactivate=
  if %type% == machineType echo sound_onactivateは %sound_onactivate% に設定されました。
+ if %type% == machineType echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
  echo;
  echo smoothingを決めてください。
  set /p smoothing=
@@ -1016,6 +917,12 @@ goto selectwelcome
  echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
  set /p tags=
  echo tagsは %tags% に設定されました。
+ echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
+ echo   "smoothing": %smoothing%, >> ModelMachine_%name%.json
+ echo   "doCulling": %doCulling%, >> ModelMachine_%name%.json
+ echo   "tags": "%tags%", >> ModelMachine_%name%.json
+ echo   "%type%": "%machinetype%" >> ModelMachine_%name%.json
+ echo } >> ModelMachine_%name%.json
  echo;
  echo おめでとうございます!
  echo 完成しました!
@@ -1023,63 +930,11 @@ goto selectwelcome
  goto switcher_json
 :switcher_json
  set back=switcher_json
- echo;ファイル名:ModelMachine_%name%.json-----
- echo {
- echo   "name": "%name%",
- echo   "model": {
- echo     "modelFile": "%modelFile%",
- echo     "textures":[
- for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do (
+ echo;Path:%setpath%\ModelMachine_%name%.json-----
+ for /f "delims=" %%a in (ModelMachine_%name%.json) do (
   echo %%a
  )
- echo     ]
- echo     },
- echo   "buttonTexture": "%button%",
- echo   "%type%": "%machinetype%",
- if %type% == machineType echo   "sound_OnActivate": "%sound_onactivate%",
- echo   "smoothing": %smoothing%,
- echo   "doCulling": %doCulling%,
- echo   "tags": "%tags%"
- echo }
- echo;
- echo 行動を選択してください
- echo;
- echo  行動の番号         行動の内容          
- echo;
- echo     2              終了させます。       
- echo     3         jsonを保存します。  
- echo;
- set /p user=
- if %user% == 2 goto 2
- if %user% == 3 goto saveswitcherjson
- echo エラー:不明な番号
- goto switcher_json
-
-:saveswitcherjson
- echo jsonを保存します。 jsonは%cd%\ModelMachine_%name%.jsonにできるはずです。
- pause
- echo { > ModelMachine_%name%.json
- echo   "name": "%name%", >> ModelMachine_%name%.json
- echo   "model": { >> ModelMachine_%name%.json
- echo     "modelFile": "%modelFile%", >> ModelMachine_%name%.json
- echo     "textures":[ >> ModelMachine_%name%.json
- for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do (
-  echo    %%a >> ModelMachine_%name%.json
- )
- echo     ]  >> ModelMachine_%name%.json
- echo     },  >> ModelMachine_%name%.json
- echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
- echo   "%type%": "%machinetype%", >> ModelMachine_%name%.json
- if %type% == machineType echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
- echo   "smoothing": %smoothing%, >> ModelMachine_%name%.json
- echo   "doCulling": %doCulling%, >> ModelMachine_%name%.json
- echo   "tags": "%tags%" >> ModelMachine_%name%.json
- echo } >> ModelMachine_%name%.json
-  echo;
-  echo ファイルの保存が完了しました。
-  echo ファイル名:"ModelMachine_%name%.json"
-  echo;
- goto %back%
+ goto 2
 :6
  cls
  set tsw=n
@@ -1090,6 +945,27 @@ goto selectwelcome
  echo これはNPCの名前になります。競合しないような名前を設定してください。
  set /p name=
  echo nameは %name% に設定されました。
+ echo { > ModelNPC_%name%.json
+ echo   "name": "%name%", >> ModelNPC_%name%.json
+ echo   "model": { >> ModelNPC_%name%.json
+ echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelNPC_%name%.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ if %modelfile:~-4% == mqoz goto mat_old6
+ if %modelfile:~-3% == obj goto mat_old6
+ if %modelfile:~-4% == ngto goto mat_old6
+ if %modelfile:~-4% == ngtz goto mat_old6
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> ModelNPC_%name%
+ endlocal
+ set return=npc
+ set filename=ModelNPC_%name%
+ goto ams
+ :mat_old6
  echo;
  echo modelfileを決めてください。
  set /p modelFile=
@@ -1101,6 +977,8 @@ goto selectwelcome
  echo;
  set count=1
  del %temp%\.Rtm_Json_Creator_json.tscf
+ echo     "modelFile": "%modelFile%", >> ModelNPC_%name%
+ echo     "textures":[ >> ModelNPC_%name%
  :checkcountnpc
  if %count% == %matc% goto lastnpcmat
     echo;
@@ -1154,64 +1032,20 @@ goto selectwelcome
  echo doCullingを決めてください。
  set /p doCulling=
  echo doCullingは %doCulling% に設定されました。
+ echo   "role": "%role%", >> ModelNPC_%name%.json
+ echo   "doCulling": %doCulling%, >> ModelNPC_%name%.json
+ echo   "smoothing": %smoothing% >> ModelNPC_%name%.json
+ echo }  >> ModelNPC_%name%.json
  echo;
  echo jsonが完成しました!
  goto npcjson
 :npcjson
  set back=npcjson
- echo;ファイル名:ModelNPC_%name%.json-------
- echo {
- echo   "name": "%name%",
- echo   "model": {
-  echo     "modelFile": "%modelFile%",
-  echo     "textures":[
-  for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do ( echo %%a )
-  echo     ]
-  echo     },
- echo   "role": "%role%",
- echo   "doCulling": %doCulling%,
- echo   "smoothing": %smoothing%
- echo }
- echo;
- echo 行動を選択してください
- echo;
- echo  行動の番号         行動の内容          
- echo;
- echo     2              終了させます。       
- echo     3         jsonを保存します。  
- echo;
- set user=
- set /p user=
- if %user% == 1 goto npcedit
- if %user% == 2 goto 2
- if %user% == 3 goto savenpcjson
- echo エラー:不明な番号
- goto %back%
-
-:savenpcjson
- echo jsonを保存します。 jsonは%cd%\ModelNPC_%name%.jsonにできるはずです。
- pause
- echo { > ModelNPC_%name%.json
- echo   "name": "%name%", >> ModelNPC_%name%.json
- echo   "model": { >> ModelNPC_%name%.json
- echo     "modelFile": "%modelFile%", >> ModelNPC_%name%.json
- echo     "textures":[ >> ModelNPC_%name%.json
- for /f "delims=?" %%a in (%temp%\.Rtm_Json_Creator_json.tscf) do (
-  echo    %%a >> ModelNPC_%name%.json
+ echo;Path:%setpath%\ModelNPC_%name%.json-----
+ for /f "delims=" %%a in (ModelNPC_%name%) do (
+  echo %%a
  )
- echo     ]  >> ModelNPC_%name%.json
- echo     },  >> ModelNPC_%name%.json
- echo   "role": "%role%", >> ModelNPC_%name%.json
- echo   "doCulling": %doCulling%, >> ModelNPC_%name%.json
- echo   "smoothing": %smoothing% >> ModelNPC_%name%.json
- echo }  >> ModelNPC_%name%.json
-  echo;
-  echo ファイルの保存が完了しました。
-  echo ファイルパス:"%cd%\ModelNPC_%name%.json"
-  echo;
- goto %back%
-
-
+ goto 2
 :7
  cls
  set tsw=f
@@ -1286,10 +1120,15 @@ goto selectwelcome
  echo   "resolutionU": %resolutionU%, >> Flag_%texture:~19%.json
  echo   "poleLenght" : %poleLength% >> Flag_%texture:~19%.json
  echo } >> Flag_%texture:~19%.json
+   if exist Flag_%texture:~19%.json (
   echo;
   echo ファイルの保存が完了しました。
   echo ファイルパス:"%cd%\Flag_%texture:~19%.json"
   echo;
+ ) ELSE (
+  set error=73N
+  goto ERROR
+ )
  goto %back%
 
 :flagedit
@@ -1344,7 +1183,7 @@ goto selectwelcome
   set soundpath=%soundpath:\=.%
   set back=sound_json
   :sound_json
-  echo;sounds.json-----
+  echo;
   echo {
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
@@ -1373,10 +1212,15 @@ goto selectwelcome
   echo    ] >> sounds.json
   echo   } >> sounds.json
   echo } >> sounds.json
+  if exist sounds.json (
   echo;
   echo ファイルの保存が完了しました。
   echo ファイルパス:"%cd%\sounds.json"
   echo;
+ ) ELSE (
+  set error=8N
+  goto ERROR
+ )
  set soundpath=%soundpath:/=.%
  goto %back%
 
@@ -1386,7 +1230,7 @@ goto selectwelcome
   echo;
   set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   set soundpath=%soundpath:\=.%
-  echo;sounds.json(今回追加分)-----
+  echo;
   echo { 
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
@@ -1409,10 +1253,10 @@ goto selectwelcome
   echo;
 
   :soundsjson_pathset
-  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),今回の入力で終わりにする場合は"\\\"を使用してください。
-  if %soundpath% == \\\ goto end_sounds_json
+  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),今回の入力で終わりにする場合は"@"を使用してください。
+  if %soundpath% == @ goto end_sounds_json
   set soundpath=%soundpath:\=.%
-  echo;sounds.json(今回追加分)-----
+  echo;
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
   echo  "sounds": [
@@ -1607,11 +1451,10 @@ goto selectwelcome
  echo ライトの設定を決めてください。
  echo 設定を終えた場合はそのままenterしてください。
  echo;
- echo  項目                        説明                        
- echo   S   どの信号が入力された時点灯するか(信号レベルは1~1024)
- echo   I   点滅間隔(0~1200 tick)                               
- echo   P   使用するオブジェクト名(「,」で区切る)               
- echo;
+ echo 項目                         説明                        
+ echo   S  どの信号が入力された時点灯するか(信号レベルは1~1024)
+ echo   I  点滅間隔(0~1200 tick)
+ echo   P  使用するオブジェクト名(「,」で区切る)
  echo;
  echo 以下の形式で入力してください。: S([S項目の数値]) I([I項目の数値]) P(P項目の文字列)
  echo e. g. S(1) I(0) P(LightYellow1, LightBlue4)
@@ -1637,7 +1480,7 @@ goto selectwelcome
  :signal_json
  echo jsonが完成しました!
  echo;
- echo -- filename: ModelSignal_%signalname%.json --
+ echo filename: ModelSignal_%signalname%.json --
  echo;
  set back=signal_json_json
  for /f "delims=@" %%a in (%tempfile%) do (
@@ -1670,6 +1513,8 @@ goto selectwelcome
  set /p railjson=
  if %railjson% == 1 goto railjson1
  if %railjson% == 2 goto railjson2
+ if %railjson% == 1pre goto railjson1pre
+ if %railjson% == 2pre goto railjson2pre
  goto welcome
 :railjson1
   echo;
@@ -1680,7 +1525,22 @@ goto selectwelcome
   echo  "railName": "%railname%", >>%tempfile%
   echo  "model": { >>%tempfile%
   echo;
-  echo レールのモデルを決めてください。(ファイル名)
+  echo レールモデルファイルのパスを入力してください。
+  echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\bogie.mqo"の形式で入力してください。
+  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+  set /p modelFile=
+  if %modelfile:~-4% == mqoz goto mat_oldsignal
+  if %modelfile:~-3% == obj goto mat_oldsignal
+  if %modelfile:~-4% == ngto goto mat_oldsignal
+  if %modelfile:~-4% == ngtz goto mat_oldsignal
+  setlocal enabledelayedexpansion
+  for %%a in ("%modelFile%") do set "filename=%%~nxa"
+  echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+  endlocal
+  set return=gouryu
+  set filename=%tempfile%
+  goto ams
+  :mat_oldsignal
   set /p modelfile=
   echo   "modelFile": "%modelfile%", >>%tempfile%
   echo modelFile: %modelfile%
@@ -1756,8 +1616,7 @@ goto selectwelcome
   echo } >>%tempfile%
 :rail_json
   set back=rail_json
-  echo jsonが完成しました!
-  echo -- filename: ModelRail_%railname%.json --
+  echo filename: ModelRail_%railname%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -1977,7 +1836,7 @@ goto selectwelcome
  :gun_json
   set back=gun_json
   echo jsonが完成しました!
-  echo filename: ModelFirearm_%name%.json 
+  echo filename: ModelFirearm_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -2010,6 +1869,23 @@ goto selectwelcome
  echo  "name": "%name%", >>%tempfile%
  echo  "model": { >>%tempfile%
  echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ if %modelfile:~-4% == mqoz goto mat_oldco
+ if %modelfile:~-3% == obj goto mat_oldco
+ if %modelfile:~-4% == ngto goto mat_oldco
+ if %modelfile:~-4% == ngtz goto mat_oldco
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+ endlocal
+ set return=csgo
+ set filename=%tempfile%
+ goto ams
+ :mat_oldco
  echo コネクターのモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo   "modelFile": "%modelfile%", >>%tempfile%
@@ -2042,6 +1918,7 @@ goto selectwelcome
  goto cocounter
  :cobutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
+ :csgo
  echo;
  echo ボタンテクスチャのパスを設定してください。
  set /p button=
@@ -2050,7 +1927,7 @@ goto selectwelcome
  echo;
  echo connectorTypeを決めてください。
  echo Relay,Input,Outputの中から選んでください。
- echo タイプは以下の通りです。: Relay:"中継コネクタ",Input:"入力コネクタ",Output:"出力コネクタ"
+ echo タイプは以下の通りです: Relay:"中継コネクタ",Input:"入力コネクタ",Output:"出力コネクタ"
  set /p type=(Relay/Input/Output): 
  echo  "connectorType":"%type%", >>%tempfile%
  echo コネクタ: %connector%
@@ -2118,6 +1995,23 @@ goto selectwelcome
  echo { >>%tempfile%
  echo  "name": "%name%" >>%tempfile%
  echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ if %modelfile:~-4% == mqoz goto mat_oldwire
+ if %modelfile:~-3% == obj goto mat_oldwire
+ if %modelfile:~-4% == ngto goto mat_oldwire
+ if %modelfile:~-4% == ngtz goto mat_oldwire
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+ endlocal
+ set return=wifi
+ set filename=%tempfile%
+ goto ams
+ :mat_oldwire
  echo ワイヤーのモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo  "model": { >>%tempfile%
@@ -2153,6 +2047,7 @@ goto selectwelcome
  :wibutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  echo;
+ :wifi
  echo ボタンテクスチャのパスを設定してください。
  set /p button=
  echo  "buttonTexture": "%button%", >>%tempfile%
@@ -2196,7 +2091,7 @@ goto selectwelcome
  echo;
  :wire_json
  echo jsonが完成しました!
-  echo -- filename: ModelWire_%name%.json --
+  echo filename: ModelWire_%name%.json
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -2217,8 +2112,6 @@ goto selectwelcome
   :savewijson
   echo F | xcopy %tempfile% %setpath%\ModelWire_%name%.json /V /C /F /-Y
   goto %back%
- 
-
 :car
  echo;
  echo 乗り物のjsonを作成します。
@@ -2230,10 +2123,27 @@ goto selectwelcome
  echo name: %name%
  echo { >>%tempfile%
  echo  "name": "%name%", >>%tempfile%
+ echo  "model": { >>%tempfile%
  echo;
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
+ set /p modelFile=
+ if %modelfile:~-4% == mqoz goto mat_oldcar
+ if %modelfile:~-3% == obj goto mat_oldcar
+ if %modelfile:~-4% == ngto goto mat_oldcar
+ if %modelfile:~-4% == ngtz goto mat_oldcar
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> %tempfile%
+ endlocal
+ set return=cartype
+ set filename=%tempfile%
+ goto ams
+ :mat_oldcar
  echo 乗り物のモデルを決めてください。(ファイル名)
  set /p modelfile=
- echo  "model": { >>%tempfile%
  echo   "modelFile": "%modelfile%", >>%tempfile%
  echo model: %modelfile%
  echo;
@@ -2266,6 +2176,7 @@ goto selectwelcome
  :cabutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  echo;
+ :cartype
  echo 乗り物のタイプを設定してください。
  echo 使用可能: Car,Ship,Plane,Lift
  echo それぞれ自動車,船舶,航空機,リフトです。
@@ -2395,7 +2306,7 @@ goto selectwelcome
  echo;
  :car_json
   echo jsonが完成しました!
-  echo -- filename: ModelVehicle_%name%.json --
+  echo filename: ModelVehicle_%name%.json 
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -2404,6 +2315,7 @@ goto selectwelcome
   echo 行動を選択してください
   echo;
   echo  行動の番号         行動の内容          
+  echo;
   echo     2              終了させます。       
   echo     3         jsonを保存します。  
   echo;
@@ -2411,6 +2323,16 @@ goto selectwelcome
   if %user% == 2 goto 2
   if %user% == 3 echo F | xcopy %tempfile% %setpath%\ModelVehicle_%name%.json /V /C /F /-Y
   goto car_json
+:firstsetting
+ echo 初期設定を行っています...
+ pushd %temp%
+ md .RJC\json
+ pushd %temp%\.RJC
+ echo If you need regenerate action number file, Please delete this file.>>rjc.tscf
+ echo Please restart RtmJsonCreator.
+ pause
+ exit /b
+
 :cantload_Noise
  echo [ERROR] TrialNoiseチャンクが検出されました。
  echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
@@ -2424,13 +2346,17 @@ goto selectwelcome
  echo;
  echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
  echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
- echo %ESC%[41mまた、このテクスチャパスにはUsers配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
+ echo %ESC%[41mまた、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
  echo %ESC%[41m------------------------------------%ESC%[0m
  echo;
  pause
  exit /b
-
+:deljson
+ del /Q %temp%\.RJC\json\*
+ pause
+ exit /b
 :License
+ echo;
  echo;
  echo Copyright (c) 2022-2023 akikawa9616
  echo;
@@ -2442,3 +2368,81 @@ goto selectwelcome
  echo;
  pause
  goto selectwelcome
+:ams
+ echo modelFilePathは %modelFile% に設定されました。
+ echo          "textures":[ >> %filename%
+ echo;
+ echo このモデルのテクスチャフォルダパスを入力してください。
+ echo これは変数を使用せず、 textures/train の形式で入力してください。
+ echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
+ set /p texturedir=
+ echo dir: %texturedir%
+ echo;
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
+ for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
+ echo 材質設定の行: %lnnum%
+ for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
+ set mat=%mat:~9%
+ set mat=%mat:~0,-2%
+ echo 材質数を取得: %mat%
+ setlocal enabledelayedexpansion
+ set /a "count=0"
+ for /f "delims=" %%a in (%modelFile%) do (
+     set /a "count+=1"
+     if !count!==%lnnum% (
+         set "line=%%a"
+     )
+ )
+ for /f "tokens=1* delims= " %%a in ("!line!") do (
+    set "mat1=%%a"
+ )
+ set matname=!mat1:~1!
+ echo 材質名を取得: !matname!
+ for /f "delims=" %%a in ("!line!") do (
+    set "texture=%%a"
+    set "texture=!texture:*tex(=!"
+    set "texture=!texture:)=!"
+ )
+ set texture=!texture:~1,-1!
+ echo テクスチャ名を取得: !texture!
+ set hoge=!texture:~1,2!
+ if !hoge! == :\ goto PathError
+ echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
+ echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams2.tscf
+ endlocal
+ set matcount=1
+ :matroop
+ if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.ams1.tscf) do ( echo %%a >>%filename% )
+ if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.ams2.tscf) do ( echo %%a >>%filename% )
+ if %mat% == %matcount% del %temp%\.ams1.tscf
+ if %mat% == %matcount% del %temp%\.ams2.tscf
+ if %mat% == %matcount% goto %return%
+ set /a matcount=%matcount% + 1
+ set /a lnnum=%lnnum% + 1
+ set count=0
+ setlocal enabledelayedexpansion
+ set /a "count=0"
+ for /f "delims=" %%a in (%modelFile%) do (
+     set /a "count+=1"
+     if !count!==%lnnum% (
+         set "line=%%a"
+     )
+ )
+
+ for /f "tokens=1* delims= " %%a in ("!line!") do (
+    set "mat1=%%a"
+ )
+ set matname=!mat1:~1!
+ echo 材質名を取得: !matname!
+ for /f "delims=" %%a in ("!line!") do (
+    set "texture=%%a"
+    set "texture=!texture:*tex(=!"
+    set "texture=!texture:)=!"
+ )
+ set texture=!texture:~1,-1!
+ echo テクスチャ名を取得: !texture!
+ echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
+ echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
+ endlocal
+ goto matroop
