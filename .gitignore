@@ -5,4 +5,4 @@ dev*
 *.mqo
 *.mqoz
 rjc.*
-WhatsNew
+WhatsNew.md
