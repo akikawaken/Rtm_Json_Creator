@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.6
+set version=1.0.0.7
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -74,6 +74,7 @@ if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
 if %start% == deljson goto deljson
 if %start% == ams goto useams
+if %start% == exit exit /b
 rem 試験的機能の終焉
 echo エラー:不明な番号です。
 goto selectwelcome
