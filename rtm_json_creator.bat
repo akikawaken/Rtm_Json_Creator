@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.5
+set version=1.0.0.6
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -2586,6 +2586,11 @@ goto selectwelcome
  echo 続行すると終了します。
  pause
  exit /b
+:cantload_notfound
+ echo [ERROR] %modelfile%が見つかりませんでした。
+ echo 続行すると終了します。
+ pause
+ exit /b
 :PathError
  echo;
  echo %ESC%[41m------------------------------------%ESC%[0m
@@ -2702,6 +2707,7 @@ goto selectwelcome
  set /p texturedir=
  echo dir: %texturedir%
  echo ------------------
+ if not exist %modelfile% goto cantload_notfound
  for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
