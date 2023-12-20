@@ -334,7 +334,7 @@ goto selectwelcome
   echo accuracyは %accuracy% に設定されました。
   rem accuracy setting end
   echo ------------------
-  rem option
+ rem option
   echo この先はすべてオプションです。必要ない場合はjsonが表示されるまでの個数を見ながら長押ししてください。
   echo  %ESC%[41mjsonが完成したとき、enterを押していると作成したjsonが消滅します。%ESC%[0m
   rem %ESC%[41m is set text color to red, %ESC%[0m is set text color to white(default)
@@ -877,7 +877,7 @@ goto selectwelcome
  echo スペシャルサンクス(敬称略)
  echo  jsonのデータ値の提供
  echo   -- .zip
- echo   -- はちこうとっかい
+ echo   -- はちこうとっかい ^| https://twitter.com/Hachiko_Server
  echo  デバッグ
  echo   -- akikawa9616
  echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
