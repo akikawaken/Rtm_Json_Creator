@@ -6,3 +6,4 @@ dev*
 *.mqoz
 rjc.*
 WhatsNew.md
+rtm_json_creator_release.bat
