@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.7
+set version=1.0.0.8
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -212,20 +212,21 @@ goto selectwelcome
  echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
  set /p modelFile=
  echo modelFileは %modelFile% に設定されました。
- echo "trainModel2":{ >> ModelTrain_%trainname%.json
+ echo "bogieModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
- echo          "textures":[>> ModelTrain_%trainname%.json
+ echo          "textures":[ >> ModelTrain_%trainname%.json
  echo ------------------
  set count=0
  :matcountsetting
  set /p matcount=列車モデルの材質数を入力してください
  echo 材質数は %matcount% に設定されました。
  :matchecks
+ if %matcount% == 1 goto matlasts
  if %matcount% equ %count% ( goto matlasts ) ELSE ( goto matsettings )
  :matsettings
  set /a count=%count%+1
    echo ------------------
-   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p mat=
    echo 材質,%count%つめの名前は %mat% に設定されました。
