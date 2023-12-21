@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.8
+set version=1.0.0.9
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -145,6 +145,7 @@ goto selectwelcome
  set /p matcount=—ñÔƒ‚ƒfƒ‹‚ÌŞ¿”‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢
  echo Ş¿”‚Í %matcount% ‚Éİ’è‚³‚ê‚Ü‚µ‚½B
  :matcheck
+ if %matcount% == 1 goto matlast
  if %matcount% equ %count% ( goto matlast ) ELSE ( goto matsetting )
  :matsetting
  set /a count=%count%+1
