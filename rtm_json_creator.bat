@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.9
+set version=1.0.1.0
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -2711,6 +2711,8 @@ goto selectwelcome
  echo dir: %texturedir%
  echo ------------------
  if not exist %modelfile% goto cantload_notfound
+ del %temp%\.ams1.tscf
+ del %temp%\.ams2.tscf
  for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
