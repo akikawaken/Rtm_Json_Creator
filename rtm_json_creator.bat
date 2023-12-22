@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.1.0
+set version=1.0.1.1
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -48,7 +48,7 @@ set back=selectwelcome
 pushd %setpath%
 echo;
 if %start% == 1 goto 1
-if %start% == 2 goto 2
+if %start% == 2 exit /b
 if %start% == 3 goto 3
 if %start% == 4 goto 4
 if %start% == 5 goto 5
