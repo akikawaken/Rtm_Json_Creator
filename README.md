@@ -6,6 +6,9 @@
 - win10home(21H2,22H2)
 - win11home(22H2)
 
+# ダウンロード場所
+[ダウンロードはこの文字列をクリックしてassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。](https://github.com/akikawaken/creator/releases/tag/v0.9.8.1 "download page" )
+
 # RtmJsonCreatorの特徴
 - 値を入力するだけなので Json構文エラー の可能性が低くなる
 - キーボードだけで操作でき、普段のコマンドと同じ感覚で操作ができる
@@ -20,10 +23,6 @@
 不明なファイル/危険なファイルとして起動がブロックされることがあります。 その場合、詳細から続行するをクリックして起動してください。  
 もし、このバッチファイルが危険に見えるのならば、githubでコードを覗いてみてください。 あなたがバッチを理解できるのならば、危険ではないことがわかるはずです。  
 追記: EXE版は実行したら解凍するだけです。 別にRtmJsonCreatorを起動するわけじゃありません。  
-
-# ダウンロード場所
-
-[ダウンロードはこの文字列をクリックしてassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。](https://github.com/akikawaken/creator/releases/tag/v0.9.8.1 "download page" )
 
 # jsonの作成がブラウザ上で体験できます!
 [![json作成を体験する](https://cdn.discordapp.com/attachments/1075375393764278332/1156172370839617556/image.png)](https://akikawaken.github.io/)
