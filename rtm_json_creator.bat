@@ -74,7 +74,6 @@ if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
 if %start% == deljson goto deljson
 if %start% == ams goto useams
-if %start% == exit exit /b
 rem 試験的機能の終焉
 echo エラー:不明な番号です。
 goto selectwelcome
@@ -2613,7 +2612,7 @@ goto selectwelcome
 :License
  echo;
  echo -----------------------------
- echo Copyright (c) 2022-2023 akikawa9616
+ echo Copyright (c) 2022-2024 akikawa9616
  echo;
  echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  echo;
