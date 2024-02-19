@@ -920,7 +920,6 @@ goto selectwelcome
  if %machineType% == "照明" set machineType=Lamp
  if %machineType% == "階段" set machineType=Stair
  if %machineType% == "足場" set machineType=Scaffold
- if %machineType% == "券売機" set machineType=Vendor
  if %machineType% == "架線柱" set machineType=Pole
  if %machineType% == "パイプ" set machineType=Pipe
  if %machineType% == "植物" set machineType=Plant
@@ -938,7 +937,6 @@ goto selectwelcome
  if %machineType% == "Lamp" set type=ornamentType
  if %machineType% == "Stair" set type=ornamentType
  if %machineType% == "Scaffold" set type=ornamentType
- if %machineType% == "Vendor" set type=ornamentType
  if %machineType% == "Pole" set type=ornamentType
  if %machineType% == "Pipe" set type=ornamentType
  if %machineType% == "Plant" set type=ornamentType
