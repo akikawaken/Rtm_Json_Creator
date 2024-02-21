@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.1.2
+set version=1.0.2
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -1376,8 +1376,6 @@ goto selectwelcome
   echo  "sounds": [
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%"
-  echo    ]
-  echo   },
   set soundpath=%soundpath:/=\%
   echo --------------------
   set soundpath=%soundpath:\=.%
@@ -1387,56 +1385,40 @@ goto selectwelcome
   echo  "sounds": [ >> sounds.json
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%" >> sounds.json
-  echo    ] >> sounds.json
-  echo   }, >> sounds.json
   echo --------------------
 
   :soundsjson_pathset
-  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),今回の入力で終わりにする場合は"\\\"を使用してください。
+  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),終了する場合は"\\\"を使用してください。
   if %soundpath% == \\\ goto end_sounds_json
   set soundpath=%soundpath:\=.%
   echo -----sounds.json(今回追加分)-----
+  echo    ]
+  echo   },
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
   echo  "sounds": [
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%"
-  echo    ]
-  echo   },
   set soundpath=%soundpath:/=\%
   echo --------------------
   set soundpath=%soundpath:\=.%
+  echo    ] >> sounds.json
+  echo   }, >> sounds.json
   echo "%soundpath:~0,-4%": { >> sounds.json
   echo  "category": "neutral", >> sounds.json
   echo  "sounds": [ >> sounds.json
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%" >> sounds.json
-  echo    ] >> sounds.json
-  echo   }, >> sounds.json
   echo --------------------
   goto soundsjson_pathset
 
   :end_sounds_json
-  echo これが最後のものとしてセットされました。
-  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   set soundpath=%soundpath:\=.%
   echo -----sounds.json(今回追加分)-----
-  echo "%soundpath:~0,-4%": {
-  echo  "category": "neutral",
-  echo  "sounds": [
-  set soundpath=%soundpath:.=/%
-  echo   "%soundpath:~0,-4%"
   echo    ]
   echo   }
   echo }
-  set soundpath=%soundpath:/=\%
   echo --------------------
-  set soundpath=%soundpath:\=.%
-  echo "%soundpath:~0,-4%": { >> sounds.json
-  echo  "category": "neutral", >> sounds.json
-  echo  "sounds": [ >> sounds.json
-  set soundpath=%soundpath:.=/%
-  echo   "%soundpath:~0,-4%" >> sounds.json
   echo    ] >> sounds.json
   echo   } >> sounds.json
   echo } >> sounds.json
