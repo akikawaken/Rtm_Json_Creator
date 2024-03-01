@@ -24,7 +24,7 @@
 もし、このバッチファイルが危険に見えるのならば、githubでコードを覗いてみてください。 あなたがバッチを理解できるのならば、危険ではないことがわかるはずです。  
 
 # jsonの作成がブラウザ上で体験できます!
-[![json作成を体験する](https://cdn.discordapp.com/attachments/1075375393764278332/1156172370839617556/image.png)](https://akikawaken.github.io/)
+[![json作成を体験する](https://raw.githubusercontent.com/akikawaken/images/main/RJC/nyan.png)](https://akikawaken.github.io/)
 *画像はイメージです。  
 *画像をクリックするとjson作成の体験ができるページに飛びます。
 *列車と看板のみ対応しています。
