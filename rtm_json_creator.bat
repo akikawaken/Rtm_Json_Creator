@@ -148,7 +148,7 @@ goto selectwelcome
  if %matcount% equ %count% ( goto matlast ) ELSE ( goto matsetting )
  :matsetting
  set /a count=%count%+1
-   echo ------------------
+  echo ------------------
    echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p mat=
@@ -159,13 +159,29 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo ------------------
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto matcheck
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
+   goto matcheck
+  :osc-mat-train
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
    echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
- goto matcheck
+  goto matcheck
  :matlast
    echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
@@ -177,6 +193,26 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo ------------------
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo                     ] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo               }, >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto bogi
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
+   echo                     ] >> ModelTrain_%trainname%.json
+   echo               }, >> ModelTrain_%trainname%.json
+   goto bogi
+  :osc-mat-train-last
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
@@ -236,6 +272,22 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo ------------------
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto matchecks
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
+   goto matchecks
+  :osc-mat-bogie
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
@@ -254,6 +306,26 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo ------------------
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo                     ] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo               }, >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto 1222
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
+   echo                     ] >> ModelTrain_%trainname%.json
+   echo               }, >> ModelTrain_%trainname%.json
+   goto 1222
+  :osc-mat-bogie-last
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
@@ -2531,33 +2603,64 @@ goto selectwelcome
 :firstsetting
  echo 初期設定を行っています...
  pushd %temp%
+ echo Create dir: %temp%\.RJC\json
  md .RJC\json
+ echo Create dir: %temp%\.RJC\welcome
  md .RJC\welcome
  pushd %temp%\.RJC
+ echo Create file: %temp%\.RJC\rjc.tscf
  echo If you need regenerate action number file, Please delete this file.>>rjc.tscf
  pushd %temp%\.RJC\welcome
+ echo Create file: %temp%\.RJC\welcome\1
  echo;>>1
+ echo Create file: %temp%\.RJC\welcome\2
  echo;>>2
+ echo Create file: %temp%\.RJC\welcome\3
  echo;>>3
+ echo Create file: %temp%\.RJC\welcome\4
  echo;>>4
+ echo Create file: %temp%\.RJC\welcome\5
  echo;>>5
+ echo Create file: %temp%\.RJC\welcome\6
  echo;>>6
+ echo Create file: %temp%\.RJC\welcome\7
  echo;>>7
+ echo Create file: %temp%\.RJC\welcome\8
  echo;>>8
+ echo Create file: %temp%\.RJC\welcome\9
  echo;>>9
+ echo Create file: %temp%\.RJC\welcome\10
  echo;>>10
+ echo Create file: %temp%\.RJC\welcome\11
  echo;>>11
+ echo Create file: %temp%\.RJC\welcome\12
  echo;>>12
+ echo Create file: %temp%\.RJC\welcome\13
  echo;>>13
+ echo Create file: %temp%\.RJC\welcome\14
  echo;>>14
+ echo Create file: %temp%\.RJC\welcome\15
  echo;>>15
+ echo Create file: %temp%\.RJC\welcome\16
  echo;>>16
+ echo Create file: %temp%\.RJC\welcome\17
  echo;>>17
+ echo Create file: %temp%\.RJC\welcome\18
  echo;>>18
+ echo Create file: %temp%\.RJC\welcome\explorer
  echo;>>explorer
+ echo Create file: %temp%\.RJC\welcome\cmd
  echo;>>cmd
+ echo Create file: %temp%\.RJC\welcome\setpath
  echo;>>setpath
+ echo Create file: %temp%\.RJC\welcome\License
  echo;>>License
+ set ERRORLEVEL=0
+ echo do "where choice" command
+ where choice
+ if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
+ if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
+ echo;
  echo Please restart RtmJsonCreator.
  pause
  exit /b
