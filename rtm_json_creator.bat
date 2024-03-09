@@ -4,7 +4,7 @@ title Rtm_Json_Creator.bat
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.2
+set version=1.0.3.1
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
@@ -410,7 +410,6 @@ goto selectwelcome
  rem option
   echo この先はすべてオプションです。必要ない場合はjsonが表示されるまでの個数を見ながら長押ししてください。
   echo  %ESC%[41mjsonが完成したとき、enterを押していると作成したjsonが消滅します。%ESC%[0m
-  rem %ESC%[41m is set text color to red, %ESC%[0m is set text color to white(default)
   pause
   rem option
   echo ------------------
@@ -711,10 +710,8 @@ goto selectwelcome
   echo } >> ModelTrain_%trainname%.json
   goto train_json
  :train_json
- echo jsonが完成しました!
- echo;
- echo 以下のタイムアウトはオプション未設定時の事故を防止する目的で導入されました。
- timeout /t 3 /NOBREAK
+ echo jsonを作成しています..
+ timeout /t 3 /NOBREAK >nul
  echo ファイルパス: %setpath%\ModelTrain_%trainname%.json
  echo;
  echo -- filename: ModelTrain_%trainname%.json --
@@ -948,7 +945,7 @@ goto selectwelcome
  echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
  echo ----
  echo スペシャルサンクス(敬称略)
- echo  jsonのデータ値の提供
+ echo  jsonのデータの提供
  echo   -- .zip
  echo   -- はちこうとっかい ^| https://twitter.com/Hachiko_Server
  echo  デバッグ
@@ -957,6 +954,9 @@ goto selectwelcome
  echo;
  echo  一部機能発案者
  echo   -- K.kirikoto ^| https://twitter.com/mikawa8002
+ echo;
+ echo  参考文献
+ echo   -- RTMモデルパック作成マニュアル_2.4.8_1.pdf ^| 著 ngt5479 ^| 2019/06/25
  echo;
  echo このプログラムはMITライセンスで公開されています。
  echo MIT License全文は行動選択画面で"License"を入力してください。
@@ -2783,6 +2783,7 @@ goto selectwelcome
  pause
  goto welcome
 :ams
+ if '^%modelFile:~-1%^%modelFile:~0,1%' == '^"^"' ( set modelFile=%modelFile:~1,-1% ) 
  echo modelFilePathは %modelFile% に設定されました。
  echo          "textures":[ >> %filename%
  echo ------------------
@@ -2792,20 +2793,20 @@ goto selectwelcome
  set /p texturedir=
  echo dir: %texturedir%
  echo ------------------
- if not exist %modelfile% goto cantload_notfound
+ if not exist "%modelfile%" goto cantload_notfound
  del %temp%\.ams1.tscf
  del %temp%\.ams2.tscf
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* "%modelFile%"') do ( goto cantload_Noise )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:Material* "%modelFile%"') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
  echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
+ for /f "delims=" %%a in ('findstr /B /R /C:Material* "%modelFile%"') do set mat=%%a
  set mat=%mat:~9%
  set mat=%mat:~0,-2%
  echo 材質数を取得: %mat%
  setlocal enabledelayedexpansion
  set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
+ for /f "delims=" %%a in ("%modelFile%") do (
      set /a "count+=1"
      if !count!==%lnnum% (
          set "line=%%a"
@@ -2840,7 +2841,7 @@ goto selectwelcome
  set count=0
  setlocal enabledelayedexpansion
  set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
+ for /f "delims=" %%a in ("%modelFile%") do (
      set /a "count+=1"
      if !count!==%lnnum% (
          set "line=%%a"
@@ -2859,6 +2860,8 @@ goto selectwelcome
  )
  set texture=!texture:~1,-1!
  echo テクスチャ名を取得: !texture!
+ set hoge=!texture:~1,2!
+ if !hoge! == :\ goto PathError
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
  endlocal
