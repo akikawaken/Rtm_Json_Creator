@@ -1,14 +1,24 @@
 @echo off
-rem (c) 2022 - 2023 akikawa9616
+rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
+set version=1.1
+set dateversion=1
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.3.1
+set notlatest=false
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+if EXIST %temp%\.RJC\osc.tscf goto welcome
+for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
+set latestver=%%a
+)
+if not exist %temp%\rjcupdate.tscf ( goto welcome ) 
+if %latestver% == %dateversion% goto welcome
+for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
+if %dateversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
 del %temp%\.Rtm_Json_Creator_json.tscf
 del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
@@ -29,7 +39,6 @@ echo       6         NPCのjsonを作成します。
 echo       7         旗のjsonを作成します。
 echo       8         sounds.jsonを作成します。
 echo       9         ディレクトリを構成します。
-echo      10         指定されたディレクトリをzip化します。(べーたばんです)
 echo      11         pack.jsonを作成します。
 echo      12         信号機のjsonを作成します。
 echo      13         レールのjsonを作成します。
@@ -39,7 +48,8 @@ echo      16         コネクターのjsonを作成します。
 echo      17         ワイヤーのjsonを作成します。
 echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
 echo     cmd         cmd.exeをコールします。
-echo   setpath       指定したディレクトリにパスを通します。
+echo setpath       指定したディレクトリにパスを通します。
+if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo  ----------------------------------------
 echo 現在のディレクトリ: %setpath%
 echo  ----------------------------------------
@@ -67,8 +77,8 @@ if %start% == 18 goto car
 if %start% == setpath call :setpath
 if %start% == explorer start explorer.exe %setpath%
 if %start% == License goto License
+if %start% == update goto update
 rem 以下の機能は将来、削除されるか変更となる可能性があります。
-if %start% == 10 goto zip
 if %start% == 999 goto soundcreate
 if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
@@ -961,7 +971,7 @@ goto selectwelcome
  echo このプログラムはMITライセンスで公開されています。
  echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
- echo version: %version%
+ echo version: %version% / dateversion: %dateversion%
  pause
  cls
  goto selectwelcome
@@ -1524,21 +1534,6 @@ goto selectwelcome
  pause
  cls
  goto welcome
-:zip
- echo;
- echo この機能はベータ版です。
- echo 動作保証外です。
- echo;
- echo ディレクトリをzip化します。
- echo どのディレクトリをzip化しますか? assetsフォルダのパスを入力してください。(c:\rtm\assetsをzipしたい場合はc:\rtmと入力。)
- echo ヒント: 隠しファイルはzip化されません
- set /p directry=
- md %temp%\.rtm
- Powershell Compress-Archive -Path %directry%\* -DestinationPath %temp%\.rtm\rtm_addon%random%
- explorer.exe %temp%\.rtm
- echo Done.
- pause
- exit
 :pack
  echo pack.jsonを作成します。
  echo 現在のディレクトリ: %cd% .
@@ -2660,6 +2655,11 @@ goto selectwelcome
  where choice
  if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
  if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
+ set ERRORLEVEL=0
+ echo do "where curl" command
+ where curl
+ if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
+ if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
  echo;
  echo Please restart RtmJsonCreator.
  pause
@@ -2705,6 +2705,31 @@ goto selectwelcome
  echo -----------------------------
  pause
  goto selectwelcome
+:update
+ echo 本当にアップデートを実行しますか?
+ echo 今まで作成したJson(%temp%\.RJC\配下に置かれているもの)は削除されます。
+ set confirm=n
+ set /p confirm=Y/N:
+ if not %confirm% == y goto welcome
+ pushd %temp%
+ echo %temp%\.RJC\配下を削除中...
+ rd /S /Q %temp%\.RJC\
+ echo %temp%\.RJC\配下を削除しました。
+ set nextpath=%random%
+ echo nextpathは%nextpath%です。
+ if exist %temp%\.RJC\update\%nextpath%\RtmJsonCreator.bat set nextpath=%random%
+ echo %temp%\rjcupdate.tscfを作成... [%temp%\.RJC\update\%nextpath%]
+ echo %temp%\.RJC\update\%nextpath%>%temp%\rjcupdate.tscf
+ echo %temp%\.RJC\update\%nextpath%\を作成...
+ md %temp%\.RJC\update\%nextpath%\
+ pushd %temp%\.RJC\update\%nextpath%\
+ curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat
+ echo アップデートが完了しました。
+ echo RtmJsonCreatorを再起動してください。
+ pushd %userprofile%
+ pause
+ exit /b
+ 
 :useams
  echo これは自動材質設定機能のテストです。
  echo 材質数,材質名,材質テクスチャパスを出力します。
