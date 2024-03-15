@@ -2,7 +2,9 @@
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
 set version=1.1
-set dateversion=1
+set releaseversion=1
+rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
+rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
@@ -15,10 +17,10 @@ for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt'
 set latestver=%%a
 )
 if not exist %temp%\rjcupdate.tscf ( goto welcome ) 
-if %latestver% == %dateversion% goto welcome
+if %latestver% == %releaseversion% goto welcome
 for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
-if %dateversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
+if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
 del %temp%\.Rtm_Json_Creator_json.tscf
 del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
@@ -971,7 +973,7 @@ goto selectwelcome
  echo このプログラムはMITライセンスで公開されています。
  echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
- echo version: %version% / dateversion: %dateversion%
+ echo version: %version% / releaseversion: %releaseversion%
  pause
  cls
  goto selectwelcome
