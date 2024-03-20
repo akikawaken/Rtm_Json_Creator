@@ -1,13 +1,24 @@
 @echo off
-rem (c) 2022 - 2023 akikawa9616
+rem (c) 2022 - 2024 akikawa9616
+title Rtm_Json_Creator.bat
+set version=1.1-SmallFileSize(SFS)
+set releaseversion=1
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
-set version=1.0.0.4-SmallFileSize(SFS)
+set notlatest=false
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+if EXIST %temp%\.RJC\osc.tscf goto welcome
+for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
+set latestver=%%a
+)
+if not exist %temp%\rjcupdate.tscf ( goto welcome ) 
+if %latestver% == %releaseversion% goto welcome
+for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
+if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
 del %temp%\.Rtm_Json_Creator_json.tscf
 del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
@@ -15,27 +26,29 @@ cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
 :selectwelcome
+pushd %temp%\.RJC\welcome
 echo;
 echo   行動の番号         行動の内容          
 echo;
-echo       1         列車のjsonを作成します。                             
-echo       2         終了させます。                                       
-echo       3         看板のjsonを作成します。                             
-echo       4         スペシャルサンクスと作者                             
-echo       5         機能あり/なし設置物のjsonを作成します。              
-echo       6         NPCのjsonを作成します。                              
-echo       7         旗のjsonを作成します。                               
-echo       8         sounds.jsonを作成します。                            
-echo       9         ディレクトリを構成します。                           
-echo      10         指定されたディレクトリをzip化します。(べーたばんです)
-echo      11         pack.jsonを作成します。                              
-echo      12         信号機のjsonを作成します。                           
-echo      13         レールのjsonを作成します。                           
-echo      14         コンテナのjsonを作成します。                         
-echo      15         火器のjsonを作成します。                             
-echo      16         コネクターのjsonを作成します。                       
-echo      17         ワイヤーのjsonを作成します。                         
-echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。   
+echo       1         列車のjsonを作成します。
+echo       2         終了させます。
+echo       3         看板のjsonを作成します。
+echo       4         スペシャルサンクスと作者
+echo       5         機能あり/なし設置物のjsonを作成します。
+echo       6         NPCのjsonを作成します。
+echo       7         旗のjsonを作成します。
+echo       8         sounds.jsonを作成します。
+echo       9         ディレクトリを構成します。
+echo      11         pack.jsonを作成します。
+echo      12         信号機のjsonを作成します。
+echo      13         レールのjsonを作成します。
+echo      14         コンテナのjsonを作成します。
+echo      15         火器のjsonを作成します。
+echo      16         コネクターのjsonを作成します。
+echo      17         ワイヤーのjsonを作成します。
+echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
+echo setpath       指定したディレクトリにパスを通します。
+if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo;
 echo 現在のディレクトリ: %setpath%
 echo;
@@ -44,7 +57,7 @@ set back=selectwelcome
 pushd %setpath%
 echo;
 if %start% == 1 goto 1
-if %start% == 2 goto 2
+if %start% == 2 exit /b
 if %start% == 3 goto 3
 if %start% == 4 goto 4
 if %start% == 5 goto 5
@@ -60,7 +73,9 @@ if %start% == 15 goto gun
 if %start% == 16 goto connector
 if %start% == 17 goto wire
 if %start% == 18 goto car
+if %start% == setpath call :setpath
 if %start% == License goto License
+if %start% == update goto update
 echo エラー:不明な番号です。
 goto selectwelcome
 :1
@@ -122,10 +137,11 @@ goto selectwelcome
  set /p matcount=列車モデルの材質数を入力してください
  echo 材質数は %matcount% に設定されました。
  :matcheck
+ if %matcount% == 1 goto matlast
  if %matcount% equ %count% ( goto matlast ) ELSE ( goto matsetting )
  :matsetting
  set /a count=%count%+1
-   echo;
+  echo;
    echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p mat=
@@ -136,13 +152,29 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo;
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo;
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto matcheck
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo;
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
+   goto matcheck
+  :osc-mat-train
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
    echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo;
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
- goto matcheck
+  goto matcheck
  :matlast
    echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
@@ -154,6 +186,26 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo;
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo;
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo                     ] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo               }, >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto bogi
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo;
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
+   echo                     ] >> ModelTrain_%trainname%.json
+   echo               }, >> ModelTrain_%trainname%.json
+   goto bogi
+  :osc-mat-train-last
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
@@ -186,20 +238,21 @@ goto selectwelcome
  echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
  set /p modelFile=
  echo modelFileは %modelFile% に設定されました。
- echo "trainModel2":{ >> ModelTrain_%trainname%.json
+ echo "bogieModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
- echo          "textures":[>> ModelTrain_%trainname%.json
+ echo          "textures":[ >> ModelTrain_%trainname%.json
  echo;
  set count=0
  :matcountsetting
  set /p matcount=列車モデルの材質数を入力してください
  echo 材質数は %matcount% に設定されました。
  :matchecks
+ if %matcount% == 1 goto matlasts
  if %matcount% equ %count% ( goto matlasts ) ELSE ( goto matsettings )
  :matsettings
  set /a count=%count%+1
    echo;
-   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
    set /p mat=
    echo 材質,%count%つめの名前は %mat% に設定されました。
@@ -209,6 +262,22 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo;
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo;
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto matchecks
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo;
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
+   goto matchecks
+  :osc-mat-bogie
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
@@ -227,6 +296,26 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo;
+   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo;
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo                     ] >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 echo               }, >> ModelTrain_%trainname%.json
+   if %ERRORLEVEL% == 1 goto 1222
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo;
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
+   echo                     ] >> ModelTrain_%trainname%.json
+   echo               }, >> ModelTrain_%trainname%.json
+   goto 1222
+  :osc-mat-bogie-last
    echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
    echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
@@ -599,10 +688,8 @@ goto selectwelcome
   echo } >> ModelTrain_%trainname%.json
   goto train_json
  :train_json
- echo jsonが完成しました!
- echo;
- echo 以下のタイムアウトはオプション未設定時の事故を防止する目的で導入されました。
- timeout /t 3 /NOBREAK
+ echo jsonを作成しています..
+ timeout /t 3 /NOBREAK >nul
  echo ファイルパス: %setpath%\ModelTrain_%trainname%.json
  echo;
  echo; filename: ModelTrain_%trainname%.json --
@@ -688,8 +775,7 @@ goto selectwelcome
  goto signjson
 :signjson
  set back=signjson
- echo;
- echo ファイル名:SignBoard_%texture%.json
+ echo;ファイル名:SignBoard_%texture%.json-------
  echo {
  echo   "texture": "%texture%",
  echo   "backTexture": %backTexture%,
@@ -706,6 +792,7 @@ goto selectwelcome
  echo;
  echo  行動の番号         行動の内容          
  echo;
+ echo     1              jsonを編集する       
  echo     2              終了させます。       
  echo     3         jsonを保存します。  
  echo;
@@ -741,13 +828,14 @@ goto selectwelcome
   goto ERROR
  )
  goto %back%
+
 :4
  echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
  echo;
  echo スペシャルサンクス(敬称略)
- echo  jsonのデータ値の提供
+ echo  jsonのデータの提供
  echo   -- .zip
- echo   -- はちこうとっかい
+ echo   -- はちこうとっかい ^| https://twitter.com/Hachiko_Server
  echo  デバッグ
  echo   -- akikawa9616
  echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
@@ -755,10 +843,13 @@ goto selectwelcome
  echo  一部機能発案者
  echo   -- K.kirikoto ^| https://twitter.com/mikawa8002
  echo;
+ echo  参考文献
+ echo   -- RTMモデルパック作成マニュアル_2.4.8_1.pdf ^| 著 ngt5479 ^| 2019/06/25
+ echo;
  echo このプログラムはMITライセンスで公開されています。
  echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
- echo version: %version%
+ echo version: %version% / releaseversion: %releaseversion%
  pause
  cls
  goto selectwelcome
@@ -789,7 +880,6 @@ goto selectwelcome
  if %machineType% == "照明" set machineType=Lamp
  if %machineType% == "階段" set machineType=Stair
  if %machineType% == "足場" set machineType=Scaffold
- if %machineType% == "券売機" set machineType=Vendor
  if %machineType% == "架線柱" set machineType=Pole
  if %machineType% == "パイプ" set machineType=Pipe
  if %machineType% == "植物" set machineType=Plant
@@ -807,7 +897,6 @@ goto selectwelcome
  if %machineType% == "Lamp" set type=ornamentType
  if %machineType% == "Stair" set type=ornamentType
  if %machineType% == "Scaffold" set type=ornamentType
- if %machineType% == "Vendor" set type=ornamentType
  if %machineType% == "Pole" set type=ornamentType
  if %machineType% == "Pipe" set type=ornamentType
  if %machineType% == "Plant" set type=ornamentType
@@ -1180,10 +1269,11 @@ goto selectwelcome
   echo;
   set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   setlocal enabledelayedexpansion
+   for /f "delims=\ tokens=1" %%s in ("!soundpath!") do set path1=%%s
   set soundpath=%soundpath:\=.%
   set back=sound_json
   :sound_json
-  echo;
+  echo;sounds.json-----
   echo {
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
@@ -1230,15 +1320,13 @@ goto selectwelcome
   echo;
   set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   set soundpath=%soundpath:\=.%
-  echo;
+  echo;sounds.json(今回追加分)-----
   echo { 
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
   echo  "sounds": [
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%"
-  echo    ]
-  echo   },
   set soundpath=%soundpath:/=\%
   echo;
   set soundpath=%soundpath:\=.%
@@ -1248,56 +1336,40 @@ goto selectwelcome
   echo  "sounds": [ >> sounds.json
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%" >> sounds.json
-  echo    ] >> sounds.json
-  echo   }, >> sounds.json
   echo;
 
   :soundsjson_pathset
-  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),今回の入力で終わりにする場合は"@"を使用してください。
-  if %soundpath% == @ goto end_sounds_json
+  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),終了する場合は"\\\"を使用してください。
+  if %soundpath% == \\\ goto end_sounds_json
   set soundpath=%soundpath:\=.%
-  echo;
+  echo;sounds.json(今回追加分)-----
+  echo    ]
+  echo   },
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
   echo  "sounds": [
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%"
-  echo    ]
-  echo   },
   set soundpath=%soundpath:/=\%
   echo;
   set soundpath=%soundpath:\=.%
+  echo    ] >> sounds.json
+  echo   }, >> sounds.json
   echo "%soundpath:~0,-4%": { >> sounds.json
   echo  "category": "neutral", >> sounds.json
   echo  "sounds": [ >> sounds.json
   set soundpath=%soundpath:.=/%
   echo   "%soundpath:~0,-4%" >> sounds.json
-  echo    ] >> sounds.json
-  echo   }, >> sounds.json
   echo;
   goto soundsjson_pathset
 
   :end_sounds_json
-  echo これが最後のものとしてセットされました。
-  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   set soundpath=%soundpath:\=.%
   echo;sounds.json(今回追加分)-----
-  echo "%soundpath:~0,-4%": {
-  echo  "category": "neutral",
-  echo  "sounds": [
-  set soundpath=%soundpath:.=/%
-  echo   "%soundpath:~0,-4%"
   echo    ]
   echo   }
   echo }
-  set soundpath=%soundpath:/=\%
   echo;
-  set soundpath=%soundpath:\=.%
-  echo "%soundpath:~0,-4%": { >> sounds.json
-  echo  "category": "neutral", >> sounds.json
-  echo  "sounds": [ >> sounds.json
-  set soundpath=%soundpath:.=/%
-  echo   "%soundpath:~0,-4%" >> sounds.json
   echo    ] >> sounds.json
   echo   } >> sounds.json
   echo } >> sounds.json
@@ -1331,23 +1403,11 @@ goto selectwelcome
  pause
  cls
  goto welcome
-:zip
- echo;
- echo この機能はベータ版です。
- echo 動作保証外です。
- echo;
- echo ディレクトリをzip化します。
- echo どのディレクトリをzip化しますか? assetsフォルダのパスを入力してください。(c:\rtm\assetsをzipしたい場合はc:\rtmと入力。)
- echo ヒント: 隠しファイルはzip化されません
- set /p directry=
- md %temp%\.rtm
- Powershell Compress-Archive -Path %directry%\* -DestinationPath %temp%\.rtm\rtm_addon%random%
- explorer.exe %temp%\.rtm
- echo Done.
- pause
- exit
 :pack
  echo pack.jsonを作成します。
+ echo 現在のディレクトリ: %cd% .
+ set /p change=変更しますか?(y/n)
+ if %change% == y call :setpath
  echo;
  echo アドオン名(モデルパック名)を決めてください:
  set /p modelpackname=
@@ -1451,10 +1511,11 @@ goto selectwelcome
  echo ライトの設定を決めてください。
  echo 設定を終えた場合はそのままenterしてください。
  echo;
- echo 項目                         説明                        
- echo   S  どの信号が入力された時点灯するか(信号レベルは1~1024)
- echo   I  点滅間隔(0~1200 tick)
- echo   P  使用するオブジェクト名(「,」で区切る)
+ echo ^|項目^|                        説明                        ^|
+ echo ^|  S ^|どの信号が入力された時点灯するか(信号レベルは1~1024)^|
+ echo ^|  I ^|点滅間隔(0~1200 tick)                               ^|
+ echo ^|  P ^|使用するオブジェクト名(「,」で区切る)               ^|
+ echo;
  echo;
  echo 以下の形式で入力してください。: S([S項目の数値]) I([I項目の数値]) P(P項目の文字列)
  echo e. g. S(1) I(0) P(LightYellow1, LightBlue4)
@@ -1480,7 +1541,7 @@ goto selectwelcome
  :signal_json
  echo jsonが完成しました!
  echo;
- echo filename: ModelSignal_%signalname%.json --
+ echo; filename: ModelSignal_%signalname%.json --
  echo;
  set back=signal_json_json
  for /f "delims=@" %%a in (%tempfile%) do (
@@ -1616,7 +1677,8 @@ goto selectwelcome
   echo } >>%tempfile%
 :rail_json
   set back=rail_json
-  echo filename: ModelRail_%railname%.json --
+  echo jsonが完成しました!
+  echo; filename: ModelRail_%railname%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -1691,7 +1753,7 @@ goto selectwelcome
  echo;
  :container_json
  set back=container_json
- echo filename: ModelContainer_%name%.json --
+ echo; filename: ModelContainer_%name%.json --
  echo {
  echo  "containerName": "%name%",
  echo  "containerModel": "%model%",
@@ -1836,7 +1898,7 @@ goto selectwelcome
  :gun_json
   set back=gun_json
   echo jsonが完成しました!
-  echo filename: ModelFirearm_%name%.json --
+  echo; filename: ModelFirearm_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -1962,7 +2024,7 @@ goto selectwelcome
  :co_json
   set back=co_json
   echo jsonが完成しました!
-  echo filename: ModelConnector_%name%.json 
+  echo; filename: ModelConnector_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -2091,7 +2153,7 @@ goto selectwelcome
  echo;
  :wire_json
  echo jsonが完成しました!
-  echo filename: ModelWire_%name%.json
+  echo; filename: ModelWire_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -2112,6 +2174,8 @@ goto selectwelcome
   :savewijson
   echo F | xcopy %tempfile% %setpath%\ModelWire_%name%.json /V /C /F /-Y
   goto %back%
+ 
+
 :car
  echo;
  echo 乗り物のjsonを作成します。
@@ -2306,7 +2370,7 @@ goto selectwelcome
  echo;
  :car_json
   echo jsonが完成しました!
-  echo filename: ModelVehicle_%name%.json 
+  echo; filename: ModelVehicle_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
@@ -2323,12 +2387,27 @@ goto selectwelcome
   if %user% == 2 goto 2
   if %user% == 3 echo F | xcopy %tempfile% %setpath%\ModelVehicle_%name%.json /V /C /F /-Y
   goto car_json
+ 
+:setpath
+ set /p setpath=Enter path here :
+ pushd %setpath%
+ echo Done.
+ exit /b
 :firstsetting
  echo 初期設定を行っています...
  pushd %temp%
  md .RJC\json
  pushd %temp%\.RJC
  echo If you need regenerate action number file, Please delete this file.>>rjc.tscf
+ set ERRORLEVEL=0
+ where choice
+ if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
+ if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
+ set ERRORLEVEL=0
+ where curl
+ if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
+ if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
+ echo;
  echo Please restart RtmJsonCreator.
  pause
  exit /b
@@ -2339,26 +2418,26 @@ goto selectwelcome
  echo 続行すると終了します。
  pause
  exit /b
-:PathError
- echo;
- echo %ESC%[41m------------------------------------%ESC%[0m
- echo %ESC%[41mパス文字列の構文が間違っている可能性があります!%ESC%[0m
- echo;
- echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
- echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
- echo %ESC%[41mまた、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
- echo %ESC%[41m------------------------------------%ESC%[0m
- echo;
+:cantload_notfound
+ echo [ERROR] %modelfile%が見つかりませんでした。
+ echo 続行すると終了します。
  pause
  exit /b
-:deljson
- del /Q %temp%\.RJC\json\*
+:PathError
+ echo;
+ echo;
+ echo パス文字列の構文が間違っている可能性があります!
+ echo;
+ echo モデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。
+ echo 一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。
+ echo また、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。
+ echo;
  pause
  exit /b
 :License
  echo;
  echo;
- echo Copyright (c) 2022-2023 akikawa9616
+ echo Copyright (c) 2022-2024 akikawa9616
  echo;
  echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  echo;
@@ -2368,7 +2447,35 @@ goto selectwelcome
  echo;
  pause
  goto selectwelcome
+:update
+ echo 本当にアップデートを実行しますか?
+ echo 今まで作成したJson(%temp%\.RJC\配下に置かれているもの)は削除されます。
+ echo;
+ echo 注意: アップデートすると、SFSバージョンから通常版になります。
+ echo;
+ set confirm=n
+ set /p confirm=Y/N:
+ if not %confirm% == y goto welcome
+ pushd %temp%
+ echo %temp%\.RJC\配下を削除中...
+ rd /S /Q %temp%\.RJC\
+ echo %temp%\.RJC\配下を削除しました。
+ set nextpath=%random%
+ echo nextpathは%nextpath%です。
+ if exist %temp%\.RJC\update\%nextpath%\RtmJsonCreator.bat set nextpath=%random%
+ echo %temp%\rjcupdate.tscfを作成... [%temp%\.RJC\update\%nextpath%]
+ echo %temp%\.RJC\update\%nextpath%>%temp%\rjcupdate.tscf
+ echo %temp%\.RJC\update\%nextpath%\を作成...
+ md %temp%\.RJC\update\%nextpath%\
+ pushd %temp%\.RJC\update\%nextpath%\
+ curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat
+ echo アップデートが完了しました。
+ echo RtmJsonCreatorを再起動してください。
+ pushd %userprofile%
+ pause
+ exit /b
 :ams
+ if '^%modelFile:~-1%^%modelFile:~0,1%' == '^"^"' ( set modelFile=%modelFile:~1,-1% ) 
  echo modelFilePathは %modelFile% に設定されました。
  echo          "textures":[ >> %filename%
  echo;
@@ -2378,17 +2485,20 @@ goto selectwelcome
  set /p texturedir=
  echo dir: %texturedir%
  echo;
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
+ if not exist "%modelfile%" goto cantload_notfound
+ del %temp%\.ams1.tscf
+ del %temp%\.ams2.tscf
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* "%modelFile%"') do ( goto cantload_Noise )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:Material* "%modelFile%"') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
  echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
+ for /f "delims=" %%a in ('findstr /B /R /C:Material* "%modelFile%"') do set mat=%%a
  set mat=%mat:~9%
  set mat=%mat:~0,-2%
  echo 材質数を取得: %mat%
  setlocal enabledelayedexpansion
  set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
+ for /f "delims=" %%a in ("%modelFile%") do (
      set /a "count+=1"
      if !count!==%lnnum% (
          set "line=%%a"
@@ -2423,7 +2533,7 @@ goto selectwelcome
  set count=0
  setlocal enabledelayedexpansion
  set /a "count=0"
- for /f "delims=" %%a in (%modelFile%) do (
+ for /f "delims=" %%a in ("%modelFile%") do (
      set /a "count+=1"
      if !count!==%lnnum% (
          set "line=%%a"
@@ -2442,6 +2552,8 @@ goto selectwelcome
  )
  set texture=!texture:~1,-1!
  echo テクスチャ名を取得: !texture!
+ set hoge=!texture:~1,2!
+ if !hoge! == :\ goto PathError
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
  endlocal
