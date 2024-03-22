@@ -12,7 +12,7 @@ set notlatest=false
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
-if EXIST %temp%\.RJC\osc.tscf goto welcome
+if EXIST %temp%\.RJC\osc.tscf goto oscwelcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
 set latestver=%%a
 )
@@ -21,6 +21,7 @@ if %latestver% == %releaseversion% goto welcome
 for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
 if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
+:oscwelcome
 del %temp%\.Rtm_Json_Creator_json.tscf
 del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
