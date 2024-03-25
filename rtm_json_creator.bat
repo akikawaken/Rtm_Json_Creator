@@ -55,6 +55,7 @@ echo setpath       指定したディレクトリにパスを通します。
 if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo  ----------------------------------------
 echo 現在のディレクトリ: %setpath%
+if %autorestart% == true ( echo 自動再起動を行いました: アップデート後. )
 echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
@@ -2666,6 +2667,7 @@ goto selectwelcome
  echo;
  echo Please restart RtmJsonCreator.
  pause
+ set autorestart=true
  exit /b
 
 :cantload_Noise
