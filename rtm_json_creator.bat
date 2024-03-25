@@ -1,11 +1,10 @@
 @echo off
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.1.1
-set releaseversion=1
+set version=1.2
+set releaseversion=2
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
-if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 pushd %temp%\.RJC\json
 set user=
 set notlatest=false
@@ -25,6 +24,7 @@ if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
 del %temp%\.Rtm_Json_Creator_json.tscf
 del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
+if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
@@ -2709,13 +2709,6 @@ goto selectwelcome
  pause
  goto selectwelcome
 :update
- echo 本当にアップデートを実行しますか?
- echo 今まで作成したJson(%temp%\.RJC\配下に置かれているもの)は削除されます。
- set confirm=n
- set /p confirm=Y/N:
- if not %confirm% == y goto welcome
- pushd %temp%
- del delete.bat
  curl -sLJO https://akikawaken.github.io/RJC/VC/delete.bat
  start delete.bat
  exit
