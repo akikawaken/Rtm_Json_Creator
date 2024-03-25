@@ -7,7 +7,7 @@
 - win11home(22H2,23H2)
 
 # ダウンロード場所
-[ダウンロードはこの文字列をクリックしてassets内の一番上(rtm-json-creator-[バージョン].batと書かれたファイル)を押してください。](https://github.com/akikawaken/creator/releases/tag/v1.0.1 "download page" )
+[ダウンロードはこの文字列をクリックしてassets内の一番上(RtmJsonCreator.batと書かれたファイル)を押してください。](https://github.com/akikawaken/creator/releases/tag/v1.1 "download page" )
 
 # RtmJsonCreatorの特徴
 - 値を入力するだけなので Json構文エラー の可能性が低くなる
