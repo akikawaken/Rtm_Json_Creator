@@ -2,7 +2,7 @@
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
 set version=1.2
-set releaseversion=2
+set releaseversion=1
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 pushd %temp%\.RJC\json
@@ -55,7 +55,6 @@ echo setpath       指定したディレクトリにパスを通します。
 if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo  ----------------------------------------
 echo 現在のディレクトリ: %setpath%
-if %autorestart% == true ( echo 自動再起動を行いました: アップデート後. )
 echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
