@@ -1,7 +1,7 @@
 @echo off
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.2
+set version=1.2.1
 set releaseversion=2
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2668,30 +2668,6 @@ goto selectwelcome
  pause
  set autorestart=true
  exit /b
-
-:cantload_Noise
- echo [ERROR] TrialNoiseチャンクが検出されました。
- echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
- echo 続行すると終了します。
- pause
- exit /b
-:cantload_notfound
- echo [ERROR] %modelfile%が見つかりませんでした。
- echo 続行すると終了します。
- pause
- exit /b
-:PathError
- echo;
- echo %ESC%[41m------------------------------------%ESC%[0m
- echo %ESC%[41mパス文字列の構文が間違っている可能性があります!%ESC%[0m
- echo;
- echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
- echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
- echo %ESC%[41mまた、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
- echo %ESC%[41m------------------------------------%ESC%[0m
- echo;
- pause
- exit /b
 :deljson
  del /Q %temp%\.RJC\json\*
  pause
@@ -2718,12 +2694,16 @@ goto selectwelcome
 :useams
  echo これは自動材質設定機能のテストです。
  echo 材質数,材質名,材質テクスチャパスを出力します。
+ echo こっちはエラーハンドリングをちゃんと作ってないので以下の点に注意してください
+ echo - ダブルクォーテーション無し
+ echo - パス/ファイル名に空白なし
  set /p modelFile=(ここにmqo形式のモデルファイルフルパスを入力:) 
  setlocal enabledelayedexpansion
- for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ for %%a in (%modelFile%) do set "filename=%%~nxa"
  endlocal
  echo modelFilePathは %modelFile% に設定されました。
  echo ------------------
+ if not exist %modelFile% goto cantload_notfound
  for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
@@ -2803,20 +2783,20 @@ goto selectwelcome
  set /p texturedir=
  echo dir: %texturedir%
  echo ------------------
- if not exist "%modelfile%" goto cantload_notfound
+ if not exist %modelfile% goto cantload_notfound
  del %temp%\.ams1.tscf
  del %temp%\.ams2.tscf
- for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* "%modelFile%"') do ( goto cantload_Noise )
- for /f "delims=" %%a in ('findstr /B /R /N /C:Material* "%modelFile%"') do set mat=%%a
+ for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%') do ( goto cantload_Noise )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
  echo 材質設定の行: %lnnum%
- for /f "delims=" %%a in ('findstr /B /R /C:Material* "%modelFile%"') do set mat=%%a
+ for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
  set mat=%mat:~9%
  set mat=%mat:~0,-2%
  echo 材質数を取得: %mat%
  setlocal enabledelayedexpansion
  set /a "count=0"
- for /f "delims=" %%a in ("%modelFile%") do (
+ for /f "delims=" %%a in (%modelFile%) do (
      set /a "count+=1"
      if !count!==%lnnum% (
          set "line=%%a"
@@ -2825,7 +2805,7 @@ goto selectwelcome
  for /f "tokens=1* delims= " %%a in ("!line!") do (
     set "mat1=%%a"
  )
- set matname=!mat1:~1!
+ set matname=!mat1!
  echo 材質名を取得: !matname!
  for /f "delims=" %%a in ("!line!") do (
     set "texture=%%a"
@@ -2836,11 +2816,14 @@ goto selectwelcome
  echo テクスチャ名を取得: !texture!
  set hoge=!texture:~1,2!
  if !hoge! == :\ goto PathError
+ echo !line! | findstr /C:"tex(" >nul
+ if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams2.tscf
  endlocal
  set matcount=1
  :matroop
+ echo;
  if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.ams1.tscf) do ( echo %%a >>%filename% )
  if %mat% == %matcount% for /f "delims=@" %%a in (%temp%\.ams2.tscf) do ( echo %%a >>%filename% )
  if %mat% == %matcount% del %temp%\.ams1.tscf
@@ -2851,7 +2834,7 @@ goto selectwelcome
  set count=0
  setlocal enabledelayedexpansion
  set /a "count=0"
- for /f "delims=" %%a in ("%modelFile%") do (
+ for /f "delims=" %%a in (%modelFile%) do (
      set /a "count+=1"
      if !count!==%lnnum% (
          set "line=%%a"
@@ -2861,7 +2844,7 @@ goto selectwelcome
  for /f "tokens=1* delims= " %%a in ("!line!") do (
     set "mat1=%%a"
  )
- set matname=!mat1:~1!
+ set matname=!mat1!
  echo 材質名を取得: !matname!
  for /f "delims=" %%a in ("!line!") do (
     set "texture=%%a"
@@ -2872,7 +2855,42 @@ goto selectwelcome
  echo テクスチャ名を取得: !texture!
  set hoge=!texture:~1,2!
  if !hoge! == :\ goto PathError
+ echo !line! | findstr /C:"tex(" >nul
+ if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
  endlocal
  goto matroop
+rem AutomaticMaterialSettingErrors
+ rem ERROR
+  :cantload_Noise
+   echo [ERROR] TrialNoiseチャンクが検出されました。
+   echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+   echo 続行すると終了します。
+   pause
+   exit /b
+  :cantload_notfound
+   echo [ERROR] %modelfile%が見つかりませんでした。
+   echo 続行すると終了します。
+   pause
+   exit /b
+  :PathError
+   echo;
+   echo %ESC%[41m------------------------------------%ESC%[0m
+   echo %ESC%[41mパス文字列の構文が間違っている可能性があります!%ESC%[0m
+   echo;
+   echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
+   echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
+   echo %ESC%[41mまた、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
+   echo %ESC%[41m------------------------------------%ESC%[0m
+   echo;
+   pause
+   exit /b
+ rem WARN
+  :AddDummyTexture
+   set texturedir=textures/train
+   set texture=tp.png
+   echo [WARN] テクスチャが設定されていない材質を検出しました。
+   echo [WARN] RTM内に同梱されている透明なテクスチャを代わりに適用します。
+   exit /b
+   
