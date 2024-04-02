@@ -1,7 +1,7 @@
 @echo off
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.2.2
+set version=1.2.3
 set releaseversion=2
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2786,6 +2786,12 @@ goto selectwelcome
  if not exist %modelfile% goto cantload_notfound
  del %temp%\.ams1.tscf
  del %temp%\.ams2.tscf
+ for /f "delims=" %%a in ('findstr /B /R /N /C:"Format Compress"* %modelFile%') do ( goto cantload_UnSupportedFormat )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:"Format Text Ver 1.0" %modelFile%') do ( goto torimaoke )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:"Format Text Ver 1.1" %modelFile%') do ( goto torimaoke )
+ for /f "delims=" %%a in ('findstr /B /R /N /C:"Format Text Ver 1.2" %modelFile%') do ( goto torimaoke )
+ goto cantload_UnknownFormatOrVer
+ :torimaoke
  for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%') do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
@@ -2863,13 +2869,29 @@ goto selectwelcome
  goto matroop
 rem AutomaticMaterialSettingErrors
  rem ERROR
+  :cantload_UnSupportedFormat
+   echo;
+   echo [ERROR] サポートされていないMQO形式が読み込まれました。: Compress
+   echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+   echo 続行すると終了します。
+   pause
+   exit /b
+  :cantload_UnknownFormatOrVer
+   echo;
+   echo [ERROR] 形式またはバージョンが認識できませんでした。
+   echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+   echo 続行すると終了します。
+   pause
+   exit /b
   :cantload_Noise
+   echo;
    echo [ERROR] TrialNoiseチャンクが検出されました。
    echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
    echo 続行すると終了します。
    pause
    exit /b
   :cantload_notfound
+   echo;
    echo [ERROR] %modelfile%が見つかりませんでした。
    echo 続行すると終了します。
    pause
