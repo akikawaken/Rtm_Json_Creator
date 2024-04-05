@@ -1,7 +1,7 @@
 @echo off
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.2.3
+set version=1.2.4
 set releaseversion=2
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -1571,14 +1571,12 @@ goto selectwelcome
  echo ファイルを保存しますか?
  set /p confirm=y/n:
  if %confirm% == n goto 2
- echo on
  echo { >>pack.json
  echo   "name":"%modelpackname%", >>pack.json
  if not %homepageurl% == Null echo   "homepage":"%homepageurl%", >>pack.json
  echo   "updateURL":"%url%", >>pack.json
  echo   "version":"%vers%" >>pack.json
  echo } >>pack.json
- echo off
  echo;
  pause
  goto 2
@@ -2825,7 +2823,13 @@ goto selectwelcome
  echo !line! | findstr /C:"tex(" >nul
  if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams2.tscf
+ echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
+ set /p option=オプションを設定,上記の数字を入力。: 
+ if !option! == 1 set option=AlphaBlend
+ if !option! == 2 set option=Light
+ if !option! == 3 set option=AlphaBlend,Light
+ if !option! == 4 set option=AlphaBlend,Light,OneTex
+ echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams2.tscf
  endlocal
  set matcount=1
  :matroop
@@ -2864,7 +2868,13 @@ goto selectwelcome
  echo !line! | findstr /C:"tex(" >nul
  if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
+ echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
+ set /p option=オプションを設定,上記の数字を入力。: 
+ if !option! == 1 set option=AlphaBlend
+ if !option! == 2 set option=Light
+ if !option! == 3 set option=AlphaBlend,Light
+ if !option! == 4 set option=AlphaBlend,Light,OneTex
+ echo       [!matname!, "%texturedir%/!texture!", "!option!"], >>%temp%\.ams1.tscf
  endlocal
  goto matroop
 rem AutomaticMaterialSettingErrors
