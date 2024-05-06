@@ -3,8 +3,8 @@ rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
 set version=1.2.4
 set releaseversion=2
-rem �l��Tips: version�ϐ��͕��ʂɃo�[�W������\�����Areleaseversion�ϐ���v1.1��1�Ƃ��������[�X�̃o�[�W�����B
-rem CLI�A�b�v�f�[�g�̓����[�X�o�[�W�������オ�������̂ݎ��s�\.
+rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
+rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 pushd %temp%\.RJC\json
 set user=
 set notlatest=false
@@ -26,37 +26,37 @@ del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
 if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 cls
-echo Rtm_Json_Creator�ւ悤����!
-echo �s����I�����Ă�������
+echo Rtm_Json_Creatorへようこそ!
+echo 行動を選択してください
 :selectwelcome
 pushd %temp%\.RJC\welcome
 echo  ----------------------------------------
-echo   �s���̔ԍ�         �s���̓��e          
+echo   行動の番号         行動の内容          
 echo  ----------------------------------------
-echo       1         ��Ԃ�json���쐬���܂��B
-echo       2         �I�������܂��B
-echo       3         �Ŕ�json���쐬���܂��B
-echo       4         �X�y�V�����T���N�X�ƍ��
-echo       5         �@�\����/�Ȃ��ݒu����json���쐬���܂��B
-echo       6         NPC��json���쐬���܂��B
-echo       7         ����json���쐬���܂��B
-echo       8         sounds.json���쐬���܂��B
-echo       9         �f�B���N�g�����\�����܂��B
-echo      11         pack.json���쐬���܂��B
-echo      12         �M���@��json���쐬���܂��B
-echo      13         ���[����json���쐬���܂��B
-echo      14         �R���e�i��json���쐬���܂��B
-echo      15         �Ί��json���쐬���܂��B
-echo      16         �R�l�N�^�[��json���쐬���܂��B
-echo      17         ���C���[��json���쐬���܂��B
-echo      18         ��蕨(������,�q��@,�D��,���t�g)��json���쐬���܂��B
-echo     cmd         cmd.exe���R�[�����܂��B
-echo setpath       �w�肵���f�B���N�g���Ƀp�X��ʂ��܂��B
-if %notlatest% == true ( echo  update        RtmJsonCreator���ŐV�łɃA�b�v�f�[�g���܂��B )
+echo       1         列車のjsonを作成します。
+echo       2         終了させます。
+echo       3         看板のjsonを作成します。
+echo       4         スペシャルサンクスと作者
+echo       5         機能あり/なし設置物のjsonを作成します。
+echo       6         NPCのjsonを作成します。
+echo       7         旗のjsonを作成します。
+echo       8         sounds.jsonを作成します。
+echo       9         ディレクトリを構成します。
+echo      11         pack.jsonを作成します。
+echo      12         信号機のjsonを作成します。
+echo      13         レールのjsonを作成します。
+echo      14         コンテナのjsonを作成します。
+echo      15         火器のjsonを作成します。
+echo      16         コネクターのjsonを作成します。
+echo      17         ワイヤーのjsonを作成します。
+echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
+echo     cmd         cmd.exeをコールします。
+echo setpath       指定したディレクトリにパスを通します。
+if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo  ----------------------------------------
-echo ���݂̃f�B���N�g��: %setpath%
+echo 現在のディレクトリ: %setpath%
 echo  ----------------------------------------
-set /p start=�s���̐�������͂��Ă�������...
+set /p start=行動の数字を入力してください...
 set back=selectwelcome
 pushd %setpath%
 echo;
@@ -81,54 +81,54 @@ if %start% == setpath call :setpath
 if %start% == explorer start explorer.exe %setpath%
 if %start% == License goto License
 if %start% == update goto update
-rem �ȉ��̋@�\�͏����A�폜����邩�ύX�ƂȂ�\��������܂��B
+rem 以下の機能は将来、削除されるか変更となる可能性があります。
 if %start% == 999 goto soundcreate
-if %start% == cmd echo exit /b ���g�p����RtmJsonCreator�ɖ߂邱�Ƃ��ł��܂��B
+if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
 if %start% == cmd call cmd.exe
 if %start% == deljson goto deljson
 if %start% == ams goto useams
-rem �����I�@�\�̏I��
-echo �G���[:�s���Ȕԍ��ł��B
+rem 試験的機能の終焉
+echo エラー:不明な番号です。
 goto selectwelcome
 :1
  cls
  set tsw=t
- echo ��Ԃ�json���쐬���܂��B
- echo �����JSON�������ۑ�����܂��B json�� %cd%\ModelTrain_%%trainname%%.json �ɂł���͂��ł��B
+ echo 列車のjsonを作成します。
+ echo これはJSONが自動保存されます。 jsonは %cd%\ModelTrain_%%trainname%%.json にできるはずです。
  echo -----------------
  rem TrainName setting start
- echo trainName�����߂Ă��������B �g�p�\:���p�p����(�p��͏������̂݉\)
- echo �m�[�g:����������邽�߂ɁA[��Җ�]_1�̂悤�Ȍ`�ɂ���̂��������߂ł��B(�������[]�͊O���Ă�������)
+ echo trainNameを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)
+ echo ノート:競合を避けるために、[作者名]_1のような形にするのがおすすめです。(もちろん[]は外してください)
  set /p trainname=
- echo trainname�� %trainname% �ɐݒ肳��܂����B
+ echo trainnameは %trainname% に設定されました。
  echo { > ModelTrain_%trainname%.json
  echo    "trainName": "%trainname%", >> ModelTrain_%trainname%.json
  rem TrainName setting end
  echo -----------------
  rem Traintype setting start
- echo traintype�����߂Ă��������B �g�p�\:EC,DC,CC,TC
- echo EC=�d��
- echo DC=�C����
- echo CC=�ݎ�
- echo TC=�^���N��
+ echo traintypeを決めてください。 使用可能:EC,DC,CC,TC
+ echo EC=電車
+ echo DC=気動車
+ echo CC=貨車
+ echo TC=タンク車
  set /p traintype=
- echo traintype�� %traintype% �ɐݒ肳��܂����B 
+ echo traintypeは %traintype% に設定されました。 
  echo    "trainType": "%traintype%", >> ModelTrain_%trainname%.json
  rem Traintype setting end
  echo ------------------
  rem tags setting start
- echo tags�����߂Ă��������B �g�p�\:���p�p����(�p��͏������̂݉\)��","
- echo �����w�肷��ꍇ��","�ŋ�؂��ē��͂��Ă��������B(��:tag1,tag2,tag3)
+ echo tagsを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)と","
+ echo 複数指定する場合は","で区切って入力してください。(例:tag1,tag2,tag3)
  set /p tags=
- echo tags�� %tags% �ɐݒ肳��܂����B
+ echo tagsは %tags% に設定されました。
  echo    "tags":"%tags%", >> ModelTrain_%trainname%.json
  rem tags setting end
  echo ------------------
  rem trainmodel setting start
- echo ���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����AC:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
- echo �����ǂݍ��݋@�\�������ȏꍇ��mqoz�܂���obj,ngto,ngtz�Ɠ��͂��Ă��������B
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_old
@@ -144,73 +144,73 @@ goto selectwelcome
  set filename=ModelTrain_%trainname%.json
  goto ams
  :mat_old
- echo modelFile�����߂Ă��������B
- echo ��Ԃ�3D���f���̃t�@�C������"�g���q����"�œ��͂��Ă��������B
+ echo modelFileを決めてください。
+ echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
  set /p modelFile=
- echo modelFile�� %modelFile% �ɐݒ肳��܂����B
+ echo modelFileは %modelFile% に設定されました。
  echo "trainModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
  echo          "textures":[>> ModelTrain_%trainname%.json
  echo ------------------
  set count=0
  :matcountsetting
- set /p matcount=��ԃ��f���̍ގ�������͂��Ă�������
- echo �ގ����� %matcount% �ɐݒ肳��܂����B
+ set /p matcount=列車モデルの材質数を入力してください
+ echo 材質数は %matcount% に設定されました。
  :matcheck
  if %matcount% == 1 goto matlast
  if %matcount% equ %count% ( goto matlast ) ELSE ( goto matsetting )
  :matsetting
  set /a count=%count%+1
   echo ------------------
-   echo ��Ԃ�3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B(���ʂł���΁A textures/train/traintexture.png �ȂǂɂȂ�܂��B)
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
    if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���?
-   echo "�I�v�V�����Ȃ�" �̏ꍇ�� 0 ���A "AlphaBlend" �̏ꍇ�� 1 ���A "Light" �� 2 ���A "AlphaBlend,Light" �� 3 �������Ă��������B
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
-   if %ERRORLEVEL% == 1 echo %mat% �� %mattexture% �̃I�v�V������ (�Ȃ�) �ɐݒ肳��܂����B
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
    if %ERRORLEVEL% == 1 echo ------------------
    if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelTrain_%trainname%.json
    if %ERRORLEVEL% == 1 goto matcheck
    if %ERRORLEVEL% == 2 set mata=AlphaBlend
    if %ERRORLEVEL% == 3 set mata=Light
    if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
    goto matcheck
   :osc-mat-train
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
   goto matcheck
  :matlast
-   echo ��Ԃ�3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B(���ʂł���΁A textures/train/traintexture.png �ȂǂɂȂ�܂��B)
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
    if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���?
-   echo "�I�v�V�����Ȃ�" �̏ꍇ�� 0 ���A "AlphaBlend" �̏ꍇ�� 1 ���A "Light" �� 2 ���A "AlphaBlend,Light" �� 3 �������Ă��������B
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
-   if %ERRORLEVEL% == 1 echo %mat% �� %mattexture% �̃I�v�V������ (�Ȃ�) �ɐݒ肳��܂����B
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
    if %ERRORLEVEL% == 1 echo ------------------
    if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelTrain_%trainname%.json
    if %ERRORLEVEL% == 1 echo                     ] >> ModelTrain_%trainname%.json
@@ -219,17 +219,17 @@ goto selectwelcome
    if %ERRORLEVEL% == 2 set mata=AlphaBlend
    if %ERRORLEVEL% == 3 set mata=Light
    if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
    echo                     ] >> ModelTrain_%trainname%.json
    echo               }, >> ModelTrain_%trainname%.json
    goto bogi
   :osc-mat-train-last
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
    echo                     ] >> ModelTrain_%trainname%.json
@@ -239,9 +239,9 @@ goto selectwelcome
 :bogi
  rem bogiemodel setting start
  echo;
- echo �{�M�[���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����A"C:\rtm\assets\minecraft\models\bogie.mqo"�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
+ echo ボギーモデルファイルのパスを入力してください。
+ echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\bogie.mqo"の形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_oldb
@@ -257,73 +257,73 @@ goto selectwelcome
  set return=1222
  goto ams
  :mat_oldb
- echo modelFile�����߂Ă��������B
- echo ��Ԃ�3D���f���̃t�@�C������"�g���q����"�œ��͂��Ă��������B
+ echo modelFileを決めてください。
+ echo 列車の3Dモデルのファイル名を"拡張子あり"で入力してください。
  set /p modelFile=
- echo modelFile�� %modelFile% �ɐݒ肳��܂����B
+ echo modelFileは %modelFile% に設定されました。
  echo "bogieModel2":{ >> ModelTrain_%trainname%.json
  echo     "modelFile": "%modelFile%", >> ModelTrain_%trainname%.json
  echo          "textures":[ >> ModelTrain_%trainname%.json
  echo ------------------
  set count=0
  :matcountsetting
- set /p matcount=��ԃ��f���̍ގ�������͂��Ă�������
- echo �ގ����� %matcount% �ɐݒ肳��܂����B
+ set /p matcount=列車モデルの材質数を入力してください
+ echo 材質数は %matcount% に設定されました。
  :matchecks
  if %matcount% == 1 goto matlasts
  if %matcount% equ %count% ( goto matlasts ) ELSE ( goto matsettings )
  :matsettings
  set /a count=%count%+1
    echo ------------------
-   echo �{�M�[��3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo ボギーの3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B(���ʂł���΁A textures/train/traintexture.png �ȂǂɂȂ�܂��B)
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
    if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���?
-   echo "�I�v�V�����Ȃ�" �̏ꍇ�� 0 ���A "AlphaBlend" �̏ꍇ�� 1 ���A "Light" �� 2 ���A "AlphaBlend,Light" �� 3 �������Ă��������B
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
-   if %ERRORLEVEL% == 1 echo %mat% �� %mattexture% �̃I�v�V������ (�Ȃ�) �ɐݒ肳��܂����B
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
    if %ERRORLEVEL% == 1 echo ------------------
    if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelTrain_%trainname%.json
    if %ERRORLEVEL% == 1 goto matchecks
    if %ERRORLEVEL% == 2 set mata=AlphaBlend
    if %ERRORLEVEL% == 3 set mata=Light
    if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
    goto matchecks
   :osc-mat-bogie
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
  goto matchecks
  :matlasts
-   echo ��Ԃ�3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B(���ʂł���΁A textures/train/traintexture.png �ȂǂɂȂ�܂��B)
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
    if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���?
-   echo "�I�v�V�����Ȃ�" �̏ꍇ�� 0 ���A "AlphaBlend" �̏ꍇ�� 1 ���A "Light" �� 2 ���A "AlphaBlend,Light" �� 3 �������Ă��������B
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
-   if %ERRORLEVEL% == 1 echo %mat% �� %mattexture% �̃I�v�V������ (�Ȃ�) �ɐݒ肳��܂����B
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
    if %ERRORLEVEL% == 1 echo ------------------
    if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelTrain_%trainname%.json
    if %ERRORLEVEL% == 1 echo                     ] >> ModelTrain_%trainname%.json
@@ -332,17 +332,17 @@ goto selectwelcome
    if %ERRORLEVEL% == 2 set mata=AlphaBlend
    if %ERRORLEVEL% == 3 set mata=Light
    if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
    echo                     ] >> ModelTrain_%trainname%.json
    echo               }, >> ModelTrain_%trainname%.json
    goto 1222
   :osc-mat-bogie-last
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
    echo                     ] >> ModelTrain_%trainname%.json
@@ -350,382 +350,382 @@ goto selectwelcome
    goto 1222
 :1222
  rem buttontexture setting start
-  echo buttontexture�����߂Ă��������B
-  echo ���q�I����ʂ̃{�^���̃e�N�X�`���ւ̃p�X���L�q���Ă��������B(���ʂł���΁A textures/train/button_train.png �ȂǂɂȂ�܂��B)
+  echo buttontextureを決めてください。
+  echo 車輌選択画面のボタンのテクスチャへのパスを記述してください。(普通であれば、 textures/train/button_train.png などになります。)
   set /p button=
-  echo �{�^���e�N�X�`���ւ̃p�X�� %button% �ɐݒ肳��܂����B
+  echo ボタンテクスチャへのパスは %button% に設定されました。
   echo  "buttonTexture": "%button%", >> ModelTrain_%trainname%.json
   rem buttontexture setting end
   echo ------------------
   rem playerpos setting start
-  echo playerpos��1�߂����߂Ă��������B
-  echo �q���g:�^�]�Ȃ̈ʒu�͎��ۂɓǂݍ��܂��Ă�������ɂ��񂾂񗝑z�ɋ߂Â���̂���ԗǂ����@�ł��B
-  echo ����͉^�]�Ȃ̈ʒu(�{�M�[���E�N���b�N���A�^�]��ԂɂȂ����Ƃ��ɌŒ肳�����W)��ݒ肵�܂��B
-  echo ���q�̒��S����̈ʒu�ŁA�P�ʂ�"���[�g��"�ł��B
-  echo �܂��� x �ł��B
+  echo playerposの1つめを決めてください。
+  echo ヒント:運転席の位置は実際に読み込ませてそれを元にだんだん理想に近づけるのが一番良い方法です。
+  echo これは運転席の位置(ボギーを右クリックし、運転状態になったときに固定される座標)を設定します。
+  echo 車輌の中心からの位置で、単位は"メートル"です。
+  echo まずは x です。
   set /p playerPosx=
-  echo ���� y �ł��B ���݂̍��W: [ x=%playerPosx% , y=���ݒ� , z=���ݒ� ]
+  echo 次に y です。 現在の座標: [ x=%playerPosx% , y=未設定 , z=未設定 ]
   set /p playerPosy=
-  echo ���� z �ł��B ���݂̍��W: [ x=%playerPosx% , y=%playerPosy% , z=���ݒ� ]
+  echo 次に z です。 現在の座標: [ x=%playerPosx% , y=%playerPosy% , z=未設定 ]
   set /p playerPosz=
   echo ------------------
-  echo playerpos��2�߂����߂Ă��������B
-  echo 1�߂̍��W: [ x=%playerPosx% , y=%playerPosy% , z=%playerPosz% ]
-  echo 2�߂͑�̂̏ꍇ�Ax��z�����̐����𔽓]?(�Ⴆ��x��1�Ȃ��-1�ɂ���Ȃ�)�����邱�ƂŊ������܂��B ���������ł����삵�܂��B
-  echo �܂��� x �ł��B
+  echo playerposの2つめを決めてください。
+  echo 1つめの座標: [ x=%playerPosx% , y=%playerPosy% , z=%playerPosz% ]
+  echo 2つめは大体の場合、xとz両方の数字を反転?(例えばxが1ならば-1にするなど)をすることで完了します。 同じ数字でも動作します。
+  echo まずは x です。
   set /p playerPos2x=
-  echo ���� y �ł��B ���݂̍��W: [ x=%playerPos2x% , y=���ݒ� , z=���ݒ� ]
+  echo 次に y です。 現在の座標: [ x=%playerPos2x% , y=未設定 , z=未設定 ]
   set /p playerPos2y=
-  echo ���� z �ł��B ���݂̍��W: [ x=%playerPos2x% , y=%playerPos2y% , z=���ݒ� ]
+  echo 次に z です。 現在の座標: [ x=%playerPos2x% , y=%playerPos2y% , z=未設定 ]
   set /p playerPos2z=
   echo  "playerPos": [[%playerPosx%, %playerPosy%, %playerPosz%], [%playerPos2x%, %playerPos2y%, %playerPos2z%]], >> ModelTrain_%trainname%.json
   rem playerpos setting end
   echo ------------------
   rem bogiepos setting start
-  echo bogiePos��1�߂����߂Ă��������B
-  echo �q���g:��Ԃ̈ʒu�͎��ۂɓǂݍ��܂��Ă�������ɂ��񂾂񗝑z�ɋ߂Â���̂���ԗǂ����@�ł��B
-  echo ����͑�Ԃ̈ʒu��ݒ肵�܂��B
-  echo ���q�̒��S����̈ʒu�ŁA�P�ʂ�"���[�g��"�ł��B
-  echo �܂��� x �ł��B
+  echo bogiePosの1つめを決めてください。
+  echo ヒント:台車の位置は実際に読み込ませてそれを元にだんだん理想に近づけるのが一番良い方法です。
+  echo これは台車の位置を設定します。
+  echo 車輌の中心からの位置で、単位は"メートル"です。
+  echo まずは x です。
   set /p bogieposx=
-  echo ���� y �ł��B ���݂̍��W: [ x=%bogieposx% , y=���ݒ� , z=���ݒ� ]
+  echo 次に y です。 現在の座標: [ x=%bogieposx% , y=未設定 , z=未設定 ]
   set /p bogieposy=
-  echo ���� z �ł��B ���݂̍��W: [ x=%bogieposx% , y=%bogieposy% , z=���ݒ� ]
+  echo 次に z です。 現在の座標: [ x=%bogieposx% , y=%bogieposy% , z=未設定 ]
   set /p bogieposz=
   echo ------------------
-  echo bogiepos��2�߂����߂Ă��������B �g�p�\:int�l�̂��ׂĂ̐���
-  echo 1�߂̍��W: [ x=%bogieposx% , y=%bogieposy% , z=%bogieposz% ]
-  echo 2�߂͑�̂̏ꍇ�Ax��z�����̐����𔽓]?(�Ⴆ��x��1�Ȃ��-1�ɂ���Ȃ�)�����邱�ƂŊ������܂��B ���������ł����삵�܂��B
-  echo �܂��� x �ł��B
+  echo bogieposの2つめを決めてください。 使用可能:int値のすべての数字
+  echo 1つめの座標: [ x=%bogieposx% , y=%bogieposy% , z=%bogieposz% ]
+  echo 2つめは大体の場合、xとz両方の数字を反転?(例えばxが1ならば-1にするなど)をすることで完了します。 同じ数字でも動作します。
+  echo まずは x です。
   set /p bogiepos2x=
-  echo ���� y �ł��B ���݂̍��W: [ x=%bogiepos2x% , y=���ݒ� , z=���ݒ� ]
+  echo 次に y です。 現在の座標: [ x=%bogiepos2x% , y=未設定 , z=未設定 ]
   set /p bogiepos2y=
-  echo ���� z �ł��B ���݂̍��W: [ x=%bogiepos2x% , y=%bogiepos2y% , z=���ݒ� ]
+  echo 次に z です。 現在の座標: [ x=%bogiepos2x% , y=%bogiepos2y% , z=未設定 ]
   set /p bogiepos2z=
   echo  "bogiePos": [[%bogieposx%, %bogieposy%, %bogieposz%], [%bogiepos2x%, %bogiepos2y%, %bogiepos2z%]], >> ModelTrain_%trainname%.json
   rem bogiepos setting end
   echo ------------------
   rem traindistance setting start
-  echo trainDistance�����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo ����͎ԗ��̒�����2����1�ɂ���Ƃ����ł��傤�B
+  echo trainDistanceを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo これは車両の長さの2分の1にするといいでしょう。
   set /p trainDistance=
-  echo trainDistance�� %trainDistance% �ɐݒ肳��܂����B
+  echo trainDistanceは %trainDistance% に設定されました。
   echo  "trainDistance": %trainDistance%,  >> ModelTrain_%trainname%.json
   rem traindistance setting end
   echo ------------------
   rem accuracy setting start
-  echo accuracy�����߂Ă��������B �g�p�\:LOW,MEDIUM
-  echo �啶���œ��͂��Ă��������B
+  echo accuracyを決めてください。 使用可能:LOW,MEDIUM
+  echo 大文字で入力してください。
   set /p accuracy=
-  echo accuracy�� %accuracy% �ɐݒ肳��܂����B
+  echo accuracyは %accuracy% に設定されました。
   rem accuracy setting end
   echo ------------------
  rem option
-  echo ���̐�͂��ׂăI�v�V�����ł��B�K�v�Ȃ��ꍇ��json���\�������܂ł̌������Ȃ��璷�������Ă��������B
-  echo  %ESC%[41mjson�����������Ƃ��Aenter�������Ă���ƍ쐬����json�����ł��܂��B%ESC%[0m
+  echo この先はすべてオプションです。必要ない場合はjsonが表示されるまでの個数を見ながら長押ししてください。
+  echo  %ESC%[41mjsonが完成したとき、enterを押していると作成したjsonが消滅します。%ESC%[0m
   pause
   rem option
   echo ------------------
-  echo accelerateion�����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo  -- N km/h/s �̏ꍇ N x 0.0006944 �̒l������
-  echo ����48��json���\������܂��B
+  echo accelerateionを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo  -- N km/h/s の場合 N x 0.0006944 の値を書く
+  echo あと48個でjsonが表示されます。
   set /p accelerateion=
-  echo accelerateion�� %accelerateion% �ɐݒ肳��܂����B
+  echo accelerateionは %accelerateion% に設定されました。
   if not "%accelerateion%" == "" echo  "accelerateion" : %accelerateion%, >> ModelTrain_%trainname%.json
   echo ------------------
-  echo maxSpeed��1�߂����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo 0.1�ɂ�13km/h(���Ԃ�)
-  echo ����47��json���\������܂��B
+  echo maxSpeedの1つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo あと47個でjsonが表示されます。
   set /p maxSpeed1=
-  echo maxSpeed��1�߂� %maxSpeed1% �ɐݒ肳��܂����B
+  echo maxSpeedの1つめは %maxSpeed1% に設定されました。
   echo ------------------
-  echo maxSpeed��2�߂����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo 0.1�ɂ�13km/h(���Ԃ�)
-  echo ���݂̐ݒ�: 1:%maxSpeed1%
-  echo ����46��json���\������܂��B
+  echo maxSpeedの2つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1%
+  echo あと46個でjsonが表示されます。
   set /p maxSpeed2=
-  echo maxSpeed��2�߂� %maxSpeed2% �ɐݒ肳��܂����B
+  echo maxSpeedの2つめは %maxSpeed2% に設定されました。
   echo ------------------
-  echo maxSpeed��3�߂����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo 0.1�ɂ�13km/h(���Ԃ�)
-  echo ���݂̐ݒ�: 1:%maxSpeed1% 2:%maxSpeed2%
-  echo ����45��json���\������܂��B
+  echo maxSpeedの3つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2%
+  echo あと45個でjsonが表示されます。
   set /p maxSpeed3=
-  echo maxSpeed��3�߂� %maxSpeed3% �ɐݒ肳��܂����B
+  echo maxSpeedの3つめは %maxSpeed3% に設定されました。
   echo ------------------
-  echo maxSpeed��4�߂����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo 0.1�ɂ�13km/h(���Ԃ�)
-  echo ���݂̐ݒ�: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3%
-  echo ����44��json���\������܂��B
+  echo maxSpeedの4つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3%
+  echo あと44個でjsonが表示されます。
   set /p maxSpeed4=
-  echo maxSpeed��4�߂� %maxSpeed4% �ɐݒ肳��܂����B
+  echo maxSpeedの4つめは %maxSpeed4% に設定されました。
   echo ------------------
-  echo maxSpeed��5�߂����߂Ă��������B �g�p�\:3���܂ł̐����Ə������ʂ܂�
-  echo 0.1�ɂ�13km/h(���Ԃ�)
-  echo ���݂̐ݒ�: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3% 4:%maxSpeed4%
-  echo ����43��json���\������܂��B
+  echo maxSpeedの5つめを決めてください。 使用可能:3桁までの数字と小数第二位まで
+  echo 0.1につき13km/h(たぶん)
+  echo 現在の設定: 1:%maxSpeed1% 2:%maxSpeed2% 3:%maxSpeed3% 4:%maxSpeed4%
+  echo あと43個でjsonが表示されます。
   set /p maxSpeed5=
-  echo maxSpeed��5�߂� %maxSpeed5% �ɐݒ肳��܂����B
+  echo maxSpeedの5つめは %maxSpeed5% に設定されました。
   if not "%maxspeed1%" == "" echo  "maxSpeed": [%maxSpeed1% , %maxSpeed2% , %maxSpeed3% , %maxSpeed4% , %maxSpeed5%], >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_Horn�����߂Ă��������B
-  echo ����42��json���\������܂��B
+  echo sound_Hornを決めてください。
+  echo あと42個でjsonが表示されます。
   set /p sound_horn=
-  echo sound_horn�� %sound_horn% �ɐݒ肳��܂����B
+  echo sound_hornは %sound_horn% に設定されました。
   if not "%sound_horn%" == "" echo  "sound_Horn": "%sound_horn%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_DoorOpen�����߂Ă��������B
-  echo ����41��json���\������܂��B
+  echo sound_DoorOpenを決めてください。
+  echo あと41個でjsonが表示されます。
   set /p sound_DoorOpen=
-  echo sound_DoorOpen�� %sound_DoorOpen% �ɐݒ肳��܂����B
+  echo sound_DoorOpenは %sound_DoorOpen% に設定されました。
   if not "%sound_DoorOpen%" == "" echo  "sound_DoorOpen": "%sound_DoorOpen%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_DoorClose�����߂Ă��������B
-  echo ����40��json���\������܂��B
+  echo sound_DoorCloseを決めてください。
+  echo あと40個でjsonが表示されます。
   set /p sound_DoorClose=
-  echo sound_DoorClose�� %sound_DoorClose% �ɐݒ肳��܂����B
+  echo sound_DoorCloseは %sound_DoorClose% に設定されました。
   if not "%sound_DoorClose%" == "" echo  "sound_DoorClose": "%sound_DoorClose%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_Stop�����߂Ă��������B
-  echo ����39��json���\������܂��B
+  echo sound_Stopを決めてください。
+  echo あと39個でjsonが表示されます。
   set /p sound_Stop=
-  echo sound_Stop�� %sound_Stop% �ɐݒ肳��܂����B
+  echo sound_Stopは %sound_Stop% に設定されました。
   if not "%sound_Stop%" == "" echo  "sound_Stop": "%sound_Stop%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_S_A�����߂Ă��������B
-  echo ����38��json���\������܂��B
+  echo sound_S_Aを決めてください。
+  echo あと38個でjsonが表示されます。
   set /p sound_S_A=
-  echo sound_S_A�� %sound_S_A% �ɐݒ肳��܂����B
+  echo sound_S_Aは %sound_S_A% に設定されました。
   if not "%sound_S_A%" == "" echo  "sound_S_A": "%sound_S_A%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_Deceleration�����߂Ă��������B
-  echo ����37��json���\������܂��B
+  echo sound_Decelerationを決めてください。
+  echo あと37個でjsonが表示されます。
   set /p sound_Deceleration=
-  echo sound_Deceleration�� %sound_Deceleration% �ɐݒ肳��܂����B
+  echo sound_Decelerationは %sound_Deceleration% に設定されました。
   if not "%Deceleration%" == "" echo  "sound_Deceration": "%sound_Deceleration%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo sound_D_S�����߂Ă��������B
-  echo ����36��json���\������܂��B
+  echo sound_D_Sを決めてください。
+  echo あと36個でjsonが表示されます。
   set /p sound_D_S=
-  echo sound_D_S�� %sound_D_S% �ɐݒ肳��܂����B
+  echo sound_D_Sは %sound_D_S% に設定されました。
   if not "%sound_D_S%" == "" echo  "sound_D_S": "%sound_D_S%", >> ModelTrain_%trainname%.json
   echo ------------------
-  echo rolling�����߂Ă��������B �g�p�\:0.0~10.0
-  echo ����35��json���\������܂��B
+  echo rollingを決めてください。 使用可能:0.0~10.0
+  echo あと35個でjsonが表示されます。
   set /p rolling=
-  echo rolling�� %rolling% �ɐݒ肳��܂����B
+  echo rollingは %rolling% に設定されました。
   if not "%rolling%" == "" echo  "rolling": %rolling%, >> ModelTrain_%trainname%.json
   echo ------------------
-  echo mutejointsound�����߂Ă��������B �g�p�\:false,true
+  echo mutejointsoundを決めてください。 使用可能:false,true
   set /p mutejointsound=
-  echo mutejointsound�� %mutejointsound% �ɐݒ肳��܂����B
+  echo mutejointsoundは %mutejointsound% に設定されました。
   if not "%mutejointsound%" == "" echo  "mutejointsound": %mutejointsound%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo rollSpeedCoefficient�����߂Ă��������B
-  echo ����34��json���\������܂��B
+  echo rollSpeedCoefficientを決めてください。
+  echo あと34個でjsonが表示されます。
   set /p rollSpeedCoefficient=
-  echo rollSpeedCoefficient�� %rollSpeedCoefficient% �ɐݒ肳��܂����B
+  echo rollSpeedCoefficientは %rollSpeedCoefficient% に設定されました。
   if not "%rollSpeedCoefficient%" == "" echo  "rollSpeedCoefficient": %rollSpeedCoefficient%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo rollCoefficient�����߂Ă��������B
-  echo ����33��json���\������܂��B
+  echo rollCoefficientを決めてください。
+  echo あと33個でjsonが表示されます。
   set /p rollCoefficient=
-  echo rollCoefficient�� %rollCoefficient% �ɐݒ肳��܂����B
+  echo rollCoefficientは %rollCoefficient% に設定されました。
   if not "%rollCoefficient%" == "" echo  "rollCoefficient": %rollCoefficient%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo rollVariationCoefficient�����߂Ă��������B
-  echo ����32��json���\������܂��B
+  echo rollVariationCoefficientを決めてください。
+  echo あと32個でjsonが表示されます。
   set /p rollVariationCoefficient=
-  echo rollVariationCoefficient�� %rollVariationCoefficient% �ɐݒ肳��܂����B
+  echo rollVariationCoefficientは %rollVariationCoefficient% に設定されました。
   if not "%rollVariationCoefficient%" == "" echo  "rollVariationCoefficient": %rollVariationCoefficient%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo rollWidthCoefficient�����߂Ă��������B
-  echo ����31��json���\������܂��B
+  echo rollWidthCoefficientを決めてください。
+  echo あと31個でjsonが表示されます。
   set /p rollWidthCoefficient=
-  echo rollWidthCoefficient�� %rollWidthCoefficient% �ɐݒ肳��܂����B
+  echo rollWidthCoefficientは %rollWidthCoefficient% に設定されました。
   if not "%rollWidthCoefficient%" == "" echo  "rollWidthCoefficient": %rollWidthCoefficient%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo useCustomColor�����߂Ă��������B
-  echo ����30��json���\������܂��B
+  echo useCustomColorを決めてください。
+  echo あと30個でjsonが表示されます。
   set /p useCustomColor=
-  echo useCustomColor�� %useCustomColor% �ɐݒ肳��܂����B
+  echo useCustomColorは %useCustomColor% に設定されました。
   if not "%usecustomcolor%" == "" echo  "useCustomColor": %useCustomColor%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo defaultData�����߂Ă��������B
-  echo ����29��json���\������܂��B
+  echo defaultDataを決めてください。
+  echo あと29個でjsonが表示されます。
   set /p defaultData=
-  echo defaultData�� %defaultData% �ɐݒ肳��܂����B
+  echo defaultDataは %defaultData% に設定されました。
   if not "%defaultData%" == "" echo  "defaultData": "%defaultData%", >> ModelTrain_%trainname%.json
   echo -------------------
-  echo scale�����߂Ă��������B
-  echo ngto���f���̏ꍇ�͐ݒ肵�������悢�ł��傤
-  echo ����28��json���\������܂��B
+  echo scaleを決めてください。
+  echo ngtoモデルの場合は設定した方がよいでしょう
+  echo あと28個でjsonが表示されます。
   set /p scale=
-  echo scale�� %scale% �ɐݒ肳��܂����B
+  echo scaleは %scale% に設定されました。
   if not "%scale%" == "" echo  "scale": %scale%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo offset��1�߂����߂Ă��������B
-  echo ����27��json���\������܂��B
+  echo offsetの1つめを決めてください。
+  echo あと27個でjsonが表示されます。
   set /p offset=
-  echo offset��1�߂� %offset% �ɐݒ肳��܂����B
+  echo offsetの1つめは %offset% に設定されました。
   echo -------------------
-  echo offset��2�߂����߂Ă��������B (offset��1�߂� %offset% �ł�)
-  echo ����26��json���\������܂��B
+  echo offsetの2つめを決めてください。 (offsetの1つめは %offset% です)
+  echo あと26個でjsonが表示されます。
   set /p offset2=
-  echo offset��2�߂� %offset2% �ɐݒ肳��܂����B
+  echo offsetの2つめは %offset2% に設定されました。
   echo -------------------
-  echo offset��3�߂����߂Ă��������B (offset1:%offset% , offset2:%offset2%)
-  echo ����25��json���\������܂��B
+  echo offsetの3つめを決めてください。 (offset1:%offset% , offset2:%offset2%)
+  echo あと25個でjsonが表示されます。
   set /p offset3=
-  echo offset��3�߂� %offset3% �ɐݒ肳��܂����B
+  echo offsetの3つめは %offset3% に設定されました。
   if not "%offset%" == "" echo  "offset": [%offset% , %offset2% , %offset3%], >> ModelTrain_%trainname%.json
   echo -------------------
-  echo smoothing�����߂Ă��������B �g�p�\:false/true
-  echo ����24��json���\������܂��B
+  echo smoothingを決めてください。 使用可能:false/true
+  echo あと24個でjsonが表示されます。
   set /p smoothing=
-  echo smoothing�� %smoothing% �ɐݒ肳��܂����B
+  echo smoothingは %smoothing% に設定されました。
   if not "%smoothing%" == "" echo  "smoothing": %smoothing%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo doCulling�����߂Ă��������B �g�p�\:false/true
-  echo ����23��json���\������܂��B
+  echo doCullingを決めてください。 使用可能:false/true
+  echo あと23個でjsonが表示されます。
   set /p doCulling=
-  echo doCulling�� %doCulling% �ɐݒ肳��܂����B
+  echo doCullingは %doCulling% に設定されました。
   if not "%doCulling%" == "" echo  "doCulling": %doCulling%, >> ModelTrain_%trainname%.json
   echo -------------------
-  echo serverScriptPath�����߂Ă��������B
-  echo ����22��json���\������܂��B
+  echo serverScriptPathを決めてください。
+  echo あと22個でjsonが表示されます。
   set /p serverScriptPath=
-  echo serverScriptPath�� %serverScriptPath% �ɐݒ肳��܂����B
+  echo serverScriptPathは %serverScriptPath% に設定されました。
   if not "%serverScriptPath%" == "" echo  "serverScriptPath": "%serverScriptPath%", >> ModelTrain_%trainname%.json
   echo -------------------
-  echo guiScriptPath�����߂Ă��������B
-  echo ����21��json���\������܂��B
+  echo guiScriptPathを決めてください。
+  echo あと21個でjsonが表示されます。
   set /p guiScriptPath=
-  echo guiScriptPath�� %guiScriptPath% �ɐݒ肳��܂����B
+  echo guiScriptPathは %guiScriptPath% に設定されました。
   if not "%guiScriptPath%" == "" echo  "guiScriptPath": "%guiScriptPath%", >> ModelTrain_%trainname%.json
   echo -------------------
-  echo guiTexture�����߂Ă��������B
-  echo ����20��json���\������܂��B
+  echo guiTextureを決めてください。
+  echo あと20個でjsonが表示されます。
   set /p guiTexture=
-  echo guiTexture�� %guiTexture% �ɐݒ肳��܂����B
+  echo guiTextureは %guiTexture% に設定されました。
   if not "%guiTexture%" == "" echo  "guitexture": "%guiTexture%", >> ModelTrain_%trainname%.json
   echo -------------------
-  echo renderAABB��1�߂����߂Ă��������B
-  echo ����19��json���\������܂��B
+  echo renderAABBの1つめを決めてください。
+  echo あと19個でjsonが表示されます。
   set /p renderAABB1=
-  echo renderAABB��1�߂� %renderAABB1% �ł��B
+  echo renderAABBの1つめは %renderAABB1% です。
   echo -------------------
-  echo renderAABB��2�߂����߂Ă��������B
-  echo ����18��json���\������܂��B
+  echo renderAABBの2つめを決めてください。
+  echo あと18個でjsonが表示されます。
   set /p renderAABB2=
-  echo renderAABB��2�߂� %renderAABB2% �ł��B
+  echo renderAABBの2つめは %renderAABB2% です。
   echo -------------------
-  echo renderAABB��3�߂����߂Ă��������B
-  echo ����17��json���\������܂��B
+  echo renderAABBの3つめを決めてください。
+  echo あと17個でjsonが表示されます。
   set /p renderAABB3=
-  echo renderAABB��3�߂� %renderAABB3% �ł��B
+  echo renderAABBの3つめは %renderAABB3% です。
   echo -------------------
-  echo renderAABB��4�߂����߂Ă��������B
-  echo ����16��json���\������܂��B
+  echo renderAABBの4つめを決めてください。
+  echo あと16個でjsonが表示されます。
   set /p renderAABB4=
-  echo renderAABB��4�߂� %renderAABB4% �ł��B
+  echo renderAABBの4つめは %renderAABB4% です。
   echo -------------------
-  echo renderAABB��5�߂����߂Ă��������B
-  echo ����15��json���\������܂��B
+  echo renderAABBの5つめを決めてください。
+  echo あと15個でjsonが表示されます。
   set /p renderAABB5=
-  echo renderAABB��5�߂� %renderAABB5% �ł��B
+  echo renderAABBの5つめは %renderAABB5% です。
   echo -------------------
-  echo renderAABB��6�߂����߂Ă��������B
-  echo ����14��json���\������܂��B
+  echo renderAABBの6つめを決めてください。
+  echo あと14個でjsonが表示されます。
   set /p renderAABB6=
-  echo renderAABB��6�߂� %renderAABB6% �ł��B
+  echo renderAABBの6つめは %renderAABB6% です。
   if not "%renderAABB1%" == "" echo  "renderAABB": [%renderAABB1% , %renderAABB2% , %renderAABB3% , %renderAABB4% , %renderAABB5% , %renderAABB6% ], >> ModelTrain_%trainname%.json
   echo --------------------
-  echo size��1�߂����߂Ă��������B
-  echo ����13��json���\������܂��B
+  echo sizeの1つめを決めてください。
+  echo あと13個でjsonが表示されます。
   set /p size1=
-  echo size��1�߂� %size1% �ɐݒ肳��܂����B
+  echo sizeの1つめは %size1% に設定されました。
   echo --------------------
-  echo size��2�߂����߂Ă��������B
-  echo ����12��json���\������܂��B
+  echo sizeの2つめを決めてください。
+  echo あと12個でjsonが表示されます。
   set /p size2=
-  echo size��2�߂� %size2% �ɐݒ肳��܂����B
+  echo sizeの2つめは %size2% に設定されました。
   if not "%size1%" == "" echo  "size": [%size1% , %size2%], >> ModelTrain_%trainname%.json
   echo --------------------
-  echo soundScriptPath�����߂Ă��������B
-  echo ����11��json���\������܂��B
+  echo soundScriptPathを決めてください。
+  echo あと11個でjsonが表示されます。
   set /p soundScriptPath=
-  echo soundScriptPath�� %soundScriptPath% �ɐݒ肳��܂����B
+  echo soundScriptPathは %soundScriptPath% に設定されました。
   if not "%soundScriptPath%" == "" echo  "soundScriptPath": "%soundScriptPath%", >> ModelTrain_%trainname%.json
   echo --------------------
-  echo smoke�̏o��x���W�����߂Ă��������B
-  echo ����10��json���\������܂��B
+  echo smokeの出るx座標を決めてください。
+  echo あと10個でjsonが表示されます。
   set /p smoke1=
-  echo smoke�� %smoke1% �ɐݒ肳��܂����B
+  echo smokeは %smoke1% に設定されました。
   echo --------------------
-  echo smoke�̏o��y���W�����߂Ă��������B
-  echo ����9��json���\������܂��B
+  echo smokeの出るy座標を決めてください。
+  echo あと9個でjsonが表示されます。
   set /p smoke2=
-  echo smoke�� %smoke2% �ɐݒ肳��܂����B
+  echo smokeは %smoke2% に設定されました。
   echo --------------------
-  echo smoke�̏o��z���W�����߂Ă��������B
-  echo ����8��json���\������܂��B
+  echo smokeの出るz座標を決めてください。
+  echo あと8個でjsonが表示されます。
   set /p smoke3=
-  echo smoke�� %smoke3% �ɐݒ肳��܂����B
+  echo smokeは %smoke3% に設定されました。
   echo --------------------
-  echo smoke�̃p�[�e�B�N�������߂Ă��������B
-  echo ����7��json���\������܂��B
+  echo smokeのパーティクルを決めてください。
+  echo あと7個でjsonが表示されます。
   set /p smoke4=
-  echo smoke�� %smoke4% �ɐݒ肳��܂����B
+  echo smokeは %smoke4% に設定されました。
   echo --------------------
-  echo smoke�����߂Ă��������B
-  echo ����6��json���\������܂��B
+  echo smokeを決めてください。
+  echo あと6個でjsonが表示されます。
   set /p smoke5=
-  echo smoke�� %smoke5% �ɐݒ肳��܂����B
+  echo smokeは %smoke5% に設定されました。
   echo --------------------
-  echo smoke�����߂Ă��������B
-  echo ����5��json���\������܂��B
+  echo smokeを決めてください。
+  echo あと5個でjsonが表示されます。
   set /p smoke6=
-  echo smoke�� %smoke6% �ɐݒ肳��܂����B
+  echo smokeは %smoke6% に設定されました。
   if not "%smoke%" == "" echo  "smoke": [[%smoke% , %smoke2% , %smoke3% , "%smoke4%" , %smoke5% , %smoke6%]], >> ModelTrain_%trainname%.json
   echo --------------------
-  echo notDisplayCab�����߂Ă��������B
-  echo ����4��json���\������܂��B
+  echo notDisplayCabを決めてください。
+  echo あと4個でjsonが表示されます。
   set /p notDisplayCab=
-  echo notDisplayCab�� %notDisplayCab% �ɐݒ肳��܂����B
+  echo notDisplayCabは %notDisplayCab% に設定されました。
   if not "%notdisplaycab%" == "" echo  "notDisplayCab": %notDisplayCab%, >> ModelTrain_%trainname%.json
   echo --------------------
-  echo wheelRotationSpeed�����߂Ă��������B
-  echo ����3��json���\������܂��B
+  echo wheelRotationSpeedを決めてください。
+  echo あと3個でjsonが表示されます。
   set /p wheelRotationSpeed=
-  echo wheelRotationSpeed�� %wheelRotationSpeed% �ɐݒ肳��܂����B
+  echo wheelRotationSpeedは %wheelRotationSpeed% に設定されました。
   if not "%wheelrotationspeed%" == "" echo  "wheelRotationSpeed": %wheelRotationSpeed%, >> ModelTrain_%trainname%.json
   echo --------------------
-  echo sound_BrakeRelease�����߂Ă��������B
-  echo ����2��json���\������܂��B
+  echo sound_BrakeReleaseを決めてください。
+  echo あと2個でjsonが表示されます。
   set /p sound_BrakeRelease=
-  echo sound_BrakeRelease�� %sound_BrakeRelease% �ɐݒ肳��܂����B
+  echo sound_BrakeReleaseは %sound_BrakeRelease% に設定されました。
   if not "%sound_BrakeRelease%" == "" echo  "sound_BrakeRelease": "%sound_BrakeRelease%", >> ModelTrain_%trainname%.json
   echo --------------------
-  echo sound_BrakeRelease2�����߂Ă��������B
-  echo ����1��json���\������܂��B
+  echo sound_BrakeRelease2を決めてください。
+  echo あと1個でjsonが表示されます。
   set /p sound_BrakeRelease2=
-  echo sound_BrakeRelease2�� %sound_BrakeRelease2% �ɐݒ肳��܂����B
+  echo sound_BrakeRelease2は %sound_BrakeRelease2% に設定されました。
   if not "%sound_BrakeRelease2%" == "" echo  "sound_BrakeRelease2": "%sound_BrakeRelease2%", >> ModelTrain_%trainname%.json
   echo --------------------
-  echo isSingleTrain�����߂Ă��������B
-  echo ����0��json���\������܂��B
+  echo isSingleTrainを決めてください。
+  echo あと0個でjsonが表示されます。
   set /p isSingleTrain=
-  echo isSingleTrain�� %isSingleTrain% �ɐݒ肳��܂����B
+  echo isSingleTrainは %isSingleTrain% に設定されました。
   if not "%isSingleTrain%" == "" echo  "isSingleTrain": %isSingleTrain%, >> ModelTrain_%trainname%.json
   echo --------------------
   echo "accuracy": "%accuracy%" >> ModelTrain_%trainname%.json
   echo } >> ModelTrain_%trainname%.json
   goto train_json
  :train_json
- echo json���쐬���Ă��܂�..
+ echo jsonを作成しています..
  timeout /t 3 /NOBREAK >nul
- echo �t�@�C���p�X: %setpath%\ModelTrain_%trainname%.json
+ echo ファイルパス: %setpath%\ModelTrain_%trainname%.json
  echo;
  echo -- filename: ModelTrain_%trainname%.json --
  echo;
@@ -735,82 +735,82 @@ goto selectwelcome
  )
 :2
  echo -------------------
- echo ���s����Ɠ��e�������܂��B
- echo ���s���Ă���낵���ł���?
+ echo 続行すると内容が消えます。
+ echo 続行してもよろしいですか?
  set user=
  set /p user=(y / n)
  if %user% == y goto 21
  if %user% == n goto %back%
- echo �I���Ȃ�:%back%
+ echo 選択なし:%back%
  goto %back%
  :21
   goto welcome
 :3
  cls
  set tsw=S
- echo �Ŕ�json���쐬���܂��B
- echo �����r���Ń~�X�������ꍇ�́A�Ō�ɕҏW�ł���̂ł����ŕύX���Ă��������B
+ echo 看板のjsonを作成します。
+ echo もし途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
- echo texture�����߂Ă��������B(��ɕۑ����Ă������Ŕ�png�t�@�C�������g���q�Ȃ��œ��͂��Ă��������B)
- echo �m�[�g:����������邽�߂ɁA[��Җ�]_1�̂悤�Ȍ`�ɂ���̂��������߂ł��B(�������[]�͊O���Ă�������)
+ echo textureを決めてください。(先に保存しておいた看板のpngファイル名を拡張子なしで入力してください。)
+ echo ノート:競合を避けるために、[作者名]_1のような形にするのがおすすめです。(もちろん[]は外してください)
  set /p texture=
- echo texture�� %texture% �ɐݒ肳��܂����B
+ echo textureは %texture% に設定されました。
  echo -------------
- echo backTexture�����߂Ă��������B �g�p�\:0,1,2 
- echo  0=���\�������e�N�X�`���ɂȂ�܂��B
- echo  1=�摜�̉E���������̃e�N�X�`���ɂȂ�܂��B
- echo  2=�������ʂ̐F�Ɠ����F�ɂȂ�܂��B
+ echo backTextureを決めてください。 使用可能:0,1,2 
+ echo  0=裏表が同じテクスチャになります。
+ echo  1=画像の右半分が裏のテクスチャになります。
+ echo  2=裏が側面の色と同じ色になります。
  set /p backTexture=
- echo backTexture�� %backTexture% �ɐݒ肳��܂����B
+ echo backTextureは %backTexture% に設定されました。
  echo -------------
- echo height�����߂Ă��������B �g�p�\:�����Ə�����O�ʂ܂�(��:0.75) 
- echo �P�ʂ�"���[�g��"�ł��B
- echo ����͊Ŕ̍����ɂȂ�܂��B
+ echo heightを決めてください。 使用可能:整数と小数第三位まで(例:0.75) 
+ echo 単位は"メートル"です。
+ echo これは看板の高さになります。
  set /p height=
- echo height�� %height% �ɐݒ肳��܂����B
+ echo heightは %height% に設定されました。
  echo -------------
- echo width�����߂Ă��������B  �g�p�\:�����Ə�����O�ʂ܂�(��:2.25)
- echo �P�ʂ�"���[�g��"�ł��B
- echo ����͊Ŕ̉��̒����ɂȂ�܂��B
+ echo widthを決めてください。  使用可能:整数と小数第三位まで(例:2.25)
+ echo 単位は"メートル"です。
+ echo これは看板の横の長さになります。
  set /p width=
- echo width�� %width% �ɐݒ肳��܂����B
+ echo widthは %width% に設定されました。
  echo -------------
- echo depth�����߂Ă��������B �g�p�\:�����Ə�����O�ʂ܂�(��:0.375)
- echo �P�ʂ�"���[�g��"�ł��B
- echo ����͊Ŕ̉��s�ɂȂ�܂��B
+ echo depthを決めてください。 使用可能:整数と小数第三位まで(例:0.375)
+ echo 単位は"メートル"です。
+ echo これは看板の奥行になります。
  set /p depth=
- echo depth�� %depth% �ɐݒ肳��܂����B
+ echo depthは %depth% に設定されました。
  echo -------------
- echo frame�����߂Ă��������B �g�p�\:����
- echo �A�j���[�V�������Ȃ��ꍇ��1�ɐݒ肵�Ă��������B
+ echo frameを決めてください。 使用可能:整数
+ echo アニメーションしない場合は1に設定してください。
  set /p frame=
- echo frame�� %frame% �ɐݒ肳��܂����B
+ echo frameは %frame% に設定されました。
  echo -------------
- echo animationCycle�����߂Ă��������B �g�p�\:����
- echo �A�j���[�V�������Ȃ��ꍇ��1�ɐݒ肵�Ă��������B
+ echo animationCycleを決めてください。 使用可能:整数
+ echo アニメーションしない場合は1に設定してください。
  set /p animationCycle=
- echo animationCycle�� %animationCycle% �ɐݒ肳��܂����B
+ echo animationCycleは %animationCycle% に設定されました。
  echo -------------
- echo color�����߂Ă��������B �g�p�\:6���̐���
- echo  -- 16 �i���J���[�R�[�h�� 10 �i���ɕϊ������l
- echo �킩��Ȃ��Ȃ��0�ɂ��܂��傤�B
+ echo colorを決めてください。 使用可能:6桁の整数
+ echo  -- 16 進数カラーコードを 10 進数に変換した値
+ echo わからないならば0にしましょう。
  set /p color=
- echo color�� %color% �ɐݒ肳��܂����B
+ echo colorは %color% に設定されました。
  echo -------------
- echo lightValue�����߂Ă��������B �g�p�\:-16~15
- echo ����͊Ŕ̔����̓x������ݒ肵�܂��B
- echo -16 �����_���ɓ_�ł���
- echo -15~-1 RS�M���������Ă��鎞�A��������(�����͔����̋���)
- echo 0 �������Ȃ�
- echo 1~15 ��ɔ�������(�����͔����̋���)
+ echo lightValueを決めてください。 使用可能:-16~15
+ echo これは看板の発光の度合いを設定します。
+ echo -16 ランダムに点滅する
+ echo -15~-1 RS信号が入っている時、発光する(数字は発光の強さ)
+ echo 0 発光しない
+ echo 1~15 常に発光する(数字は発光の強さ)
  set /p lightValue=
- echo lightValue�� %lightValue% �ɐݒ肳��܂����B
+ echo lightValueは %lightValue% に設定されました。
  echo -------------
- echo json���������܂���!
+ echo jsonが完成しました!
  goto signjson
 :signjson
  set back=signjson
- echo ------�t�@�C����:SignBoard_%texture%.json-------
+ echo ------ファイル名:SignBoard_%texture%.json-------
  echo {
  echo   "texture": "%texture%",
  echo   "backTexture": %backTexture%,
@@ -823,24 +823,24 @@ goto selectwelcome
  echo   "lightValue": %lightValue%
  echo }
  echo ------------------------------------------------
- echo �s����I�����Ă�������
+ echo 行動を選択してください
  echo ----------------------------------------
- echo  �s���̔ԍ�         �s���̓��e          
+ echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     1              json��ҏW����       
- echo     2              �I�������܂��B       
- echo     3         json��ۑ����܂��B  
+ echo     1              jsonを編集する       
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set user=
  set /p user=
  if %user% == 1 goto signedit
  if %user% == 2 goto 2
  if %user% == 3 goto savesignjson
- echo �G���[:�s���Ȕԍ�
+ echo エラー:不明な番号
  goto signjson
 
 :savesignjson
- echo json��ۑ����܂��B json��%cd%\SignBoard_%texture%.json�ɂł���͂��ł��B
+ echo jsonを保存します。 jsonは%cd%\SignBoard_%texture%.jsonにできるはずです。
  pause
  echo { > SignBoard_%texture%.json
  echo   "texture": "%texture%", >> SignBoard_%texture%.json
@@ -855,8 +855,8 @@ goto selectwelcome
  echo } >> SignBoard_%texture%.json
  if exist SignBoard_%texture%.json (
   echo;
-  echo �t�@�C���̕ۑ����������܂����B
-  echo �t�@�C����:"SignBoard_%texture%.json"
+  echo ファイルの保存が完了しました。
+  echo ファイル名:"SignBoard_%texture%.json"
   echo;
  ) ELSE (
   set error=33N
@@ -865,8 +865,8 @@ goto selectwelcome
  goto %back%
 
 :signedit
- echo �ǂ̕�����ҏW���܂���?
- echo json�̃f�[�^�l�̖��O����͂��Ă��������B(���json����f�[�^�l���R�s�y���Ă��������B�������啶���̈Ⴂ�ŃG���[�ɂȂ��Ă��܂��܂��B)
+ echo どの部分を編集しますか?
+ echo jsonのデータ値の名前を入力してください。(上のjsonからデータ値をコピペしてください。小文字大文字の違いでエラーになってしまいます。)
  set edit=1
  set user=
  set /p user=
@@ -879,100 +879,100 @@ goto selectwelcome
  if %user% == animationCycle goto signedit_a
  if %user% == color goto signedit_c
  if %user% == lightValue goto signedit_l
- echo �G���[:�s���Ȗ��O
+ echo エラー:不明な名前
  goto signedit
  :signedit_t
  echo -------------
- echo texture�����߂Ă��������B(��ɕۑ����Ă������Ŕ�png�t�@�C�������g���q�Ȃ��œ��͂��Ă��������B)
+ echo textureを決めてください。(先に保存しておいた看板のpngファイル名を拡張子なしで入力してください。)
  set /p texture=
- echo texture�� %texture% �ɐݒ肳��܂����B
+ echo textureは %texture% に設定されました。
  goto signjson
  :signedit_b
  echo -------------
- echo backTexture�����߂Ă��������B �g�p�\:0,1,2 
- echo  0=���\�������e�N�X�`���ɂȂ�܂��B
- echo  1=�摜�̉E���������̃e�N�X�`���ɂȂ�܂��B
- echo  2=�������ʂ̐F�Ɠ����F�ɂȂ�܂��B
+ echo backTextureを決めてください。 使用可能:0,1,2 
+ echo  0=裏表が同じテクスチャになります。
+ echo  1=画像の右半分が裏のテクスチャになります。
+ echo  2=裏が側面の色と同じ色になります。
  set /p backTexture=
- echo backTexture�� %backTexture% �ɐݒ肳��܂����B
+ echo backTextureは %backTexture% に設定されました。
  goto signjson
  :signedit_h
  echo -------------
- echo height�����߂Ă��������B �g�p�\:�����Ə�����O�ʂ܂�(��:0.75) 
- echo �P�ʂ�"���[�g��"�ł��B
- echo ����͊Ŕ̍����ɂȂ�܂��B
+ echo heightを決めてください。 使用可能:整数と小数第三位まで(例:0.75) 
+ echo 単位は"メートル"です。
+ echo これは看板の高さになります。
  set /p height=
- echo height�� %height% �ɐݒ肳��܂����B
+ echo heightは %height% に設定されました。
  goto signjson
  :signedit_w
  echo -------------
- echo width�����߂Ă��������B  �g�p�\:�����Ə�����O�ʂ܂�(��:2.25)
- echo �P�ʂ�"���[�g��"�ł��B
- echo ����͊Ŕ̉��̒����ɂȂ�܂��B
+ echo widthを決めてください。  使用可能:整数と小数第三位まで(例:2.25)
+ echo 単位は"メートル"です。
+ echo これは看板の横の長さになります。
  set /p width=
- echo width�� %width% �ɐݒ肳��܂����B
+ echo widthは %width% に設定されました。
  goto signjson
  :signedit_d
  echo -------------
- echo depth�����߂Ă��������B �g�p�\:�����Ə�����O�ʂ܂�(��:0.375)
- echo �P�ʂ�"���[�g��"�ł��B
- echo ����͊Ŕ̉��s�ɂȂ�܂��B
+ echo depthを決めてください。 使用可能:整数と小数第三位まで(例:0.375)
+ echo 単位は"メートル"です。
+ echo これは看板の奥行になります。
  set /p depth=
- echo depth�� %depth% �ɐݒ肳��܂����B
+ echo depthは %depth% に設定されました。
  goto signjson
  :signedit_f
  echo -------------
- echo frame�����߂Ă��������B �g�p�\:����
- echo �A�j���[�V�������Ȃ��ꍇ��1�ɐݒ肵�Ă��������B
+ echo frameを決めてください。 使用可能:整数
+ echo アニメーションしない場合は1に設定してください。
  set /p frame=
- echo frame�� %frame% �ɐݒ肳��܂����B
+ echo frameは %frame% に設定されました。
  goto signjson
  :signedit_a
  echo -------------
- echo animationCycle�����߂Ă��������B �g�p�\:����
- echo �A�j���[�V�������Ȃ��ꍇ��1�ɐݒ肵�Ă��������B
+ echo animationCycleを決めてください。 使用可能:整数
+ echo アニメーションしない場合は1に設定してください。
  set /p animationCycle=
- echo animationCycle�� %animationCycle% �ɐݒ肳��܂����B
+ echo animationCycleは %animationCycle% に設定されました。
  goto signjson
  :signedit_c
  echo -------------
- echo color�����߂Ă��������B �g�p�\:6���̐���
- echo  -- 16 �i���J���[�R�[�h�� 10 �i���ɕϊ������l
- echo �킩��Ȃ��Ȃ��0�ɂ��܂��傤�B
+ echo colorを決めてください。 使用可能:6桁の整数
+ echo  -- 16 進数カラーコードを 10 進数に変換した値
+ echo わからないならば0にしましょう。
  set /p color=
- echo color�� %color% �ɐݒ肳��܂����B
+ echo colorは %color% に設定されました。
  goto signjson
  :signedit_l
  echo -------------
- echo lightValue�����߂Ă��������B �g�p�\:-16~15
- echo ����͊Ŕ̔����̓x������ݒ肵�܂��B
- echo -16 �����_���ɓ_�ł���
- echo -15~-1 RS�M���������Ă��鎞�A��������(�����͔����̋���)
- echo 0 ���s���Ȃ�
- echo 1~15 ��ɔ�������(�����͔����̋���)
+ echo lightValueを決めてください。 使用可能:-16~15
+ echo これは看板の発光の度合いを設定します。
+ echo -16 ランダムに点滅する
+ echo -15~-1 RS信号が入っている時、発光する(数字は発光の強さ)
+ echo 0 発行しない
+ echo 1~15 常に発光する(数字は発光の強さ)
  set /p lightValue=
- echo lightValue�� %lightValue% �ɐݒ肳��܂����B
+ echo lightValueは %lightValue% に設定されました。
  goto signjson
 
 :4
- echo ���:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
+ echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
  echo ----
- echo �X�y�V�����T���N�X(�h�̗�)
- echo  json�̃f�[�^�̒�
+ echo スペシャルサンクス(敬称略)
+ echo  jsonのデータの提供
  echo   -- .zip
- echo   -- �͂������Ƃ����� ^| https://twitter.com/Hachiko_Server
- echo  �f�o�b�O
+ echo   -- はちこうとっかい ^| https://twitter.com/Hachiko_Server
+ echo  デバッグ
  echo   -- akikawa9616
- echo   -- ���Ƃ��� ^| https://www.youtube.com/@Yonkatsu12
+ echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
  echo;
- echo  �ꕔ�@�\���Ď�
+ echo  一部機能発案者
  echo   -- K.kirikoto ^| https://twitter.com/mikawa8002
  echo;
- echo  �Q�l����
- echo   -- RTM���f���p�b�N�쐬�}�j���A��_2.4.8_1.pdf ^| �� ngt5479 ^| 2019/06/25
+ echo  参考文献
+ echo   -- RTMモデルパック作成マニュアル_2.4.8_1.pdf ^| 著 ngt5479 ^| 2019/06/25
  echo;
- echo ���̃v���O������MIT���C�Z���X�Ō��J����Ă��܂��B
- echo MIT License�S���͍s���I����ʂ�"License"����͂��Ă��������B
+ echo このプログラムはMITライセンスで公開されています。
+ echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
  echo version: %version% / releaseversion: %releaseversion%
  pause
@@ -981,33 +981,33 @@ goto selectwelcome
 :5
  cls
  set tsw=w
- echo �@�\����/�Ȃ��ݒu���̂ǂ���쐬���܂���?
- echo �������͂��Ȃ��ꍇ�͋����I�����܂��B
- echo �g�p�\(�@�\����):�Ւf�@,�]�Q�@,���D�@,�����@,�Ɩ�R,�Ԏ~��,ATC,��Ԍ��o��,�Ɩ�
- echo �g�p�\(�@�\�Ȃ�):�Ɩ�,�K�i,����,�ː���,�p�C�v,�A��
- echo "�Ɩ�R"��"�Ɩ�"�̈Ⴂ��RS���͂��\���ǂ����ł��B ��{�I�ɂ�"�Ɩ�"��I�����邱�Ƃ������߂��܂��B
+ echo 機能あり/なし設置物のどれを作成しますか?
+ echo 何も入力しない場合は強制終了します。
+ echo 使用可能(機能あり):遮断機,転轍機,改札機,券売機,照明R,車止め,ATC,列車検出器,照明
+ echo 使用可能(機能なし):照明,階段,足場,架線柱,パイプ,植物
+ echo "照明R"と"照明"の違いはRS入力が可能かどうかです。 基本的には"照明"を選択することをお勧めします。
  echo ----------
  echo if u cant type japanese,pls type english machineType:
  echo Gate,Point,Turnstile,Vendor,Light,BumpingPost,Antenna_Send,Antenna_Receive
  echo Lamp,Stair,Scaffold,Pole,Pipe,Plant
  echo (hint: "Antenna_Send"="Automatic Train Control","Antenna_Receive"="Train detector")
  set /p machineType=
- if %machineType% == "�Ւf�@" set machineType=Gate
- if %machineType% == "�]�Q�@" set machineType=Point
- if %machineType% == "���D�@" set machineType=Turnstile
- if %machineType% == "�����@" set machineType=Vendor
- if %machineType% == "�Ɩ�R" set machineType=Light
- if %machineType% == "�Ԏ~��" set machineType=BumpingPost
+ if %machineType% == "遮断機" set machineType=Gate
+ if %machineType% == "転轍機" set machineType=Point
+ if %machineType% == "改札機" set machineType=Turnstile
+ if %machineType% == "券売機" set machineType=Vendor
+ if %machineType% == "照明R" set machineType=Light
+ if %machineType% == "車止め" set machineType=BumpingPost
  if %machineType% == "ATC" set machineType=Antenna_Send
- if %machineType% == "��Ԍ��o��" set machineType=Antenna_Receive
+ if %machineType% == "列車検出器" set machineType=Antenna_Receive
  if %machineType% == "Train detector" set machineType=Antenna_Receive
 
- if %machineType% == "�Ɩ�" set machineType=Lamp
- if %machineType% == "�K�i" set machineType=Stair
- if %machineType% == "����" set machineType=Scaffold
- if %machineType% == "�ː���" set machineType=Pole
- if %machineType% == "�p�C�v" set machineType=Pipe
- if %machineType% == "�A��" set machineType=Plant
+ if %machineType% == "照明" set machineType=Lamp
+ if %machineType% == "階段" set machineType=Stair
+ if %machineType% == "足場" set machineType=Scaffold
+ if %machineType% == "架線柱" set machineType=Pole
+ if %machineType% == "パイプ" set machineType=Pipe
+ if %machineType% == "植物" set machineType=Plant
  
  if %machineType% == "Gate" set type=machineType
  if %machineType% == "Point" set type=machineType
@@ -1028,21 +1028,21 @@ goto selectwelcome
  goto 5-1
 
  :5-1
- echo �@�\����ݒu����json���쐬���܂��B
- echo �����A�r���Ń~�X�������ꍇ�́A�Ō�ɕҏW�ł���̂ł����ŕύX���Ă��������B
+ echo 機能あり設置物のjsonを作成します。
+ echo もし、途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
- echo name�����߂Ă��������B
- echo ����͋@�\����ݒu���̖��O�ɂȂ�܂��B�������Ȃ��悤�Ȗ��O��ݒ肵�Ă��������B
+ echo nameを決めてください。
+ echo これは機能あり設置物の名前になります。競合しないような名前を設定してください。
  set /p name=
- echo name�� %name% �ɐݒ肳��܂����B
+ echo nameは %name% に設定されました。
  echo -------------
  echo { >> ModelMachine_%name%.json
  echo   "name": "%name%", >> ModelMachine_%name%.json
  echo   "model": { >> ModelMachine_%name%.json
- echo ���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����AC:\rtm\assets\minecraft\models\ModelMachine_%name%.mqo�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
- echo �����ǂݍ��݋@�\�������ȏꍇ��mqoz�܂���obj,ngto,ngtz�Ɠ��͂��Ă��������B
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelMachine_%name%.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_old5
@@ -1058,14 +1058,14 @@ goto selectwelcome
  set filename=ModelMachine_%name%.json
  goto ams
  :mat_old5
- echo modelfile�����߂Ă��������B
+ echo modelfileを決めてください。
  set /p modelFile=
- echo modelfile�� %modelFile% �ɐݒ肳��܂����B
+ echo modelfileは %modelFile% に設定されました。
  echo -------------
  :cantthat
- echo %modelFile% �̍ގ�����ݒ肵�Ă��������B
+ echo %modelFile% の材質数を設定してください。
  set /p matc=
- echo �ގ����� %matc% �ɐݒ肳��܂����B
+ echo 材質数は %matc% に設定されました。
  echo -------------
  set count=1
  del %temp%\.Rtm_Json_Creator_json.tscf
@@ -1074,65 +1074,65 @@ goto selectwelcome
  :madamada
   if %matc% == %count% goto saigo
    echo ------------------
-   echo �@�\����ݒu����3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo 機能あり設置物の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> %temp%\.Rtm_Json_Creator_json.tscf 
  set /a count=%count% + 1
    goto madamada
    :saigo
    echo ------------------
-   echo �@�\����ݒu����3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo 機能あり設置物の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"]]}, >> %temp%\.Rtm_Json_Creator_json.tscf 
  :switcher
- echo buttontexture�����߂Ă��������B
+ echo buttontextureを決めてください。
  set /p button=
- echo buttonTexture�� %button% �ɐݒ肳��܂����B
+ echo buttonTextureは %button% に設定されました。
  echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
  if %type% == machineType echo --------------------
- if %type% == machineType echo sound_onactivate�����߂Ă��������B
+ if %type% == machineType echo sound_onactivateを決めてください。
  if %type% == machineType set /p sound_onactivate=
- if %type% == machineType echo sound_onactivate�� %sound_onactivate% �ɐݒ肳��܂����B
+ if %type% == machineType echo sound_onactivateは %sound_onactivate% に設定されました。
  if %type% == machineType echo   "sound_OnActivate": "%sound_onactivate%", >> ModelMachine_%name%.json
  echo --------------------
- echo smoothing�����߂Ă��������B
+ echo smoothingを決めてください。
  set /p smoothing=
- echo smoothing�� %smoothing% �ɐݒ肳��܂����B
+ echo smoothingは %smoothing% に設定されました。
  echo --------------------
- echo doCulling�����߂Ă��������B
+ echo doCullingを決めてください。
  set /p doCulling=
- echo doCulling�� %doCulling% �ɐݒ肳��܂����B
+ echo doCullingは %doCulling% に設定されました。
  echo --------------------
- echo tags�����߂Ă��������B
- echo �����w�肷��ꍇ��","���g�p���Ă��������B(��:akikawa,point,original)
+ echo tagsを決めてください。
+ echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
  set /p tags=
- echo tags�� %tags% �ɐݒ肳��܂����B
+ echo tagsは %tags% に設定されました。
  echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
  echo   "smoothing": %smoothing%, >> ModelMachine_%name%.json
  echo   "doCulling": %doCulling%, >> ModelMachine_%name%.json
@@ -1140,8 +1140,8 @@ goto selectwelcome
  echo   "%type%": "%machinetype%" >> ModelMachine_%name%.json
  echo } >> ModelMachine_%name%.json
  echo --------------------
- echo ���߂łƂ��������܂�!
- echo �������܂���!
+ echo おめでとうございます!
+ echo 完成しました!
  echo ------------
  goto switcher_json
 :switcher_json
@@ -1154,21 +1154,21 @@ goto selectwelcome
 :6
  cls
  set tsw=n
- echo NPC��json���쐬���܂��B
- echo �����A�r���Ń~�X�������ꍇ�́A�Ō�ɕҏW�ł���̂ł����ŕύX���Ă��������B
+ echo NPCのjsonを作成します。
+ echo もし、途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
- echo name�����߂Ă��������B
- echo �����NPC�̖��O�ɂȂ�܂��B�������Ȃ��悤�Ȗ��O��ݒ肵�Ă��������B
+ echo nameを決めてください。
+ echo これはNPCの名前になります。競合しないような名前を設定してください。
  set /p name=
- echo name�� %name% �ɐݒ肳��܂����B
+ echo nameは %name% に設定されました。
  echo { > ModelNPC_%name%.json
  echo   "name": "%name%", >> ModelNPC_%name%.json
  echo   "model": { >> ModelNPC_%name%.json
  echo;
- echo ���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����AC:\rtm\assets\minecraft\models\ModelNPC_%name%.mqo�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
- echo �����ǂݍ��݋@�\�������ȏꍇ��mqoz�܂���obj,ngto,ngtz�Ɠ��͂��Ă��������B
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelNPC_%name%.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_old6
@@ -1180,18 +1180,18 @@ goto selectwelcome
  for %%a in ("%modelFile%") do set "filename=%%~nxa"
  echo     "modelFile": "!filename:~0,-4!", >> ModelNPC_%name%
  endlocal
- set return=npc
+ set return=npc_b
  set filename=ModelNPC_%name%
  goto ams
  :mat_old6
  echo -------------
- echo modelfile�����߂Ă��������B
+ echo modelfileを決めてください。
  set /p modelFile=
- echo modelfile�� %modelFile% �ɐݒ肳��܂����B
+ echo modelfileは %modelFile% に設定されました。
  echo -------------
- echo %modelFile% �̍ގ�����ݒ肵�Ă��������B
+ echo %modelFile% の材質数を設定してください。
  set /p matc=
- echo �ގ����� %matc% �ɐݒ肳��܂����B
+ echo 材質数は %matc% に設定されました。
  echo -------------
  set count=1
  del %temp%\.Rtm_Json_Creator_json.tscf
@@ -1200,62 +1200,61 @@ goto selectwelcome
  :checkcountnpc
  if %count% == %matc% goto lastnpcmat
     echo ------------------
-   echo NPC��3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo NPCの3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> %temp%\.Rtm_Json_Creator_json.tscf 
  set /a count=%count% + 1
    goto checkcountnpc
    :lastnpcmat
    echo ------------------
-   echo NPC��3D���f���̍ގ�,%count%�߂̖��O�����߂Ă��������B
-   echo �ގ�������͂��Ă��������B
+   echo NPCの3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
    set /p mat=
-   echo �ގ�,%count%�߂̖��O�� %mat% �ɐݒ肳��܂����B
+   echo 材質,%count%つめの名前は %mat% に設定されました。
    echo ------------------
-   echo %mat% �̃e�N�X�`���ւ̃p�X���L�q���Ă��������B
-   echo �I�v�V�����͎��Őݒ肵�܂��B
+   echo %mat% のテクスチャへのパスを記述してください。
+   echo オプションは次で設定します。
    set /p mattexture=
-   echo %mat% �̃e�N�X�`���p�X�� %mattexture% �ɐݒ肳��܂����B
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   echo %mat% �� %mattexture% �ɃI�v�V���������܂���? �g�p�\: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo �I�v�V������ݒ肵�Ȃ�/�悭�킩��Ȃ��̂Ȃ�΁A�������͂�����enter���Ă�������
+   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
+   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
    set /p mata=
-   echo %mat% �� %mattexture% �̃I�v�V������ %mata% �ɐݒ肳��܂����B
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> %temp%\.Rtm_Json_Creator_json.tscf 
-:npc
- echo -------------
- echo role�����߂Ă��������B
- echo attendant,guard,mannequin,passenger�̂ǂꂩ���g�p�ł��܂��B
+ :npc_b
+ echo roleを決めてください。
+ echo attendant,guard,mannequin,passengerのどれかが使用できます。
  set /p role=
- echo role�� %role% �ɐݒ肳��܂����B
+ echo roleは %role% に設定されました。
  echo --------------------
- echo smoothing�����߂Ă��������B
+ echo smoothingを決めてください。
  set /p smoothing=
- echo smoothing�� %smoothing% �ɐݒ肳��܂����B
+ echo smoothingは %smoothing% に設定されました。
  echo --------------------
- echo doCulling�����߂Ă��������B
+ echo doCullingを決めてください。
  set /p doCulling=
- echo doCulling�� %doCulling% �ɐݒ肳��܂����B
+ echo doCullingは %doCulling% に設定されました。
  echo   "role": "%role%", >> ModelNPC_%name%.json
  echo   "doCulling": %doCulling%, >> ModelNPC_%name%.json
  echo   "smoothing": %smoothing% >> ModelNPC_%name%.json
  echo }  >> ModelNPC_%name%.json
  echo --------------------
- echo json���������܂���!
+ echo jsonが完成しました!
  goto npcjson
 :npcjson
  set back=npcjson
@@ -1267,42 +1266,42 @@ goto selectwelcome
 :7
  cls
  set tsw=f
- echo ����json���쐬���܂��B
- echo �����r���Ń~�X�������ꍇ�́A�Ō�ɕҏW�ł���̂ł����ŕύX���Ă��������B
+ echo 旗のjsonを作成します。
+ echo もし途中でミスをした場合は、最後に編集できるのでそこで変更してください。
  echo -------------
- echo texture�����߂Ă��������B
- echo textures/flag/flag_[texturename].png �̂悤�ɐݒ肵�Ă��������B
+ echo textureを決めてください。
+ echo textures/flag/flag_[texturename].png のように設定してください。
  set /p texture=
- echo texture�� %texture% �ɐݒ肳��܂����B
+ echo textureは %texture% に設定されました。
  echo ------------
- echo height�����߂Ă��������B
- echo �P�ʂ�"���[�g��"�ł��B
+ echo heightを決めてください。
+ echo 単位は"メートル"です。
  set /p height=
- echo height�� %height% �ɐݒ肳��܂����B
+ echo heightは %height% に設定されました。
  echo -------------
- echo width�����߂Ă��������B
- echo �P�ʂ�"���[�g��"�ł��B
+ echo widthを決めてください。
+ echo 単位は"メートル"です。
  set /p width=
- echo width�� %width% �ɐݒ肳��܂����B
+ echo widthは %width% に設定されました。
  echo -------------
- echo resolutionV�����߂Ă��������B
+ echo resolutionVを決めてください。
  set /p resolutionV=
- echo resolutionV�� %resolutionV% �ɐݒ肳��܂����B
+ echo resolutionVは %resolutionV% に設定されました。
  echo --------------
- echo resolutionU�����߂Ă��������B
+ echo resolutionUを決めてください。
  set /p resolutionU=
- echo resolutionU�� %resolutionU% �ɐݒ肳��܂����B
+ echo resolutionUは %resolutionU% に設定されました。
  echo --------------
- echo poleLength�����߂Ă��������B
- echo 2.0����2m�ɂȂ�܂��B(���Ԃ�)
+ echo poleLengthを決めてください。
+ echo 2.0だと2mになります。(たぶん)
  set /p poleLength=
- echo poleLength�� %poleLength% �ɐݒ肳��܂����B
+ echo poleLengthは %poleLength% に設定されました。
  echo --------------
- echo json���������܂���!
+ echo jsonが完成しました!
  goto flagjson
 :flagjson
  set back=flagjson
- echo ------�t�@�C����:Flag_%texture:~19,-4%.json-------
+ echo ------ファイル名:Flag_%texture:~19,-4%.json-------
  echo {
  echo   "texture": "%texture%",
  echo   "height": %height%,
@@ -1312,23 +1311,23 @@ goto selectwelcome
  echo   "poleLength" : %poleLength%
  echo }
  echo ------------------------------------------------
- echo �s����I�����Ă�������
+ echo 行動を選択してください
  echo ----------------------------------------
- echo  �s���̔ԍ�         �s���̓��e          
+ echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     1              json��ҏW����       
- echo     2              �I�������܂��B       
- echo     3           json��ۑ����܂��B  
+ echo     1              jsonを編集する       
+ echo     2              終了させます。       
+ echo     3           jsonを保存します。  
  echo ----------------------------------------
  set user=
  set /p user=
  if %user% == 1 goto flagedit
  if %user% == 2 goto 2
  if %user% == 3 goto saveflagjson
- echo �G���[:�s���Ȕԍ�
+ echo エラー:不明な番号
  goto %back%
 :saveflagjson
- echo json��ۑ����܂��B json��%cd%\ModelNPC_%texture:~19%.json�ɂł���͂��ł��B
+ echo jsonを保存します。 jsonは%cd%\ModelNPC_%texture:~19%.jsonにできるはずです。
  pause
  echo { > Flag_%texture:~19%.json
  echo   "texture": "%texture%", >> Flag_%texture:~19%.json
@@ -1340,8 +1339,8 @@ goto selectwelcome
  echo } >> Flag_%texture:~19%.json
    if exist Flag_%texture:~19%.json (
   echo;
-  echo �t�@�C���̕ۑ����������܂����B
-  echo �t�@�C���p�X:"%cd%\Flag_%texture:~19%.json"
+  echo ファイルの保存が完了しました。
+  echo ファイルパス:"%cd%\Flag_%texture:~19%.json"
   echo;
  ) ELSE (
   set error=73N
@@ -1350,53 +1349,53 @@ goto selectwelcome
  goto %back%
 
 :flagedit
- echo json��ҏW���܂��B
- echo �ҏW���Ȃ��Ƃ���͂��̂܂�enter���Ă��������B
+ echo jsonを編集します。
+ echo 編集しないところはそのままenterしてください。
  echo -------------
- echo texture�����߂Ă��������B ����: %texture%
- echo "textures/flag/flag_[texturename].png" �̂悤�ɐݒ肵�Ă��������B
+ echo textureを決めてください。 現在: %texture%
+ echo "textures/flag/flag_[texturename].png" のように設定してください。
  set /p texture=
- echo texture�� %texture% �ɐݒ肳��܂����B
+ echo textureは %texture% に設定されました。
  echo ------------
- echo height�����߂Ă��������B �g�p�\:�����Ə�����O�ʂ܂�(��:0.75) 
- echo ����:%height%
+ echo heightを決めてください。 使用可能:整数と小数第三位まで(例:0.75) 
+ echo 現在:%height%
  set /p height=
- echo height�� %height% �ɐݒ肳��܂����B
+ echo heightは %height% に設定されました。
  echo -------------
- echo width�����߂Ă��������B  �g�p�\:�����Ə�����O�ʂ܂�(��:2.25)
- echo ����: %width%
+ echo widthを決めてください。  使用可能:整数と小数第三位まで(例:2.25)
+ echo 現在: %width%
  set /p width=
- echo width�� %width% �ɐݒ肳��܂����B
+ echo widthは %width% に設定されました。
  echo -------------
- echo resolutionV�����߂Ă��������B ����: %resolutionV%
+ echo resolutionVを決めてください。 現在: %resolutionV%
  set /p resolutionV=
- echo resolutionV�� %resolutionV% �ɐݒ肳��܂����B
+ echo resolutionVは %resolutionV% に設定されました。
  echo --------------
- echo resolutionU�����߂Ă��������B ����: %resolutionU%
+ echo resolutionUを決めてください。 現在: %resolutionU%
  set /p resolutionU=
- echo resolutionU�� %resolutionU% �ɐݒ肳��܂����B
+ echo resolutionUは %resolutionU% に設定されました。
  echo --------------
- echo poleLength�����߂Ă��������B ����: %poleLength%
- echo 2.0����2m�ɂȂ�܂��B(���Ԃ�)
+ echo poleLengthを決めてください。 現在: %poleLength%
+ echo 2.0だと2mになります。(たぶん)
  set /p poleLength=
- echo poleLength�� %poleLength% �ɐݒ肳��܂����B
+ echo poleLengthは %poleLength% に設定されました。
  echo --------------
  goto %back%
 
 :8
  cls
  set tsw=sounds
- echo sounds.json���쐬���܂��B
+ echo sounds.jsonを作成します。
  echo --------
  setlocal enabledelayedexpansion
- echo 2�ȏ�T�E���h��ǉ����܂���?
- echo ���̏ꍇ�A"json�t�@�C���̕ۑ�"���K�{�ł��B
+ echo 2つ以上サウンドを追加しますか?
+ echo その場合、"jsonファイルの保存"が必須です。
  set /p nextkonanshint=(y / n)
  if %nextkonanshint% == y goto sound_two
  if %nextkonanshint% == n goto sound
  :sound
   echo --------
-  set /p soundpath=�T�E���h�̃p�X��ݒ肵�Ă��������B(�Ⴆ�΁Ac:\addon\assets\my_sound\train\chime1.ogg���w�肷��ꍇ��"train\chime1.ogg"�Ɠ��͂��Ă��������B)
+  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   setlocal enabledelayedexpansion
   rem for /f "delims=\ tokens=1" %%s in ("!soundpath!") do set path1=%%s
   rem echo path1 has set to %path1%
@@ -1418,13 +1417,13 @@ goto selectwelcome
   echo   }
   echo }
   echo --------------------
-  echo sounds.json���������܂���!
-  echo �ۑ����܂���?
+  echo sounds.jsonが完成しました!
+  echo 保存しますか?
   set /p user=(y / n)
   if %user% == n goto 2
   if %user% == y goto savesounds
   :savesounds
-  echo json��ۑ����܂��B json��%cd%\sounds.json�ɂł���͂��ł��B
+  echo jsonを保存します。 jsonは%cd%\sounds.jsonにできるはずです。
   set soundpath=%soundpath:/=.%
   pause
   echo { > sounds.json
@@ -1438,8 +1437,8 @@ goto selectwelcome
   echo } >> sounds.json
   if exist sounds.json (
   echo;
-  echo �t�@�C���̕ۑ����������܂����B
-  echo �t�@�C���p�X:"%cd%\sounds.json"
+  echo ファイルの保存が完了しました。
+  echo ファイルパス:"%cd%\sounds.json"
   echo;
  ) ELSE (
   set error=8N
@@ -1449,12 +1448,12 @@ goto selectwelcome
  goto %back%
 
  :sound_two
-  echo ����:
-  echo json�������ۑ����܂��B json��%cd%\sounds.json�ɂł���͂��ł��B
+  echo 注意:
+  echo jsonを自動保存します。 jsonは%cd%\sounds.jsonにできるはずです。
   echo --------
-  set /p soundpath=�T�E���h�̃p�X��ݒ肵�Ă��������B(�Ⴆ�΁Ac:\addon\assets\my_sound\train\chime1.ogg���w�肷��ꍇ��"train\chime1.ogg"�Ɠ��͂��Ă��������B)
+  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。)
   set soundpath=%soundpath:\=.%
-  echo -----sounds.json(����ǉ���)-----
+  echo -----sounds.json(今回追加分)-----
   echo { 
   echo "%soundpath:~0,-4%": {
   echo  "category": "neutral",
@@ -1473,10 +1472,10 @@ goto selectwelcome
   echo --------------------
 
   :soundsjson_pathset
-  set /p soundpath=�T�E���h�̃p�X��ݒ肵�Ă��������B(�Ⴆ�΁Ac:\addon\assets\my_sound\train\chime1.ogg���w�肷��ꍇ��"train\chime1.ogg"�Ɠ��͂��Ă��������B),�I������ꍇ��"\\\"���g�p���Ă��������B
+  set /p soundpath=サウンドのパスを設定してください。(例えば、c:\addon\assets\my_sound\train\chime1.oggを指定する場合は"train\chime1.ogg"と入力してください。),終了する場合は"\\\"を使用してください。
   if %soundpath% == \\\ goto end_sounds_json
   set soundpath=%soundpath:\=.%
-  echo -----sounds.json(����ǉ���)-----
+  echo -----sounds.json(今回追加分)-----
   echo    ]
   echo   },
   echo "%soundpath:~0,-4%": {
@@ -1499,7 +1498,7 @@ goto selectwelcome
 
   :end_sounds_json
   set soundpath=%soundpath:\=.%
-  echo -----sounds.json(����ǉ���)-----
+  echo -----sounds.json(今回追加分)-----
   echo    ]
   echo   }
   echo }
@@ -1507,16 +1506,16 @@ goto selectwelcome
   echo    ] >> sounds.json
   echo   } >> sounds.json
   echo } >> sounds.json
-  echo sounds.json�̋L�q���I�����܂��B
-  echo �t�@�C���p�X:"%cd%\sounds.json"
+  echo sounds.jsonの記述を終了します。
+  echo ファイルパス:"%cd%\sounds.json"
   pause
   goto 2
 
 :9
- echo RTM�̃f�B���N�g���\�����쐬���܂��B
- echo �ǂ��Ƀf�B���N�g�����쐬���܂���?(�L�q���ꂽ�p�X����"RTM"�t�H���_���ł��܂��B)
+ echo RTMのディレクトリ構成を作成します。
+ echo どこにディレクトリを作成しますか?(記述されたパス下に"RTM"フォルダができます。)
  echo;
- echo ����: ���łɎw�肳�ꂽ�f�B���N�g����RTM�t�H���_������Ƒ����o�O��܂��B
+ echo 注意: すでに指定されたディレクトリにRTMフォルダがあると多分バグります。
  echo;
  set /p directry=
  pushd %directry%
@@ -1533,32 +1532,32 @@ goto selectwelcome
  md RTM\mods\RTM\train
  pushd %directry%\RTM
  tree
- echo �ǂ�? �ł���?
+ echo どう? できた?
  pause
  cls
  goto welcome
 :pack
- echo pack.json���쐬���܂��B
- echo ���݂̃f�B���N�g��: %cd% .
- set /p change=�ύX���܂���?(y/n)
+ echo pack.jsonを作成します。
+ echo 現在のディレクトリ: %cd% .
+ set /p change=変更しますか?(y/n)
  if %change% == y call :setpath
  echo;
- echo �A�h�I����(���f���p�b�N��)�����߂Ă�������:
+ echo アドオン名(モデルパック名)を決めてください:
  set /p modelpackname=
- echo �A�h�I������%modelpackname%�ɐݒ肳��܂����B
+ echo アドオン名は%modelpackname%に設定されました。
  echo;
- echo �z�[���y�[�W��URL�����߂Ă�������( �K�{�ł͂���܂���. �K�v�Ȃ��ꍇ�͋󔒂̂܂܃G���^�[���Ă��������B )
+ echo ホームページのURLを決めてください( 必須ではありません. 必要ない場合は空白のままエンターしてください。 )
  set homepageurl=Null
  set /p homepageurl=
- echo �z�[���y�[�W��URL�� %homepageurl% �ɐݒ肳��܂����B
+ echo ホームページのURLは %homepageurl% に設定されました。
  echo;
- echo "�A�b�v�f�[�g�m�F�p�e�L�X�g�� URL"�����߂Ă��������B
+ echo "アップデート確認用テキストの URL"を決めてください。
  set /p url=
- echo "�A�b�v�f�[�g�m�F�p�e�L�X�g�� URL"�� %url% �ɐݒ肳��܂����B
+ echo "アップデート確認用テキストの URL"は %url% に設定されました。
  echo;
- echo �o�[�W���������߂Ă�������
+ echo バージョンを決めてください
  set /p vers=
- echo �o�[�W������ %vers% �ɐݒ肳��܂����B
+ echo バージョンは %vers% に設定されました。
  echo;
  echo Done!
  echo {
@@ -1568,7 +1567,7 @@ goto selectwelcome
  echo   "version":"%vers%"
  echo }
  echo;
- echo �t�@�C����ۑ����܂���?
+ echo ファイルを保存しますか?
  set /p confirm=y/n:
  if %confirm% == n goto 2
  echo { >>pack.json
@@ -1582,57 +1581,57 @@ goto selectwelcome
  goto 2
 :signal
  set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
- echo �M����json���쐬���܂��B
+ echo 信号のjsonを作成します。
  echo;
- echo signalName�����߂Ă��������B
+ echo signalNameを決めてください。
  set /p signalname=
- echo signalName�� %signalname% �ɐݒ肳��܂����B
+ echo signalNameは %signalname% に設定されました。
  echo { >>%tempfile%
  echo  "signalName": "%signalname%", >>%tempfile%
  echo;
- echo signalModel�����߂Ă��������B
+ echo signalModelを決めてください。
  set /p signalModel=
- echo signalModel�� %signalModel% �ɐݒ肳��܂����B
+ echo signalModelは %signalModel% に設定されました。
  echo  "signalModel": "%signalModel%", >>%tempfile%
  echo;
- echo signalTexture�����߂Ă��������B
+ echo signalTextureを決めてください。
  set /p signalTexture=
- echo signalTexture�� %signalTexture% �ɐݒ肳��܂����B
+ echo signalTextureは %signalTexture% に設定されました。
  echo  "signalTexture": "%signalTexture%", >>%tempfile%
  echo;
- echo lightTexture�����߂Ă��������B
+ echo lightTextureを決めてください。
  set /p lightTexture=
- echo lightTexture�� %lightTexture% �ɐݒ肳��܂����B
+ echo lightTextureは %lightTexture% に設定されました。
  echo  "lightTexture": "%lightTexture%", >>%tempfile%
  echo;
- echo buttonTexture�����߂Ă��������B
+ echo buttonTextureを決めてください。
  set /p buttonTexture=
- echo buttonTexture�� %buttonTexture% �ɐݒ肳��܂����B
+ echo buttonTextureは %buttonTexture% に設定されました。
  echo  "buttonTexture": "%buttonTexture%", >>%tempfile%
  echo  "modelPartsFixture": { >>%tempfile%
  echo;
- echo modelPartsFixture�ɂ�����objects�����߂Ă��������B
- echo ����̓p�[�c(�Œ��)�Ɏg�p����I�u�W�F�N�g�̖��O�ł��B
- echo �����ݒ肷��ꍇ��%ESC%[7m"pole", "pole2", "pole3"%ESC%[0m�̌`���Ŏw�肵�Ă��������B ��������g�p����ꍇ��%ESC%[7m"%ESC%[0m�ň͂��K�v������܂��B
+ echo modelPartsFixtureにおけるobjectsを決めてください。
+ echo これはパーツ(固定具)に使用するオブジェクトの名前です。
+ echo 複数設定する場合は%ESC%[7m"pole", "pole2", "pole3"%ESC%[0mの形式で指定してください。 文字列を使用する場合は%ESC%[7m"%ESC%[0mで囲う必要があります。
  set /p objects_fixture=
  echo   "objects": [%objects_fixture%], >>%tempfile%
  echo;
- echo modelPartsFixture�ɂ�����pos�����߂Ă��������B
- echo ����͉�]�̒��S�ʒu�̐ݒ�ł��B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo modelPartsFixtureにおけるposを決めてください。
+ echo これは回転の中心位置の設定です。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos_fixture=
  echo   "pos": [%pos_fixture%] >>%tempfile%
  echo  }, >>%tempfile%
  echo  "modelPartsBody": { >>%tempfile%
  echo;
- echo modelPartsBody�ɂ�����objects�����߂Ă��������B
- echo ����̓p�[�c(�{��)�Ɏg�p����I�u�W�F�N�g�̖��O�ł��B
- echo �����ݒ肷��ꍇ��%ESC%[7m"doby", "light1", "light2", "light3"%ESC%[0m�̌`���Ŏw�肵�Ă��������B ��������g�p����ꍇ��%ESC%[7m"%ESC%[0m�ň͂��K�v������܂��B
+ echo modelPartsBodyにおけるobjectsを決めてください。
+ echo これはパーツ(本体)に使用するオブジェクトの名前です。
+ echo 複数設定する場合は%ESC%[7m"doby", "light1", "light2", "light3"%ESC%[0mの形式で指定してください。 文字列を使用する場合は%ESC%[7m"%ESC%[0mで囲う必要があります。
  set /p objects_body=
  echo   "objects": [%objects_body%], >>%tempfile%
  echo;
- echo modelPartsBody�ɂ�����pos�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo modelPartsBodyにおけるposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos_body=
  echo   "pos": [%pos_body%] >>%tempfile%
  echo  }, >>%tempfile%
@@ -1640,16 +1639,16 @@ goto selectwelcome
  echo;
  set firstlight=1
  :lightsetting
- echo ���C�g�̐ݒ�����߂Ă��������B
- echo �ݒ���I�����ꍇ�͂��̂܂�enter���Ă��������B
+ echo ライトの設定を決めてください。
+ echo 設定を終えた場合はそのままenterしてください。
  echo -----------------------------------------------------------
- echo ^|����^|                        ����                        ^|
- echo ^|  S ^|�ǂ̐M�������͂��ꂽ���_�����邩(�M�����x����1~1024)^|
- echo ^|  I ^|�_�ŊԊu(0~1200 tick)                               ^|
- echo ^|  P ^|�g�p����I�u�W�F�N�g��(�u,�v�ŋ�؂�)               ^|
+ echo ^|項目^|                        説明                        ^|
+ echo ^|  S ^|どの信号が入力された時点灯するか(信号レベルは1~1024)^|
+ echo ^|  I ^|点滅間隔(0~1200 tick)                               ^|
+ echo ^|  P ^|使用するオブジェクト名(「,」で区切る)               ^|
  echo -----------------------------------------------------------
  echo;
- echo �ȉ��̌`���œ��͂��Ă��������B: S([S���ڂ̐��l]) I([I���ڂ̐��l]) P(P���ڂ̕�����)
+ echo 以下の形式で入力してください。: S([S項目の数値]) I([I項目の数値]) P(P項目の文字列)
  echo e. g. S(1) I(0) P(LightYellow1, LightBlue4)
  echo;
  set light=Null
@@ -1665,13 +1664,13 @@ goto selectwelcome
  :rotate
  echo   "%lastlight%" >>%tempfile%
  echo  ], >>%tempfile%
- echo rotateBody�����߂Ă��������B
+ echo rotateBodyを決めてください。
  set /p rotateBody=(true/false) :
  echo  "rotateBody": %rotateBody% >>%tempfile%
  echo } >> %tempfile%
  goto signal_json
  :signal_json
- echo json���������܂���!
+ echo jsonが完成しました!
  echo;
  echo -- filename: ModelSignal_%signalname%.json --
  echo;
@@ -1680,28 +1679,28 @@ goto selectwelcome
   echo %%a
  )
  echo ----------------------------------------
- echo �s����I�����Ă�������
+ echo 行動を選択してください
  echo ----------------------------------------
- echo  �s���̔ԍ�         �s���̓��e          
+ echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     2              �I�������܂��B       
- echo     3         json��ۑ����܂��B  
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set /p user=
  if %user% == 2 goto 2
  if %user% == 3 goto savesignaljson
- echo �G���[:�s���Ȕԍ�
+ echo エラー:不明な番号
  goto signal_json
  :savesignaljson
   echo F | xcopy %tempfile% %setpath%\ModelSignal_%signalname%.json /S /V /C /F /-Y
  goto signal_json
 :rail
- echo ���[����json���쐬���܂��B
+ echo レールのjsonを作成します。
  set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
  echo;
- echo ���[����2��ނ̋L�q���@������܂��B �ǂ�����g�p���܂���?
- echo 1: ��{�̐ݒ���@ 2: �ȈՓI�Ȑݒ���@(�ގ�������:1)
- echo �����̌��"pre"��t���邱�ƂŃv���r���[���\�ł��B
+ echo レールは2種類の記述方法があります。 どちらを使用しますか?
+ echo 1: 基本の設定方法 2: 簡易的な設定方法(材質数制限:1)
+ echo 数字の後に"pre"を付けることでプレビューが可能です。
  set railjson=Null
  set /p railjson=
  if %railjson% == 1 goto railjson1
@@ -1711,16 +1710,16 @@ goto selectwelcome
  goto welcome
 :railjson1
   echo;
-  echo ���[���������߂Ă��������B
+  echo レール名を決めてください。
   set /p railname=
   echo railName: %railname%
   echo { >>%tempfile%
   echo  "railName": "%railname%", >>%tempfile%
   echo  "model": { >>%tempfile%
   echo;
-  echo ���[�����f���t�@�C���̃p�X����͂��Ă��������B
-  echo ����͕ϐ����g�p�����A"C:\rtm\assets\minecraft\models\bogie.mqo"�̌`���œ��͂��Ă��������B
-  echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
+  echo レールモデルファイルのパスを入力してください。
+  echo これは変数を使用せず、"C:\rtm\assets\minecraft\models\bogie.mqo"の形式で入力してください。
+  echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
   set /p modelFile=
   rem check format
   if %modelfile:~-4% == mqoz goto mat_oldsignal
@@ -1740,36 +1739,36 @@ goto selectwelcome
   echo   "modelFile": "%modelfile%", >>%tempfile%
   echo modelFile: %modelfile%
   echo;
-  echo ���[���̍ގ��������߂Ă��������B
+  echo レールの材質数を決めてください。
   set /p mat=
-  echo �ގ����� %mat% �ł��B
+  echo 材質数は %mat% です。
   echo   "textures": [ >>%tempfile%
   :matfirst
-   echo �ގ��̖��O����͂��Ă��������B
+   echo 材質の名前を入力してください。
    set /p matname=
-   echo �ގ����� %matname% �ł��B
+   echo 材質名は %matname% です。
    echo;
-   echo �ގ��̃e�N�X�`���p�X����͂��Ă��������B
-   echo ����: %ESC%[41m\%ESC%[0m(�o�b�N�X���b�V��)�ł͂Ȃ�%ESC%[41m/%ESC%[0m(�X���b�V��)���g�p���Ă��������B
+   echo 材質のテクスチャパスを入力してください。
+   echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
    set /p texturepath=
-   echo �e�N�X�`���p�X�� %texturepath% �ł��B
+   echo テクスチャパスは %texturepath% です。
    set matcount=1
   :matcounter
   if %mat% == %matcount% goto railbutton
    set /a matcount= %matcount% + 1
-   echo %matcount% �߂̍ގ�������͂��Ă��������B
+   echo %matcount% つめの材質名を入力してください。
    set /p matname1=
-   echo �ގ����� %matname1% �ł��B
+   echo 材質名は %matname1% です。
    echo;
-   echo %matname1% �̃e�N�X�`���p�X����͂��Ă��������B
+   echo %matname1% のテクスチャパスを入力してください。
    set /p texturep=
-   echo �e�N�X�`���p�X�� %texturep% �ł��B
+   echo テクスチャパスは %texturep% です。
    echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
    goto matcounter
   :railbutton
   echo   ["%matname%", "%texturepath%", ""]], >>%tempfile%
-  echo rendererPath��ݒ肷��ꍇ�͈ȉ��ɓ��͂��Ă��������B
-  echo �w�肵�Ȃ��ꍇ��scripts/RenderRailStandard.js�ɂ��Ă��������B
+  echo rendererPathを設定する場合は以下に入力してください。
+  echo 指定しない場合はscripts/RenderRailStandard.jsにしてください。
   set rendererPath=Null
   set /p rendererPath=
   if %rendererPath% == Null echo   "rendererPath": "scripts/RenderRailStandard.js" >>%tempfile%
@@ -1777,33 +1776,33 @@ goto selectwelcome
   echo  }, >>%tempfile%
   :gouryu
   echo;
-  echo �{�^���e�N�X�`���̃p�X��ݒ肵�Ă��������B
+  echo ボタンテクスチャのパスを設定してください。
   set /p button=
   echo  "buttonTexture": "%button%", >>%tempfile%
   echo;
-  echo ballastWidth�����߂Ă��������B
-  echo 1�ȏ�̊�������̒l����͂��Ă��������B ����͓����u���b�N�̕��ł��B
+  echo ballastWidthを決めてください。
+  echo 1以上の奇数かつ整数の値を入力してください。 これは道床ブロックの幅です。
   set /p ballast=
   echo  "ballastWidth": %ballast%, >>%tempfile%
   echo;
-  echo allowCrossing�����߂Ă��������B
-  echo �����Mob���ʂ蔲������悤�ɂ��邩�̐ݒ�ł��B
+  echo allowCrossingを決めてください。
+  echo これはMobが通り抜けられるようにするかの設定です。
   set /p crossing=(true/false): 
   echo  "allowCrossing": %crossing%, >>%tempfile%
   echo;
-  echo �����u���b�N�����߂Ă��������B
+  echo 道床ブロックを決めてください。
   echo e. g. gravel
   set /p blockname=
   echo  "defaultBallast": [{ >>%tempfile%
   echo   "blockName": "%blockname%", >>%tempfile%
   echo;
-  echo %blockname% �̃��^�f�[�^��ݒ肵�Ă��������B
-  echo �ʏ��0����͂��Ă��������B
+  echo %blockname% のメタデータを設定してください。
+  echo 通常は0を入力してください。
   set /p meta=
   echo   "blockMetadata": %meta%, >>%tempfile%
   echo;
-  echo �����̍��������߂Ă��������B
-  echo 1��1m�ɂȂ�܂��B
+  echo 道床の高さを決めてください。
+  echo 1で1mになります。
   set /p height=
   echo   "height": %height% >>%tempfile%
   echo  }], >>%tempfile%
@@ -1811,79 +1810,79 @@ goto selectwelcome
   echo } >>%tempfile%
 :rail_json
   set back=rail_json
-  echo json���������܂���!
+  echo jsonが完成しました!
   echo -- filename: ModelRail_%railname%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
   )
   echo ----------------------------------------
-  echo �s����I�����Ă�������
+  echo 行動を選択してください
   echo ----------------------------------------
-  echo  �s���̔ԍ�         �s���̓��e          
+  echo  行動の番号         行動の内容          
   echo ----------------------------------------
-  echo     2              �I�������܂��B       
-  echo     3         json��ۑ����܂��B  
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
   echo ----------------------------------------
   set /p user=
   if %user% == 2 goto 2
   if %user% == 3 goto saverailjson
-  echo �G���[:�s���Ȕԍ�
+  echo エラー:不明な番号
   goto rail_json
   :saverailjson
   echo F | xcopy %tempfile% %setpath%\ModelRail_%railname%.json /V /C /F /-Y
   goto rail_json
 :railjson2
   echo;
-  echo ���[���������߂Ă��������B
+  echo レール名を決めてください。
   set /p railname=
   echo railName: %railname%
   echo { >>%tempfile%
   echo  "railName": "%railname%", >>%tempfile%
   echo;
-  echo ���[���̃��f�������߂Ă��������B(�t�@�C����)
+  echo レールのモデルを決めてください。(ファイル名)
   set /p modelfile=
   echo  "railModel": "%modelfile%", >>%tempfile%
   echo modelFile: %modelfile%
   echo;
-  echo ���[���̃e�N�X�`���p�X�����߂Ă��������B
+  echo レールのテクスチャパスを決めてください。
   set /p railTexture=
   echo  "railTexture": "%railTexture%", >>%tempfile%
   echo;
   goto gouryu
 :contami
- echo �R���e�i��json���쐬���܂��B
+ echo コンテナのjsonを作成します。
  echo;
- echo �R���e�i�̖��O�����߂Ă��������B
+ echo コンテナの名前を決めてください。
  set /p name=
- echo �R���e�i��: %name%
+ echo コンテナ名: %name%
  echo;
- echo ���f�����w�肵�Ă��������B
+ echo モデルを指定してください。
  set /p model=
- echo ���f����: %model%
+ echo モデル名: %model%
  echo;
- echo �e�N�X�`���p�X���w�肵�Ă��������B
+ echo テクスチャパスを指定してください。
  set /p texture=
- echo �e�N�X�`���p�X: %texture%
+ echo テクスチャパス: %texture%
  echo;
- echo �{�^���e�N�X�`���̃p�X��ݒ肵�Ă��������B
+ echo ボタンテクスチャのパスを設定してください。
  set /p buttontexture=
- echo �{�^���e�N�X�`���p�X: %buttontexture%
+ echo ボタンテクスチャパス: %buttontexture%
  echo;
- echo �R���e�i�̕������߂Ă��������B
- echo ����̓��f���ɓK�p�����킯�ł͂Ȃ��A�����蔻��̌v�Z�p�Ƃ��Ĉ����܂��B
+ echo コンテナの幅を決めてください。
+ echo これはモデルに適用されるわけではなく、当たり判定の計算用として扱われます。
  set /p width=
- echo ��: %width%
+ echo 幅: %width%
  echo;
- echo �R���e�i�̍��������߂Ă��������B
- echo ����̓��f���ɓK�p�����킯�ł͂Ȃ��A�����蔻��̌v�Z�p�Ƃ��Ĉ����܂��B
+ echo コンテナの高さを決めてください。
+ echo これはモデルに適用されるわけではなく、当たり判定の計算用として扱われます。
  set /p height=
- echo ����: %height%
+ echo 高さ: %height%
  echo;
- echo �R���e�i�̒��������߂Ă��������B
- echo ����̓��f���ɓK�p�����킯�ł͂Ȃ��A�ݎԂɍڂ������̈ʒu�����p�Ƃ��Ĉ����܂��B
+ echo コンテナの長さを決めてください。
+ echo これはモデルに適用されるわけではなく、貨車に載せた時の位置調整用として扱われます。
  set /p length=
- echo ����: %length%
+ echo 長さ: %length%
  echo;
  :container_json
  set back=container_json
@@ -1898,17 +1897,17 @@ goto selectwelcome
  echo  "buttonTexture": "%buttontexture%"
  echo }
  echo ----------------------------------------
- echo �s����I�����Ă�������
+ echo 行動を選択してください
  echo ----------------------------------------
- echo  �s���̔ԍ�         �s���̓��e          
+ echo  行動の番号         行動の内容          
  echo ----------------------------------------
- echo     2              �I�������܂��B       
- echo     3         json��ۑ����܂��B  
+ echo     2              終了させます。       
+ echo     3         jsonを保存します。  
  echo ----------------------------------------
  set /p user=
  if %user% == 2 goto 2
  if %user% == 3 goto savecontami
- echo �G���[:�s���Ȕԍ�
+ echo エラー:不明な番号
  goto %back%
  :savecontami
  echo { >>%setpath%\ModelContainer_%name%.json
@@ -1921,154 +1920,154 @@ goto selectwelcome
  echo  "buttonTexture": "%buttontexture%" >>%setpath%\ModelContainer_%name%.json
  echo } >>%setpath%\ModelContainer_%name%.json
  echo;
- echo �t�@�C���̕ۑ����������܂����B
- echo �t�@�C���p�X:"%setpath%\ModelContainer_%name%.json"
+ echo ファイルの保存が完了しました。
+ echo ファイルパス:"%setpath%\ModelContainer_%name%.json"
  echo;
  goto %back%
 :gun
- echo �Ί��json���쐬���܂��B
+ echo 火器のjsonを作成します。
  set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
  echo;
  echo { >>%tempfile%
- echo �Ί�̖��O�����߂Ă��������B
+ echo 火器の名前を決めてください。
  set /p name=
- echo ���O: %name%
+ echo 名前: %name%
  echo  "firearmName": "%name%", >>%tempfile%
  echo;
- echo ���f���t�@�C��������͂��Ă��������B
+ echo モデルファイル名を入力してください。
  set /p model=
- echo ���f��: %model%
+ echo モデル: %model%
  echo  "firearmModel": "%model%", >>%tempfile%
  echo;
- echo �e�N�X�`���p�X����͂��Ă�������
+ echo テクスチャパスを入力してください
  set /p texture=
- echo �e�N�X�`��: %texture%
+ echo テクスチャ: %texture%
  echo  "firearmTexture": "%texture%", >>%tempfile%
  echo;
- echo �{�^���e�N�X�`���̃p�X����͂��Ă��������B
+ echo ボタンテクスチャのパスを入力してください。
  set /p button=
- echo �{�^��: %button%
+ echo ボタン: %button%
  echo  "buttonTexture": "%button%", >>%tempfile%
  echo;
- echo �p�[�c(��]�Ȃ�)�̃I�u�W�F�N�g�������߂Ă��������B
- echo �����̃I�u�W�F�N�g�����w�肷��ꍇ��%ESC%[7mobject1", "object2%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo パーツ(回転なし)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
  set /p object=
  echo;
- echo �I�u�W�F�N�g��pos�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos=
  echo  "modelPartsN": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
  echo;
- echo �p�[�c(Y����])�̃I�u�W�F�N�g�������߂Ă��������B
- echo �����̃I�u�W�F�N�g�����w�肷��ꍇ��%ESC%[7mobject1", "object2%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo パーツ(Y軸回転)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
  set /p object=
  echo;
- echo �I�u�W�F�N�g��pos�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos=
  echo  "modelPartsY": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
  echo;
- echo �p�[�c(X����])�̃I�u�W�F�N�g�������߂Ă��������B
- echo �����̃I�u�W�F�N�g�����w�肷��ꍇ��%ESC%[7mobject1", "object2%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo パーツ(X軸回転)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
  set /p object=
  echo;
- echo �I�u�W�F�N�g��pos�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos=
  echo  "modelPartsX": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
  echo;
- echo �p�[�c(�o����)�̃I�u�W�F�N�g�������߂Ă��������B
- echo �����̃I�u�W�F�N�g�����w�肷��ꍇ��%ESC%[7mobject1", "object2%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo パーツ(バレル)のオブジェクト名を決めてください。
+ echo 複数のオブジェクト名を指定する場合は%ESC%[7mobject1", "object2%ESC%[0mの形式で指定してください。
  set /p object=
  echo;
- echo �I�u�W�F�N�g��pos�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo オブジェクトのposを決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p pos=
  echo  "modelPartsBarrel": {"objects": ["%object%"],"pos": [%pos%]}, >>%tempfile%
  echo;
- echo �C���̈ʒu�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo 砲口の位置を決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p muzzle=
- echo �C��: %muzzle%
+ echo 砲口: %muzzle%
  echo  "muzzlePos": [%muzzle%], >>%tempfile%
  echo;
- echo �C��̈ʒu�����߂Ă��������B
- echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo 砲手の位置を決めてください。
+ echo %ESC%[7m0.0, 0.0, 0.0%ESC%[0mの形式で指定してください。
  set /p player=
- echo �C��: %player%
+ echo 砲手: %player%
  echo  "playerPos": [%player%], >>%tempfile%
  echo;
- echo ����p�x�̍ő�,�ŏ��l�����߂Ă��������B
- echo %ESC%[7m180.0, -180.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo 旋回角度の最大,最小値を決めてください。
+ echo %ESC%[7m180.0, -180.0%ESC%[0mの形式で指定してください。
  set /p yaw=
- echo ����p�x: %yaw%
+ echo 旋回角度: %yaw%
  echo  "yaw": [%yaw%], >>%tempfile%
  echo;
- echo ��p�̍ő�,�ŏ��l�����߂Ă��������B
- echo %ESC%[7m180.0, -180.0%ESC%[0m�̌`���Ŏw�肵�Ă��������B
+ echo 仰俯角の最大,最小値を決めてください。
+ echo %ESC%[7m180.0, -180.0%ESC%[0mの形式で指定してください。
  set /p pitch=
- echo ��p: %pitch%
+ echo 仰俯角: %pitch%
  echo  "pitch": [%pitch%], >>%tempfile%
  echo;
- echo Y����]�̑��x�����߂Ă��������B
+ echo Y軸回転の速度を決めてください。
  set /p speedy=
- echo ���x: %speedy%
+ echo 速度: %speedy%
  echo  "rotationSpeedY": %speedy%, >>%tempfile%
  echo;
- echo X����]�̑��x�����߂Ă��������B
+ echo X軸回転の速度を決めてください。
  set /p speedtwitter=
- echo ���x: %speedtwitter%
+ echo 速度: %speedtwitter%
  echo  "rotationSpeedX": %speedtwitter%, >>%tempfile%
  echo;
- echo ���R�C���̑傫�������߂Ă��������B
+ echo リコイルの大きさを決めてください。
  set /p recoil=
- echo ���R�C��: %recoil%
+ echo リコイル: %recoil%
  echo  "recoil": %recoil%, >>%tempfile%
  echo;
- echo ��l�̂̎��Ƀ��f����`�悵�Ȃ����ǂ��������߂Ă��������B
+ echo 一人称の時にモデルを描画しないかどうかを決めてください。
  set /p fpv=(true/false): 
  echo  "fpvMode": %fpv% >>%tempfile%
  echo } >>%tempfile%
  :gun_json
   set back=gun_json
-  echo json���������܂���!
+  echo jsonが完成しました!
   echo -- filename: ModelFirearm_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
   )
   echo ----------------------------------------
-  echo �s����I�����Ă�������
+  echo 行動を選択してください
   echo ----------------------------------------
-  echo  �s���̔ԍ�         �s���̓��e          
+  echo  行動の番号         行動の内容          
   echo ----------------------------------------
-  echo     2              �I�������܂��B       
-  echo     3         json��ۑ����܂��B  
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
   echo ----------------------------------------
   set /p user=
   if %user% == 2 goto 2
   if %user% == 3 goto savegunjson
-  echo �G���[:�s���Ȕԍ�
+  echo エラー:不明な番号
   goto rail_json
   :savegunjson
   echo F | xcopy %tempfile% %setpath%\ModelFirearm_%name%.json /V /C /F /-Y
   goto %back%
  
 :connector
- echo �R�l�N�^�[��json���쐬���܂��B
+ echo コネクターのjsonを作成します。
  set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
  echo;
- echo �R�l�N�^�[�������߂Ă��������B
+ echo コネクター名を決めてください。
  set /p name=
  echo Name: %name%
  echo { >>%tempfile%
  echo  "name": "%name%", >>%tempfile%
  echo  "model": { >>%tempfile%
  echo;
- echo ���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����AC:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
- echo �����ǂݍ��݋@�\�������ȏꍇ��mqoz�܂���obj,ngto,ngtz�Ɠ��͂��Ă��������B
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_oldco
@@ -2083,119 +2082,119 @@ goto selectwelcome
  set filename=%tempfile%
  goto ams
  :mat_oldco
- echo �R�l�N�^�[�̃��f�������߂Ă��������B(�t�@�C����)
+ echo コネクターのモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo   "modelFile": "%modelfile%", >>%tempfile%
  echo modelFile: %modelfile%
  echo;
- echo �R�l�N�^�[�̍ގ��������߂Ă��������B
+ echo コネクターの材質数を決めてください。
  set /p mat=
- echo �ގ����� %mat% �ł��B
+ echo 材質数は %mat% です。
  echo   "textures": [ >>%tempfile%
- echo �ގ��̖��O����͂��Ă��������B
+ echo 材質の名前を入力してください。
  set /p matname=
- echo �ގ����� %matname% �ł��B
+ echo 材質名は %matname% です。
  echo;
- echo �ގ��̃e�N�X�`���p�X����͂��Ă��������B
- echo ����: %ESC%[41m\%ESC%[0m(�o�b�N�X���b�V��)�ł͂Ȃ�%ESC%[41m/%ESC%[0m(�X���b�V��)���g�p���Ă��������B
+ echo 材質のテクスチャパスを入力してください。
+ echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
  set /p texturepath=
- echo �e�N�X�`���p�X�� %texturepath% �ł��B
+ echo テクスチャパスは %texturepath% です。
  set matcount=1
  :cocounter
   if %mat% == %matcount% goto cobutton
  set /a matcount= %matcount% + 1
- echo %matcount% �߂̍ގ�������͂��Ă��������B
+ echo %matcount% つめの材質名を入力してください。
  set /p matname1=
- echo �ގ����� %matname1% �ł��B
+ echo 材質名は %matname1% です。
  echo;
- echo %matname1% �̃e�N�X�`���p�X����͂��Ă��������B
+ echo %matname1% のテクスチャパスを入力してください。
  set /p texturep=
- echo �e�N�X�`���p�X�� %texturep% �ł��B
+ echo テクスチャパスは %texturep% です。
  echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
  goto cocounter
  :cobutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  :csgo
  echo;
- echo �{�^���e�N�X�`���̃p�X��ݒ肵�Ă��������B
+ echo ボタンテクスチャのパスを設定してください。
  set /p button=
  echo  "buttonTexture": "%button%", >>%tempfile%
- echo �{�^��: %button%
+ echo ボタン: %button%
  echo;
- echo connectorType�����߂Ă��������B
- echo Relay,Input,Output�̒�����I��ł��������B
- echo �^�C�v�͈ȉ��̒ʂ�ł�: Relay:"���p�R�l�N�^",Input:"���̓R�l�N�^",Output:"�o�̓R�l�N�^"
+ echo connectorTypeを決めてください。
+ echo Relay,Input,Outputの中から選んでください。
+ echo タイプは以下の通りです: Relay:"中継コネクタ",Input:"入力コネクタ",Output:"出力コネクタ"
  set /p type=(Relay/Input/Output): 
  echo  "connectorType":"%type%", >>%tempfile%
- echo �R�l�N�^: %connector%
+ echo コネクタ: %connector%
  echo;
- echo wirePos�����߂Ă��������B
- echo ����̓��C���ڑ����̐ڑ��ʒu�ł��B(�u���b�N���S��%ESC%[41m0.0,0.0,0.0%ESC%[0m�ɂȂ�܂��B)
- echo %ESC%[41m0.0, 0.0, 0.0%ESC%[0m�̌`���œ��͂��Ă��������B ���ꂼ��x,y,z�̏��ł��B
+ echo wirePosを決めてください。
+ echo これはワイヤ接続時の接続位置です。(ブロック中心が%ESC%[41m0.0,0.0,0.0%ESC%[0mになります。)
+ echo %ESC%[41m0.0, 0.0, 0.0%ESC%[0mの形式で入力してください。 それぞれx,y,zの順です。
  set /p pos=
  echo pos: %pos%
  echo  "wirePos": [%pos%], >>%tempfile%
  echo;
- echo smoothing�����߂Ă��������B
+ echo smoothingを決めてください。
  set /p smooz=(true/false): 
  echo smoothing: %smooz%
  echo  "smoothing": %smooz%, >>%tempfile%
  echo;
- echo doCulling�����߂Ă��������B
+ echo doCullingを決めてください。
  set /p doCulling=(true/false): 
  echo doCulling: %doCulling%
  echo  "doCulling": %doCulling%, >>%tempfile%
  echo;
- echo accuracy�����߂Ă��������B
+ echo accuracyを決めてください。
  set /p accuracy=(LOW,MEDIUM): 
  echo accuracy: %accuracy%
  echo  "accuracy": %accuracy%, >>%tempfile%
  echo;
- echo tags�����߂Ă��������B
+ echo tagsを決めてください。
  set /p tag=
  echo tag: %tag%
  echo  "tags": "%tag%" >>%tempfile%
  echo } >>%tempfile%
  :co_json
   set back=co_json
-  echo json���������܂���!
+  echo jsonが完成しました!
   echo -- filename: ModelConnector_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
   )
   echo ----------------------------------------
-  echo �s����I�����Ă�������
+  echo 行動を選択してください
   echo ----------------------------------------
-  echo  �s���̔ԍ�         �s���̓��e          
+  echo  行動の番号         行動の内容          
   echo ----------------------------------------
-  echo     2              �I�������܂��B       
-  echo     3         json��ۑ����܂��B  
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
   echo ----------------------------------------
   set /p user=
   if %user% == 2 goto 2
   if %user% == 3 goto savecojson
-  echo �G���[:�s���Ȕԍ�
+  echo エラー:不明な番号
   goto %back%
   :savecojson
   echo F | xcopy %tempfile% %setpath%\ModelConnector_%name%.json /V /C /F /-Y
   goto %back%
 :wire
  echo;
- echo ���C���[��json���쐬���܂��B
+ echo ワイヤーのjsonを作成します。
  echo;
  set back=wire_json
  set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
- echo name�����߂Ă��������B
+ echo nameを決めてください。
  set /p name=
  echo name: %name%
  echo { >>%tempfile%
  echo  "name": "%name%" >>%tempfile%
  echo;
- echo ���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����AC:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
- echo �����ǂݍ��݋@�\�������ȏꍇ��mqoz�܂���obj,ngto,ngtz�Ɠ��͂��Ă��������B
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_oldwire
@@ -2210,102 +2209,102 @@ goto selectwelcome
  set filename=%tempfile%
  goto ams
  :mat_oldwire
- echo ���C���[�̃��f�������߂Ă��������B(�t�@�C����)
+ echo ワイヤーのモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo  "model": { >>%tempfile%
  echo   "modelFile": "%modelfile%" >>%tempfile%
  echo model: %modelfile%
  echo;
- echo %modelfile%�̍ގ�����ݒ肵�Ă��������B
+ echo %modelfile%の材質数を設定してください。
  set /p mat=
- echo �ގ����� %mat% �ł��B
+ echo 材質数は %mat% です。
  echo;
  echo   "textures": [ >>%tempfile%
- echo 1 �߂̍ގ�������͂��Ă��������B
+ echo 1 つめの材質名を入力してください。
  set /p matname=
- echo �ގ����� %matname% �ł��B
+ echo 材質名は %matname% です。
  echo;
- echo �ގ��̃e�N�X�`���p�X����͂��Ă��������B
- echo ����: %ESC%[41m\%ESC%[0m(�o�b�N�X���b�V��)�ł͂Ȃ�%ESC%[41m/%ESC%[0m(�X���b�V��)���g�p���Ă��������B
+ echo 材質のテクスチャパスを入力してください。
+ echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
  set /p texturepath=
- echo �e�N�X�`���p�X�� %texturepath% �ł��B
+ echo テクスチャパスは %texturepath% です。
  set matcount=1
  :wicounter
   if %mat% == %matcount% goto wibutton
  set /a matcount= %matcount% + 1
- echo %matcount% �߂̍ގ�������͂��Ă��������B
+ echo %matcount% つめの材質名を入力してください。
  set /p matname1=
- echo �ގ����� %matname1% �ł��B
+ echo 材質名は %matname1% です。
  echo;
- echo %matname1% �̃e�N�X�`���p�X����͂��Ă��������B
+ echo %matname1% のテクスチャパスを入力してください。
  set /p texturep=
- echo �e�N�X�`���p�X�� %texturep% �ł��B
+ echo テクスチャパスは %texturep% です。
  echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
  goto wicounter
  :wibutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  echo;
  :wifi
- echo �{�^���e�N�X�`���̃p�X��ݒ肵�Ă��������B
+ echo ボタンテクスチャのパスを設定してください。
  set /p button=
  echo  "buttonTexture": "%button%", >>%tempfile%
- echo �{�^��: %button%
+ echo ボタン: %button%
  echo;
- echo deflectionCoefficient�����߂Ă��������B
- echo ����̓J�e�i���[�Ȑ��̌W���Ɋւ���ݒ�ł��B
+ echo deflectionCoefficientを決めてください。
+ echo これはカテナリー曲線の係数に関する設定です。
  set /p deflection=
  echo deflectionCoefficient: %deflection%
  echo  "deflectionCoefficient": %deflection%, >>%tempfile%
  echo;
- echo lengthCoefficient�����߂Ă��������B
- echo ����̓J�e�i���[�Ȑ��̌W���Ɋւ���ݒ�ł��B
+ echo lengthCoefficientを決めてください。
+ echo これはカテナリー曲線の係数に関する設定です。
  set /p length=
  echo lengthCoefficient: %length%
  echo  "lengthCoefficient": %length%, >>%tempfile%
  echo;
- echo sectionLength�����߂Ă��������B
- echo ����͋Ȑ���1�����̒����Ɋւ���ݒ�ł��B
+ echo sectionLengthを決めてください。
+ echo これは曲線の1分割の長さに関する設定です。
  set /p section=
  echo sectionLength: %section%
  echo  "sectionLength": %section%, >>%tempfile%
  echo;
- echo useCustomColor�����߂Ă��������B
+ echo useCustomColorを決めてください。
  set useCustomColor=true
  set /p useCustomColor=
- echo useCustomColor�� %useCustomColor% �ɐݒ肳��܂����B
+ echo useCustomColorは %useCustomColor% に設定されました。
  echo  "useCustomColor": %useCustomColor%, >>%tempfile%
  echo;
- echo doCulling�����߂Ă��������B
+ echo doCullingを決めてください。
  set doCulling=true
  set /p doCulling=
- echo doCulling��%doCulling%�ɐݒ肳��܂����B
+ echo doCullingは%doCulling%に設定されました。
  echo  "doCulling": %doCulling%, >>%tempfile%
  echo;
- echo smoothing�����߂Ă��������B
+ echo smoothingを決めてください。
  set /p smoothing=
- echo smoothing��%smoothing%�ɐݒ肳��܂����B
+ echo smoothingは%smoothing%に設定されました。
  echo  "smoothing": %smoothing%, >>%tempfile%
  echo } >%tempfile%
  echo;
  :wire_json
- echo json���������܂���!
+ echo jsonが完成しました!
   echo -- filename: ModelWire_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
   )
   echo ----------------------------------------
-  echo �s����I�����Ă�������
+  echo 行動を選択してください
   echo ----------------------------------------
-  echo  �s���̔ԍ�         �s���̓��e          
+  echo  行動の番号         行動の内容          
   echo ----------------------------------------
-  echo     2              �I�������܂��B       
-  echo     3         json��ۑ����܂��B  
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
   echo ----------------------------------------
   set /p user=
   if %user% == 2 goto 2
   if %user% == 3 goto savewijson
-  echo �G���[:�s���Ȕԍ�
+  echo エラー:不明な番号
   goto %back%
   :savewijson
   echo F | xcopy %tempfile% %setpath%\ModelWire_%name%.json /V /C /F /-Y
@@ -2314,21 +2313,21 @@ goto selectwelcome
 
 :car
  echo;
- echo ��蕨��json���쐬���܂��B
+ echo 乗り物のjsonを作成します。
  echo;
  set back=car_json
  set tempfile=%temp%\.Rtm_Json_Creator_json.tscf
- echo name�����߂Ă��������B
+ echo nameを決めてください。
  set /p name=
  echo name: %name%
  echo { >>%tempfile%
  echo  "name": "%name%", >>%tempfile%
  echo  "model": { >>%tempfile%
  echo;
- echo ���f���t�@�C���̃p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����AC:\rtm\assets\minecraft\models\ModelTrain_Temp.mqo�̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� / (�X���b�V��)�ł͂Ȃ� \ (�o�b�N�X���b�V��)���g�p���Ă��������B%ESC%[0m
- echo �����ǂݍ��݋@�\�������ȏꍇ��mqoz�܂���obj,ngto,ngtz�Ɠ��͂��Ă��������B
+ echo モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、C:\rtm\assets\minecraft\models\ModelTrain_Temp.mqoの形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ echo 自動読み込み機能が嫌いな場合はmqozまたはobj,ngto,ngtzと入力してください。
  set /p modelFile=
  rem check format
  if %modelfile:~-4% == mqoz goto mat_oldcar
@@ -2343,102 +2342,102 @@ goto selectwelcome
  set filename=%tempfile%
  goto ams
  :mat_oldcar
- echo ��蕨�̃��f�������߂Ă��������B(�t�@�C����)
+ echo 乗り物のモデルを決めてください。(ファイル名)
  set /p modelfile=
  echo   "modelFile": "%modelfile%", >>%tempfile%
  echo model: %modelfile%
  echo;
- echo %modelfile%�̍ގ�����ݒ肵�Ă��������B
+ echo %modelfile%の材質数を設定してください。
  set /p mat=
- echo �ގ����� %mat% �ł��B
+ echo 材質数は %mat% です。
  echo;
  echo   "textures": [ >>%tempfile%
- echo 1 �߂̍ގ�������͂��Ă��������B
+ echo 1 つめの材質名を入力してください。
  set /p matname=
- echo �ގ����� %matname% �ł��B
+ echo 材質名は %matname% です。
  echo;
- echo �ގ��̃e�N�X�`���p�X����͂��Ă��������B
- echo ����: %ESC%[41m\%ESC%[0m(�o�b�N�X���b�V��)�ł͂Ȃ�%ESC%[41m/%ESC%[0m(�X���b�V��)���g�p���Ă��������B
+ echo 材質のテクスチャパスを入力してください。
+ echo 注意: %ESC%[41m\%ESC%[0m(バックスラッシュ)ではなく%ESC%[41m/%ESC%[0m(スラッシュ)を使用してください。
  set /p texturepath=
- echo �e�N�X�`���p�X�� %texturepath% �ł��B
+ echo テクスチャパスは %texturepath% です。
  set matcount=1
  :cacounter
   if %mat% == %matcount% goto cabutton
  set /a matcount= %matcount% + 1
- echo %matcount% �߂̍ގ�������͂��Ă��������B
+ echo %matcount% つめの材質名を入力してください。
  set /p matname1=
- echo �ގ����� %matname1% �ł��B
+ echo 材質名は %matname1% です。
  echo;
- echo %matname1% �̃e�N�X�`���p�X����͂��Ă��������B
+ echo %matname1% のテクスチャパスを入力してください。
  set /p texturep=
- echo �e�N�X�`���p�X�� %texturep% �ł��B
+ echo テクスチャパスは %texturep% です。
  echo   ["%matname1%", "%texturep%", ""], >>%tempfile%
  goto cacounter
  :cabutton
  echo   ["%matname%", "%texturepath%", ""]]}, >>%tempfile%
  echo;
  :cartype
- echo ��蕨�̃^�C�v��ݒ肵�Ă��������B
- echo �g�p�\: Car,Ship,Plane,Lift
- echo ���ꂼ�ꎩ����,�D��,�q��@,���t�g�ł��B
+ echo 乗り物のタイプを設定してください。
+ echo 使用可能: Car,Ship,Plane,Lift
+ echo それぞれ自動車,船舶,航空機,リフトです。
  set /p Type=
  echo  "vehicleType": "%Type%", >>%tempfile%
- echo �^�C�v: %Type%
+ echo タイプ: %Type%
  if %Type% == Lift goto Lift
  echo;
- echo ����₷��,�n�ʂ�ݒ肵�Ă��������B
- echo �f�t�H���g�� 0.9 �ł��B
+ echo 滑りやすさ,地面を設定してください。
+ echo デフォルトは 0.9 です。
  set friction1=null
  set /p friction1=
  echo;
- echo ����₷��,�󒆂�ݒ肵�Ă��������B
- echo �f�t�H���g�� 0.9 �ł��B
+ echo 滑りやすさ,空中を設定してください。
+ echo デフォルトは 0.9 です。
  set /p friction2=
  echo;
  echo  "friction": [%friction1%, %friction2%], >>%tempfile%
- echo �����x,�n�ʂ�ݒ肵�Ă��������B
+ echo 加速度,地面を設定してください。
  set /p acceleration1=
  echo;
- echo �����x,�󒆂�ݒ肵�Ă��������B
+ echo 加速度,空中を設定してください。
  set /p acceleration2=
  echo  "acceleration": [%acceleration1%, %acceleration2%], >>%tempfile%
  echo;
- echo �ő呬�x,�n�ʂ�ݒ肵�Ă��������B
+ echo 最大速度,地面を設定してください。
  set /p maxSpeed1=
  echo;
- echo �ő呬�x,�󒆂�ݒ肵�Ă��������B
+ echo 最大速度,空中を設定してください。
  set /p maxSpeed2=
  echo  "maxSpeed": [%maxSpeed1%, %maxSpeed2%], >>%tempfile%
  echo;
- echo �ő�Yaw,�n�ʂ�ݒ肵�Ă��������B
+ echo 最大Yaw,地面を設定してください。
  set /p yaw1=
  echo;
- echo �ő�Yaw,�󒆂�ݒ肵�Ă��������B
+ echo 最大Yaw,空中を設定してください。
  set /p yaw2=
  echo  "maxYaw": [%yaw1%, %yaw2%], >>%tempfile%
  echo;
- echo Yaw�W��,�n�ʂ�ݒ肵�Ă��������B
+ echo Yaw係数,地面を設定してください。
  set /p yaw1k=
  echo;
- echo Yaw�W��,�󒆂�ݒ肵�Ă��������B
+ echo Yaw係数,空中を設定してください。
  set /p yaw2k=
  echo  "yawCoefficient": [%yaw1k%, %yaw2k%], >>%tempfile%
  echo;
- echo pitch�W��,�n�ʂ�ݒ肵�Ă��������B
+ echo pitch係数,地面を設定してください。
  set /p pitch1=
  echo;
- echo pitch�W��,�󒆂�ݒ肵�Ă��������B
+ echo pitch係数,空中を設定してください。
  set /p pitch2=
  echo  "pitchCoefficient": [%pitch1%, %pitch2%], >>%tempfile%
  echo;
- echo roll�W��,�n�ʂ�ݒ肵�Ă��������B
+ echo roll係数,地面を設定してください。
  set /p roll1k=
  echo;
- echo roll�W��,�󒆂�ݒ肵�Ă��������B
+ echo roll係数,空中を設定してください。
  set /p roll2k=
  echo  "rollCoefficient": [%roll1k%, %roll2k%], >>%tempfile%
  echo;
- echo ��Ԓ��ɐ���ł��邩�ǂ�����ݒ肵�Ă��������B
+ echo 停車中に旋回できるかどうかを設定してください。
  set /p stop=(true/false) : 
  echo  "changeYawOnStopping": %stop% >>%tempfile%
  echo } >>%tempfile%
@@ -2446,79 +2445,79 @@ goto selectwelcome
 
  :Lift
  echo;
- echo �{�^���e�N�X�`���̃p�X��ݒ肵�Ă��������B
+ echo ボタンテクスチャのパスを設定してください。
  set /p button=
  echo  "buttonTexture": "%button%", >>%tempfile%
- echo �{�^��: %button%
+ echo ボタン: %button%
  echo;
- echo size��1�߂����߂Ă��������B
+ echo sizeの1つめを決めてください。
  set /p size1=
- echo size��1�߂� %size1% �ɐݒ肳��܂����B
+ echo sizeの1つめは %size1% に設定されました。
  echo;
- echo size��2�߂����߂Ă��������B
+ echo sizeの2つめを決めてください。
  set /p size2=
- echo size��2�߂� %size2% �ɐݒ肳��܂����B
+ echo sizeの2つめは %size2% に設定されました。
  echo  "size": [%size1% , %size2%], >>%tempfile%
  echo;
- echo playerPos�����߂Ă��������B
- echo 0.0, 0.48, 0.0 �̌`���œ��͂��Ă��������B
+ echo playerPosを決めてください。
+ echo 0.0, 0.48, 0.0 の形式で入力してください。
  set /p playerPos=
  echo  "playerPos": [[%playerPos%]], >>%tempfile%
  echo;
- echo vibration�����߂Ă��������B
- echo 0.0, 0.0 �̌`���œ��͂��Ă��������B
+ echo vibrationを決めてください。
+ echo 0.0, 0.0 の形式で入力してください。
  set /p vibration=
  echo  "vibration":[%vibration%], >>%tempfile%
  echo;
- echo gripPos�����߂Ă��������B
- echo ����̓��t�g�ƃ��C���[�̐ړ_��x,y,z�̃��[�g���P�ʂŎw�肵�Ă��������B
- echo 0.0, 3.5, 0.0 �̌`���œ��͂��Ă��������B
- echo �q���g: RTM�Ƀv���C���X�g�[������Ă��郊�t�g�� 0.0, 3.5, 0.0 �ł��B
+ echo gripPosを決めてください。
+ echo これはリフトとワイヤーの接点をx,y,zのメートル単位で指定してください。
+ echo 0.0, 3.5, 0.0 の形式で入力してください。
+ echo ヒント: RTMにプリインストールされているリフトは 0.0, 3.5, 0.0 です。
  set /p gripPos=
  echo  "gripPos": [%gripPos%], >>%tempfile%
  echo;
- echo useCustomColor�����߂Ă��������B
+ echo useCustomColorを決めてください。
  set /p useCustomColor=(true/false): 
  echo  "useCustomColor": %useCustomColor% >>%tempfile%
  echo;
- echo smoothing�����߂Ă��������B
+ echo smoothingを決めてください。
  set /p smooz=(true/false) : 
  echo  "smoothing": %smooz%, >>%tempfile%
  echo;
- echo doCulling�����߂Ă��������B
+ echo doCullingを決めてください。
  set /p doCulling=(true/false) : 
  echo  "doCulling": %doCulling%, >>%tempfile%
  echo  "changeYawOnStopping": false, >>%tempfile%
  echo;
- echo accuracy�����߂Ă��������B
+ echo accuracyを決めてください。
  set /p accuracy=(LOW/MIDIUM): 
  echo  "accuracy": "%accuracy%", >>%tempfile%
  echo;
- echo collisionParts�����߂Ă��������B
- echo "seat1" �̌`���œ��͂��Ă��������B �����w��̏ꍇ�� "seat1", "seat2", "seat3" �̌`���œ��͂��Ă��������B
+ echo collisionPartsを決めてください。
+ echo "seat1" の形式で入力してください。 複数指定の場合は "seat1", "seat2", "seat3" の形式で入力してください。
  set /p collisionParts=
  echo  "collisionParts": [%collisionParts%], >>%tempfile%
  echo;
- echo tags�����߂Ă��������B
- echo �����w�肷��ꍇ��,�ŋ�؂��ē��͂��Ă��������B
+ echo tagsを決めてください。
+ echo 複数指定する場合は,で区切って入力してください。
  set /p tags=
  echo  "tags": "%tags%" >>%tempfile%
  echo } >>%tempfile%
  echo;
  :car_json
-  echo json���������܂���!
+  echo jsonが完成しました!
   echo -- filename: ModelVehicle_%name%.json --
   echo;
   for /f "delims=@" %%a in (%tempfile%) do (
    echo %%a
   )
   echo ----------------------------------------
-  echo �s����I�����Ă�������
+  echo 行動を選択してください
   echo ----------------------------------------
-  echo  �s���̔ԍ�         �s���̓��e          
+  echo  行動の番号         行動の内容          
   echo ----------------------------------------
-  echo     2              �I�������܂��B       
-  echo     3         json��ۑ����܂��B  
+  echo     2              終了させます。       
+  echo     3         jsonを保存します。  
   echo ----------------------------------------
   set /p user=
   if %user% == 2 goto 2
@@ -2526,15 +2525,15 @@ goto selectwelcome
   goto car_json
  
 :soundcreate
- echo ���̃T�E���h�N���G�C�g�@�\��sounds.json�̍쐬�e�X�g�Ɏg�p���邽�߂̂��̂ł��B
- echo sound.log�t�@�C�����폜����K�v������܂���? (�K�v�Ȃ��ꍇ�͍����łɂ�����̂�+�ō쐬����܂�,�Ⴆ�΁A99�s�̃t�@�C�������ɑ��݂��Ă���5�s�ǉ��������ꍇ�͕K�v�Ȃ���I�����邱�Ƃ�99�s�Ƀv���X��5�s�����������邱�Ƃ��ł��܂��B)
+ echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
+ echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
  set /p confirm=(y / n)
  if %confirm% == y del /F sound.log
  if %confirm% == n goto next
  :next
- echo ���s�K�v�ł���?
- echo �󔒂�0�A�͂���߂���ɑ傫�������w�肵�Ă��܂��A�~�߂����Ƃ���"CTRL + C"�����邱�ƂŃo�b�`�t�@�C���������I�����Ă��������B
- echo ����Ȃ��ƃo�b�`�t�@�C����������������薳����sounds.log�̃t�@�C���T�C�Y���傫���Ȃ�܂�(1�b��1KB�y�[�X�ő����܂�)
+ echo 何行必要ですか?
+ echo 空白や0、はちゃめちゃに大きい数を指定してしまい、止めたいときは"CTRL + C"をすることでバッチファイルを強制終了してください。
+ echo じゃないとバッチファイルが動き続ける限り無限にsounds.logのファイルサイズが大きくなります(1秒に1KBペースで増えます)
  set /p stopcount=
  :loo
  set /a count=%count% + 1
@@ -2549,7 +2548,7 @@ goto selectwelcome
  echo done!
  echo schedule: %stopcount%
  echo work total: %count%
- if not %stopcount% == %count% echo stopcount��count�̐����Ⴄ���Ƃ����m���܂����B ������̃J�E���^�[���������Ȃ炱��͊Ԉ���Ă��܂��B ���̏ꍇ�͖������Ă��������B
+ if not %stopcount% == %count% echo stopcountとcountの数が違うことを検知しました。 もし上のカウンターが同じ数ならこれは間違っています。 その場合は無視してください。
  echo;
  pause
  exit
@@ -2559,7 +2558,7 @@ goto selectwelcome
  echo Done.
  exit /b
 :railjson1pre
- echo �v���r���[���\������܂�:
+ echo プレビューが表示されます:
  pause
  echo { 
  echo   "railName": "keburukacon", 
@@ -2580,7 +2579,7 @@ goto selectwelcome
  echo } 
  goto rail
 :railjson2pre
- echo �v���r���[���\������܂�:
+ echo プレビューが表示されます:
  pause
  echo {
  echo   "railName": "keburukacon",
@@ -2597,7 +2596,7 @@ goto selectwelcome
  echo }
  goto rail
 :firstsetting
- echo �����ݒ���s���Ă��܂�...
+ echo 初期設定を行っています...
  pushd %temp%
  echo Create dir: %temp%\.RJC\json
  md .RJC\json
@@ -2675,11 +2674,11 @@ goto selectwelcome
  echo -----------------------------
  echo Copyright (c) 2022-2024 akikawa9616
  echo;
- echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the �gSoftware�h), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  echo;
  echo The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  echo;
- echo THE SOFTWARE IS PROVIDED �gAS IS�h, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ echo THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  echo -----------------------------
  pause
  goto selectwelcome
@@ -2690,28 +2689,28 @@ goto selectwelcome
  start delete.bat
  exit
 :useams
- echo ����͎����ގ��ݒ�@�\�̃e�X�g�ł��B
- echo �ގ���,�ގ���,�ގ��e�N�X�`���p�X���o�͂��܂��B
- echo �������̓G���[�n���h�����O�������ƍ���ĂȂ��̂ňȉ��̓_�ɒ��ӂ��Ă�������
- echo - �_�u���N�H�[�e�[�V��������
- echo - �p�X/�t�@�C�����ɋ󔒂Ȃ�
- set /p modelFile=(������mqo�`���̃��f���t�@�C���t���p�X�����:) 
+ echo これは自動材質設定機能のテストです。
+ echo 材質数,材質名,材質テクスチャパスを出力します。
+ echo こっちはエラーハンドリングをちゃんと作ってないので以下の点に注意してください
+ echo - ダブルクォーテーション無し
+ echo - パス/ファイル名に空白なし
+ set /p modelFile=(ここにmqo形式のモデルファイルフルパスを入力:) 
  setlocal enabledelayedexpansion
  for %%a in (%modelFile%) do set "filename=%%~nxa"
  endlocal
- echo modelFilePath�� %modelFile% �ɐݒ肳��܂����B
+ echo modelFilePathは %modelFile% に設定されました。
  echo ------------------
  if not exist %modelFile% goto cantload_notfound
  for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%) do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
  echo;
- echo �ގ��ݒ�̍s: %lnnum%
+ echo 材質設定の行: %lnnum%
  echo;
  for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
  set mat=%mat:~9%
  set mat=%mat:~0,-2%
- echo �ގ������擾: %mat%
+ echo 材質数を取得: %mat%
  echo;
  setlocal enabledelayedexpansion
  set /a "count=0"
@@ -2725,15 +2724,15 @@ goto selectwelcome
     set "mat1=%%a"
  )
  set matname=!mat1:~1!
- echo �ގ������擾: !matname!
+ echo 材質名を取得: !matname!
  for /f "delims=" %%a in ("!line!") do (
     set "texture=%%a"
     set "texture=!texture:*tex(=!"
     set "texture=!texture:)=!"
  )
  set texture=!texture:~1,-1!
- echo �e�N�X�`�������擾: !texture!
- echo �ގ���: !matname! , !matname!�̃e�N�X�`��: !texture!
+ echo テクスチャ名を取得: !texture!
+ echo 材質名: !matname! , !matname!のテクスチャ: !texture!
  endlocal
  set matcount=1
  echo;
@@ -2755,14 +2754,14 @@ goto selectwelcome
     set "mat1=%%a"
  )
  set matname=!mat1:~1!
- echo �ގ������擾: !matname!
+ echo 材質名を取得: !matname!
  for /f "delims=" %%a in ("!line!") do (
     set "texture=%%a"
     set "texture=!texture:*tex(=!"
     set "texture=!texture:)=!"
  )
  set texture=!texture:~1,-1!
- echo �e�N�X�`�������擾: !texture!
+ echo テクスチャ名を取得: !texture!
  echo name: !matname! ,texturename: !texture!
  echo;
  endlocal
@@ -2772,12 +2771,12 @@ goto selectwelcome
  goto welcome
 :ams
  if '^%modelFile:~-1%^%modelFile:~0,1%' == '^"^"' ( set modelFile=%modelFile:~1,-1% ) 
- echo modelFilePath�� %modelFile% �ɐݒ肳��܂����B
+ echo modelFilePathは %modelFile% に設定されました。
  echo          "textures":[ >> %filename%
  echo ------------------
- echo ���̃��f���̃e�N�X�`���t�H���_�p�X����͂��Ă��������B
- echo ����͕ϐ����g�p�����A textures/train �̌`���œ��͂��Ă��������B
- echo %ESC%[7m�K�� \ (�o�b�N�X���b�V��)�ł͂Ȃ� / (�X���b�V��)���g�p���Ă��������B%ESC%[0m
+ echo このモデルのテクスチャフォルダパスを入力してください。
+ echo これは変数を使用せず、 textures/train の形式で入力してください。
+ echo %ESC%[7m必ず \ (バックスラッシュ)ではなく / (スラッシュ)を使用してください。%ESC%[0m
  set /p texturedir=
  echo dir: %texturedir%
  echo ------------------
@@ -2793,11 +2792,11 @@ goto selectwelcome
  for /f "delims=" %%a in ('findstr /B /R /N /C:TrialNoise* %modelFile%') do ( goto cantload_Noise )
  for /f "delims=" %%a in ('findstr /B /R /N /C:Material* %modelFile%') do set mat=%%a
  for /f "delims=:" %%a in ('echo %mat%') do set lnnum=%%a
- echo �ގ��ݒ�̍s: %lnnum%
+ echo 材質設定の行: %lnnum%
  for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
  set mat=%mat:~9%
  set mat=%mat:~0,-2%
- echo �ގ������擾: %mat%
+ echo 材質数を取得: %mat%
  setlocal enabledelayedexpansion
  set /a "count=0"
  for /f "delims=" %%a in (%modelFile%) do (
@@ -2810,21 +2809,21 @@ goto selectwelcome
     set "mat1=%%a"
  )
  set matname=!mat1!
- echo �ގ������擾: !matname!
+ echo 材質名を取得: !matname!
  for /f "delims=" %%a in ("!line!") do (
     set "texture=%%a"
     set "texture=!texture:*tex(=!"
     set "texture=!texture:)=!"
  )
  set texture=!texture:~1,-1!
- echo �e�N�X�`�������擾: !texture!
+ echo テクスチャ名を取得: !texture!
  set hoge=!texture:~1,2!
  if !hoge! == :\ goto PathError
  echo !line! | findstr /C:"tex(" >nul
  if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo �I�v�V����: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
- set /p option=�I�v�V������ݒ�,��L�̐�������́B: 
+ echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
+ set /p option=オプションを設定,上記の数字を入力。: 
  if !option! == 1 set option=AlphaBlend
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
@@ -2855,21 +2854,21 @@ goto selectwelcome
     set "mat1=%%a"
  )
  set matname=!mat1!
- echo �ގ������擾: !matname!
+ echo 材質名を取得: !matname!
  for /f "delims=" %%a in ("!line!") do (
     set "texture=%%a"
     set "texture=!texture:*tex(=!"
     set "texture=!texture:)=!"
  )
  set texture=!texture:~1,-1!
- echo �e�N�X�`�������擾: !texture!
+ echo テクスチャ名を取得: !texture!
  set hoge=!texture:~1,2!
  if !hoge! == :\ goto PathError
  echo !line! | findstr /C:"tex(" >nul
  if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
- echo �I�v�V����: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
- set /p option=�I�v�V������ݒ�,��L�̐�������́B: 
+ echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
+ set /p option=オプションを設定,上記の数字を入力。: 
  if !option! == 1 set option=AlphaBlend
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
@@ -2881,39 +2880,39 @@ rem AutomaticMaterialSettingErrors
  rem ERROR
   :cantload_UnSupportedFormat
    echo;
-   echo [ERROR] �T�|�[�g����Ă��Ȃ�MQO�`�����ǂݍ��܂�܂����B: Compress
-   echo [ERROR] %modelFile%�ɑ΂���ǂݍ��݂͋����I�ɒ�~����܂����B
-   echo ���s����ƏI�����܂��B
+   echo [ERROR] サポートされていないMQO形式が読み込まれました。: Compress
+   echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+   echo 続行すると終了します。
    pause
    exit /b
   :cantload_UnknownFormatOrVer
    echo;
-   echo [ERROR] �`���܂��̓o�[�W�������F���ł��܂���ł����B
-   echo [ERROR] %modelFile%�ɑ΂���ǂݍ��݂͋����I�ɒ�~����܂����B
-   echo ���s����ƏI�����܂��B
+   echo [ERROR] 形式またはバージョンが認識できませんでした。
+   echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+   echo 続行すると終了します。
    pause
    exit /b
   :cantload_Noise
    echo;
-   echo [ERROR] TrialNoise�`�����N�����o����܂����B
-   echo [ERROR] %modelFile%�ɑ΂���ǂݍ��݂͋����I�ɒ�~����܂����B
-   echo ���s����ƏI�����܂��B
+   echo [ERROR] TrialNoiseチャンクが検出されました。
+   echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
+   echo 続行すると終了します。
    pause
    exit /b
   :cantload_notfound
    echo;
-   echo [ERROR] %modelfile%��������܂���ł����B
-   echo ���s����ƏI�����܂��B
+   echo [ERROR] %modelfile%が見つかりませんでした。
+   echo 続行すると終了します。
    pause
    exit /b
   :PathError
    echo;
    echo %ESC%[41m------------------------------------%ESC%[0m
-   echo %ESC%[41m�p�X������̍\�����Ԉ���Ă���\��������܂�!%ESC%[0m
+   echo %ESC%[41mパス文字列の構文が間違っている可能性があります!%ESC%[0m
    echo;
-   echo %ESC%[41m���f���t�@�C���̍ގ���: !matname! �� !texture! �̌`���ł͂Ȃ��A�e�N�X�`���̃t�@�C�����݂̂��ގ��e�N�X�`���ɐݒ肷��悤�ɂ��Ă��������B%ESC%[0m
-   echo %ESC%[41m�ꉞ�A���̂܂܂ł�RTM�͓��삵�܂����ARtmJsonCreator�͑Ή����Ă��Ȃ����߁A���̐��Json���쐬���邱�Ƃ͂ł��܂���B%ESC%[0m
-   echo %ESC%[41m�܂��A���̃e�N�X�`���p�X�ɂ�%USERPROFILE%�z���ւ̃p�X���܂܂�Ă���\��������A�A�h�I����z�z���鎞�͖{���o���ɒ��ӂ��Ă��������B%ESC%[0m
+   echo %ESC%[41mモデルファイルの材質名: !matname! を !texture! の形式ではなく、テクスチャのファイル名のみを材質テクスチャに設定するようにしてください。%ESC%[0m
+   echo %ESC%[41m一応、このままでもRTMは動作しますが、RtmJsonCreatorは対応していないため、この先のJsonを作成することはできません。%ESC%[0m
+   echo %ESC%[41mまた、このテクスチャパスには%USERPROFILE%配下へのパスが含まれている可能性があり、アドオンを配布する時は本名バレに注意してください。%ESC%[0m
    echo %ESC%[41m------------------------------------%ESC%[0m
    echo;
    pause
@@ -2922,7 +2921,7 @@ rem AutomaticMaterialSettingErrors
   :AddDummyTexture
    set texturedir=textures/train
    set texture=tp.png
-   echo [WARN] �e�N�X�`�����ݒ肳��Ă��Ȃ��ގ������o���܂����B
-   echo [WARN] RTM���ɓ�������Ă��铧���ȃe�N�X�`�������ɓK�p���܂��B
+   echo [WARN] テクスチャが設定されていない材質を検出しました。
+   echo [WARN] RTM内に同梱されている透明なテクスチャを代わりに適用します。
    exit /b
    
