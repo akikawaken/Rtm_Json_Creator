@@ -1,7 +1,7 @@
 @echo off
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.2.4
+set version=1.2.5
 set releaseversion=2
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2597,6 +2597,7 @@ goto selectwelcome
  goto rail
 :firstsetting
  echo 初期設定を行っています...
+ if exist %temp%\.RJC\rjc.tscf set autorestart=true
  pushd %temp%
  echo Create dir: %temp%\.RJC\json
  md .RJC\json
@@ -2653,18 +2654,19 @@ goto selectwelcome
  set ERRORLEVEL=0
  echo do "where choice" command
  where choice
+ if %ERRORLEVEL% == 0 echo CHOICE COMMAND FOUND.
  if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
- if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
+ if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
  set ERRORLEVEL=0
  echo do "where curl" command
  where curl
+ if %ERRORLEVEL% == 0 echo CURL COMMAND FOUND.
  if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
- if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC>>OSC.tscf
+ if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
  echo;
- echo Please restart RtmJsonCreator.
- pause
- set autorestart=true
- exit /b
+ if %autorestart% == true ( for /f %%a in (%temp%\rjcupdate.tscf) do (call %%a))
+ pushd c:\
+ for /f %%a in ('dir /s /b RtmJsonCreator.bat') do ( call %%a )
 :deljson
  del /Q %temp%\.RJC\json\*
  echo Done.
