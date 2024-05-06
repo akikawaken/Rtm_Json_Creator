@@ -27,7 +27,6 @@
 [![json作成を体験する](https://raw.githubusercontent.com/akikawaken/images/main/RJC/nyan.png)](https://akikawaken.github.io/)
 *画像はイメージです。  
 *画像をクリックするとjson作成の体験ができるページに飛びます。
-*列車と看板のみ対応しています。
 
 # 対応可否
 **バージョン:1.0.1 , 2023-12-25時点.**
