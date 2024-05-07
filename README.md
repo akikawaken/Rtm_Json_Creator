@@ -8,7 +8,10 @@
 
 # ダウンロード場所
 GitHubダウンロード: [assets内の一番上がインストーラ兼本体です。](https://github.com/akikawaken/creator/releases/tag/v1.2.5 "download page" )  
-CLIダウンロード: <code>curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat & call RtmJsonCreator.bat</code>
+CLIダウンロード: 
+```
+curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat & call RtmJsonCreator.bat
+```
 
 # RtmJsonCreatorの特徴
 - 値を入力するだけなので Json構文エラー の可能性が低くなる
