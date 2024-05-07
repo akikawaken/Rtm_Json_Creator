@@ -2597,6 +2597,7 @@ goto selectwelcome
  goto rail
 :firstsetting
  echo ‰ŠúÝ’è‚ðs‚Á‚Ä‚¢‚Ü‚·...
+ set autorestart=false
  if exist %temp%\.RJC\rjc.tscf set autorestart=true
  pushd %temp%
  echo Create dir: %temp%\.RJC\json
@@ -2664,7 +2665,11 @@ goto selectwelcome
  if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
  if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
  echo;
- if %autorestart% == true ( for /f %%a in (%temp%\rjcupdate.tscf) do (call %%a))
+ if %autorestart% == true for /f %%a in (%temp%\rjcupdate.tscf) do (call %%a)
+ popd
+ popd
+ popd
+ if exist RtmJsonCreator.bat call RtmJsonCreator.bat
  pushd c:\
  for /f %%a in ('dir /s /b RtmJsonCreator.bat') do ( call %%a )
 :deljson
