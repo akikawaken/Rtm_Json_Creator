@@ -7,3 +7,5 @@ dev*
 rjc.*
 WhatsNew.md
 rtm_json_creator_release.bat
+*.tscf
+climap*
