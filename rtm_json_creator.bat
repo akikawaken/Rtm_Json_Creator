@@ -1,8 +1,9 @@
 @echo off
+:startrjc
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.2.5
-set releaseversion=2
+set version=1.3.2
+set releaseversion=4
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 pushd %temp%\.RJC\json
@@ -11,11 +12,17 @@ set notlatest=false
 set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+echo;
+for /f %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
+  if %%a == true goto down
+)
+if EXIST %temp%\.RJC\osc.tscf ( set oscmode=1 ) ELSE ( set oscmode=0 )
 if EXIST %temp%\.RJC\osc.tscf goto oscwelcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
 set latestver=%%a
 )
 if not exist %temp%\rjcupdate.tscf ( goto welcome ) 
+if exist %temp%\rjcversion.tscf ( for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a ) )
 if %latestver% == %releaseversion% goto welcome
 for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
@@ -28,56 +35,49 @@ if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
+
 :selectwelcome
-pushd %temp%\.RJC\welcome
-echo  ----------------------------------------
-echo   行動の番号         行動の内容          
-echo  ----------------------------------------
-echo       1         列車のjsonを作成します。
-echo       2         終了させます。
-echo       3         看板のjsonを作成します。
-echo       4         スペシャルサンクスと作者
-echo       5         機能あり/なし設置物のjsonを作成します。
-echo       6         NPCのjsonを作成します。
-echo       7         旗のjsonを作成します。
-echo       8         sounds.jsonを作成します。
-echo       9         ディレクトリを構成します。
-echo      11         pack.jsonを作成します。
-echo      12         信号機のjsonを作成します。
-echo      13         レールのjsonを作成します。
-echo      14         コンテナのjsonを作成します。
-echo      15         火器のjsonを作成します。
-echo      16         コネクターのjsonを作成します。
-echo      17         ワイヤーのjsonを作成します。
-echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。
-echo     cmd         cmd.exeをコールします。
-echo setpath       指定したディレクトリにパスを通します。
+goto syoki
+
+if exist %temp%\.RJC\setting\osc.tscf goto syoki
+more %temp%\.RJC\setting\welcome.tscf
 if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo  ----------------------------------------
 echo 現在のディレクトリ: %setpath%
 echo  ----------------------------------------
 set /p start=行動の数字を入力してください...
 set back=selectwelcome
-pushd %setpath%
 echo;
-if %start% == 1 goto 1
-if %start% == 2 exit /b
-if %start% == 3 goto 3
-if %start% == 4 goto 4
-if %start% == 5 goto 5
-if %start% == 6 goto 6
-if %start% == 7 goto 7
-if %start% == 8 goto 8
-if %start% == 9 goto 9
+for /f 
+
+:syoki
+more %temp%\.RJC\setting\welcome.tscf
+if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
+echo  ----------------------------------------
+echo 現在のディレクトリ: %setpath%
+echo  ----------------------------------------
+set /p start=行動の数字を入力してください...
+set back=selectwelcome
+echo;
+if %start% == 1 goto train
+if %start% == 2 exit
+if %start% == 3 goto sign
+if %start% == 4 call :specialthanks
+if %start% == 5 goto machine
+if %start% == 6 goto npc
+if %start% == 7 goto flag
+if %start% == 8 goto sound
+if %start% == 9 goto dir
 if %start% == 11 goto pack
 if %start% == 12 goto signal
 if %start% == 13 goto rail
 if %start% == 14 goto contami
 if %start% == 15 goto gun
-if %start% == 16 goto connector
+if %start% == 16 goto connector0
 if %start% == 17 goto wire
 if %start% == 18 goto car
 if %start% == setpath call :setpath
+if %start% == setting goto setting
 if %start% == explorer start explorer.exe %setpath%
 if %start% == License goto License
 if %start% == update goto update
@@ -90,7 +90,7 @@ if %start% == ams goto useams
 rem 試験的機能の終焉
 echo エラー:不明な番号です。
 goto selectwelcome
-:1
+:train
  cls
  set tsw=t
  echo 列車のjsonを作成します。
@@ -733,7 +733,7 @@ goto selectwelcome
  for /f "delims=" %%a in (ModelTrain_%trainname%.json) do (
   echo %%a
  )
-:2
+:sign
  echo -------------------
  echo 続行すると内容が消えます。
  echo 続行してもよろしいですか?
@@ -953,32 +953,7 @@ goto selectwelcome
  set /p lightValue=
  echo lightValueは %lightValue% に設定されました。
  goto signjson
-
-:4
- echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
- echo ----
- echo スペシャルサンクス(敬称略)
- echo  jsonのデータの提供
- echo   -- .zip
- echo   -- はちこうとっかい ^| https://twitter.com/Hachiko_Server
- echo  デバッグ
- echo   -- akikawa9616
- echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
- echo;
- echo  一部機能発案者
- echo   -- K.kirikoto ^| https://twitter.com/mikawa8002
- echo;
- echo  参考文献
- echo   -- RTMモデルパック作成マニュアル_2.4.8_1.pdf ^| 著 ngt5479 ^| 2019/06/25
- echo;
- echo このプログラムはMITライセンスで公開されています。
- echo MIT License全文は行動選択画面で"License"を入力してください。
- echo;
- echo version: %version% / releaseversion: %releaseversion%
- pause
- cls
- goto selectwelcome
-:5
+:machine
  cls
  set tsw=w
  echo 機能あり/なし設置物のどれを作成しますか?
@@ -1151,7 +1126,7 @@ goto selectwelcome
   echo %%a
  )
  goto 2
-:6
+:npc
  cls
  set tsw=n
  echo NPCのjsonを作成します。
@@ -1263,7 +1238,7 @@ goto selectwelcome
   echo %%a
  )
  goto 2
-:7
+:flag
  cls
  set tsw=f
  echo 旗のjsonを作成します。
@@ -1382,7 +1357,7 @@ goto selectwelcome
  echo --------------
  goto %back%
 
-:8
+:sound
  cls
  set tsw=sounds
  echo sounds.jsonを作成します。
@@ -1511,7 +1486,7 @@ goto selectwelcome
   pause
   goto 2
 
-:9
+:dir
  echo RTMのディレクトリ構成を作成します。
  echo どこにディレクトリを作成しますか?(記述されたパス下に"RTM"フォルダができます。)
  echo;
@@ -2596,62 +2571,46 @@ goto selectwelcome
  echo }
  goto rail
 :firstsetting
- echo 初期設定を行っています...
+ set isnotconfirm=false
  set autorestart=false
- if exist %temp%\.RJC\rjc.tscf set autorestart=true
+ echo 初期設定を行っています...
  pushd %temp%
  echo Create dir: %temp%\.RJC\json
  md .RJC\json
- echo Create dir: %temp%\.RJC\welcome
- md .RJC\welcome
+ echo Create dir: %temp%\.RJC\setting
+ md .RJC\setting
  pushd %temp%\.RJC
  echo Create file: %temp%\.RJC\rjc.tscf
- echo If you need regenerate action number file, Please delete this file.>>rjc.tscf
- pushd %temp%\.RJC\welcome
- echo Create file: %temp%\.RJC\welcome\1
- echo;>>1
- echo Create file: %temp%\.RJC\welcome\2
- echo;>>2
- echo Create file: %temp%\.RJC\welcome\3
- echo;>>3
- echo Create file: %temp%\.RJC\welcome\4
- echo;>>4
- echo Create file: %temp%\.RJC\welcome\5
- echo;>>5
- echo Create file: %temp%\.RJC\welcome\6
- echo;>>6
- echo Create file: %temp%\.RJC\welcome\7
- echo;>>7
- echo Create file: %temp%\.RJC\welcome\8
- echo;>>8
- echo Create file: %temp%\.RJC\welcome\9
- echo;>>9
- echo Create file: %temp%\.RJC\welcome\10
- echo;>>10
- echo Create file: %temp%\.RJC\welcome\11
- echo;>>11
- echo Create file: %temp%\.RJC\welcome\12
- echo;>>12
- echo Create file: %temp%\.RJC\welcome\13
- echo;>>13
- echo Create file: %temp%\.RJC\welcome\14
- echo;>>14
- echo Create file: %temp%\.RJC\welcome\15
- echo;>>15
- echo Create file: %temp%\.RJC\welcome\16
- echo;>>16
- echo Create file: %temp%\.RJC\welcome\17
- echo;>>17
- echo Create file: %temp%\.RJC\welcome\18
- echo;>>18
- echo Create file: %temp%\.RJC\welcome\explorer
- echo;>>explorer
- echo Create file: %temp%\.RJC\welcome\cmd
- echo;>>cmd
- echo Create file: %temp%\.RJC\welcome\setpath
- echo;>>setpath
- echo Create file: %temp%\.RJC\welcome\License
- echo;>>License
+ echo;>rjc.tscf
+ :loadwelcome
+ if exist %temp%\.RJC\setting\welcome.tscf del %temp%\.RJC\setting\welcome.tscf
+ pushd %temp%\.RJC\setting
+ echo Create file: %temp%\.RJC\setting\welcome.tscf
+ echo  ---------------------------------------->>%temp%\.RJC\setting\welcome.tscf
+ echo   行動の番号         行動の内容          >>%temp%\.RJC\setting\welcome.tscf
+ echo  ---------------------------------------->>%temp%\.RJC\setting\welcome.tscf
+ echo       1         列車のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       2         このウィンドウを殺します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       3         看板のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       4         スペシャルサンクスと作者>>%temp%\.RJC\setting\welcome.tscf
+ echo       5         機能あり/なし設置物のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       6         NPCのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       7         旗のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       8         sounds.jsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       9         ディレクトリを構成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      11         pack.jsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      12         信号機のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      13         レールのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      14         コンテナのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      15         火器のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      16         コネクターのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      17         ワイヤーのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo setting         設定画面を開きます。>>%temp%\.RJC\setting\welcome.tscf
+ echo     cmd         cmd.exeをコールします。>>%temp%\.RJC\setting\welcome.tscf
+ echo setpath         指定したディレクトリにパスを通します。>>%temp%\.RJC\setting\welcome.tscf
+ if %isnotconfirm% == true echo Done.
+ if %isnotconfirm% == true goto setting
  set ERRORLEVEL=0
  echo do "where choice" command
  where choice
@@ -2665,13 +2624,9 @@ goto selectwelcome
  if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
  if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
  echo;
- if %autorestart% == true for /f %%a in (%temp%\rjcupdate.tscf) do (call %%a)
- popd
- popd
- popd
- if exist RtmJsonCreator.bat call RtmJsonCreator.bat
- pushd c:\
- for /f %%a in ('dir /s /b RtmJsonCreator.bat') do ( call %%a )
+ echo Done.
+ timeout /t 3>nul
+ goto startrjc
 :deljson
  del /Q %temp%\.RJC\json\*
  echo Done.
@@ -2692,6 +2647,7 @@ goto selectwelcome
 :update
  pushd %temp%
  del delete.bat
+ del %temp%\rjcversion.tscf
  curl -sLJO https://akikawaken.github.io/RJC/VC/delete.bat
  start delete.bat
  exit
@@ -2830,12 +2786,16 @@ goto selectwelcome
  if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
- set /p option=オプションを設定,上記の数字を入力。: 
+ set option=null
+ set /p option=オプションを設定,上記の数字を入力。オプション不要の場合は何も入力せずEnter: 
  if !option! == 1 set option=AlphaBlend
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
- echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams2.tscf
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} >>%temp%\.ams2.tscf
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]} >>%temp%\.ams2.tscf
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} 
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}
  endlocal
  set matcount=1
  :matroop
@@ -2875,14 +2835,319 @@ goto selectwelcome
  if !errorlevel! == 1 call :AddDummyTexture
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
- set /p option=オプションを設定,上記の数字を入力。: 
+ set option=null
+ set /p option=オプションを設定,上記の数字を入力。オプション不要の場合は何も入力せずEnter: 
  if !option! == 1 set option=AlphaBlend
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
- echo       [!matname!, "%texturedir%/!texture!", "!option!"], >>%temp%\.ams1.tscf
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams1.tscf
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams1.tscf
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, 
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}, 
  endlocal
  goto matroop
+
+:setting
+ timeout /t 3>nul
+ cls
+ set count=0
+ rem ln limit:30 
+ echo;
+ echo 設定画面
+ echo;
+ echo    1  スペシャルサンクス
+ echo    2  RtmAddonディレクトリを構成
+ echo    3  アップデート/ダウングレード
+ rem echo    4  行動選択画面の並び替え
+ echo    5  コマンドライン呼び出し
+ echo    6  削除/アンインストール (まだ試してない！)
+ echo    7  自動材質設定の初期版を利用する
+ echo    8  explorer.exeをコールします。
+ echo    9  互換モードを切り替える
+ echo   10  パスを通す
+ rem echo   11  
+ rem echo   12  
+ rem echo   13  
+ rem echo   14  
+ rem echo   15  
+ rem echo   16  
+ rem echo   17  
+ rem echo   18  
+ rem echo   19  
+ rem echo   20  
+ rem echo   21  
+ rem echo   22  
+ rem echo   23  
+ rem echo   24  
+ echo rexit RtmJsonCreatorを終了します。
+ echo  exit 設定を終了します。 
+ echo;
+ set count=0
+ set /p settinginput=
+ if %settinginput% == 1 call :specialthanks
+ if %settinginput% == 2 goto dir
+ if %settinginput% == 3 goto supdate
+ if %settinginput% == 4 goto changewelcome
+ if %settinginput% == 5 call cmd.exe
+ if %settinginput% == 6 goto deletes
+ if %settinginput% == 7 goto useams
+ if %settinginput% == 8 start explorer.exe %setpath%
+ if %settinginput% == 9 goto turnosc
+ if %settinginput% == 10 call :setpath
+ if %settinginput% == rexit exit
+ if %settinginput% == exit goto startrjc
+ echo エラー:不明な番号です。
+ goto selectwelcome
+
+ :supdate
+  if not %oscmode% == 0 goto setting
+  echo 1 強制的に最新版へアップデートする
+  echo 2 強制的に特定のバージョンへ移行させる
+  set /p settinginput=
+  if %settinginput% == 1 goto update
+  if %settinginput% == 2 goto HyperUpdate
+  goto setting
+ :HyperUpdate
+  pushd %temp%\.RJC
+  curl https://akikawaken.github.io/RJC/VC/DownloadList.tscf
+  popd
+  echo;
+  set /p downloadversion=バージョン名を入力(e.g. 0.1): 
+  if %downloadversion:~0,1% == 0 echo 選択されたバージョンにはアップデート機能が搭載されていません。 現バージョンに戻すには%temp%\.RJC配下と%temp%\rjcupdate.tscf,%temp%\rjcversion.tscfの削除が必要になります。
+  if %downloadversion% == 1.0.1.2 echo 選択されたバージョンにはアップデート機能が搭載されていません。 現バージョンに戻すには%temp%\.RJC配下と%temp%\rjcupdate.tscf,%temp%\rjcversion.tscfの削除が必要になります。
+  if %downloadversion% == 1.2 echo 選択されたバージョンには設定画面が搭載されていません。 現バージョンに戻すには一旦最新版に上げてから落とす必要があります。
+  echo %downloadversion% へ バージョンを変更します。
+  set /p settinginput=(Y/N): 
+  if not %settinginput% == y goto setting
+  pushd %temp%
+  curl -sLJO https://akikawaken.github.io/RJC/VC/Old/%downloadversion%_delete.bat
+  start %temp%\%downloadversion%_delete.bat
+  exit
+
+ :changewelcome
+  echo;
+  echo 初期設定またはほかのファイルからロードしますか?
+  echo;
+  echo 1 自分で作る
+  echo 2 初期設定を利用する
+  echo 3 ロードする
+  echo;
+  set /p settinginput=
+  if %settinginput% == 1 goto createoriginalwelcomescreen
+  if %settinginput% == 2 goto loadwelcome
+  if %settinginput% == 3 goto loadfromotherfile
+  goto setting
+ 
+  :loadfromotherfile
+  echo ロードするファイルへのフルパスを指定してください。
+  echo;
+  echo 注意: この機能は v%version% の行動選択画面の形式に沿っていないファイルも読み込むことができます。
+  echo;
+  set /p loadfile=(Path/Cancel): 
+  if %loadfile% == Cancel goto setting
+  if not exist %loadfile% goto setting
+  del %temp%\.RJC\setting\welcome.tscf
+  type %loadfile% >> %temp%\.RJC\setting\welcome.tscf
+ 
+  :createoriginalwelcomescreen
+  del %temp%\.RJC\setting\welcome.tscf
+  set /a count=%count% + 1
+  echo 明示的にする項目を選んでください。
+  echo これは %count% 行目に表示されます。
+  echo;
+  echo --Json--
+  echo    1  列車
+  echo    2  看板
+  echo    3  設置物
+  echo    4  信号機
+  echo    5  レール
+  echo    6  コンテナ
+  echo    7  コネクタ
+  echo    8  ワイヤ
+  echo    9  旗
+  echo   10  火器
+  echo   11  乗り物
+  echo   12  NPC
+  echo   13  sounds.json
+  echo   14  pack.json
+  echo --Other--
+  echo   15  設定画面
+  echo   16  スペシャルサンクス
+  echo   17  ディレクトリ構成
+  echo   18  cmd
+  echo   19  SetPath
+  echo   20  RtmJsonCreatorを終了
+  echo --WelcomeScreenSystem--
+  echo exit  明示的にする項目の設定を終了する
+  set displayln=0
+  set /p displayln=
+  if %displayln% == 1 set display%count%=train
+  if %displayln% == 2 set display%count%=sign
+  if %displayln% == 3 set display%count%=machine
+  if %displayln% == 4 set display%count%=signal
+  if %displayln% == 5 set display%count%=rail
+  if %displayln% == 6 set display%count%=container
+  if %displayln% == 7 set display%count%=connector
+  if %displayln% == 8 set display%count%=wire
+  if %displayln% == 9 set display%count%=flag
+  if %displayln% == 10 set display%count%=gun
+  if %displayln% == 11 set display%count%=car
+  if %displayln% == 12 set display%count%=npc
+  if %displayln% == 13 set display%count%=sounds
+  if %displayln% == 14 set display%count%=pack
+  if %displayln% == 15 set display%count%=setting
+  if %displayln% == 16 set display%count%=specialthanks
+  if %displayln% == 17 set display%count%=dir
+  if %displayln% == 18 set display%count%=cmd
+  if %displayln% == 19 set display%count%=setpath
+  if %displayln% == 20 set display%count%=exit
+  if %displayln% == 1 goto welcome_train
+  if %displayln% == 2 goto welcome_sign
+  if %displayln% == 3 goto welcome_machine
+  if %displayln% == 4 goto welcome_signal
+  if %displayln% == 5 goto welcome_rail
+  if %displayln% == 6 goto welcome_container
+  if %displayln% == 7 goto welcome_connector
+  if %displayln% == 8 goto welcome_wire
+  if %displayln% == 9 goto welcome_flag
+  if %displayln% == 10 goto welcome_gun
+  if %displayln% == 11 goto welcome_car
+  if %displayln% == 12 goto welcome_npc
+  if %displayln% == 13 goto welcome_sounds
+  if %displayln% == 14 goto welcome_pack
+  if %displayln% == 15 goto welcome_setting
+  if %displayln% == 16 goto welcome_specialthanks
+  if %displayln% == 17 goto welcome_dir
+  if %displayln% == 18 goto welcome_cmd
+  if %displayln% == 19 goto welcome_setpath
+  if %displayln% == 20 goto welcome_exit
+  :welcome_train
+  :welcome_sign
+  :welcome_machine
+  :welcome_signal
+  :welcome_rail
+  :welcome_container
+  :welcome_connector
+  :welcome_wire
+  :welcome_flag
+  :welcome_gun
+  :welcome_car
+  :welcome_npc
+  :welcome_sounds
+  :welcome_pack
+  :welcome_setting
+  :welcome_specialthanks
+  :welcome_dir
+  :welcome_cmd
+  :welcome_setpath
+  :welcome_exit
+
+ :deletes
+  set deltscf=false
+  set savejson=false
+  set canceluninst=false
+  set startuninst=false
+  set echomode=false
+  echo  1 作成したJsonを削除する(全て削除します!)
+  echo  2 RtmJsonCreatorをアンインストールする
+  set /p settinginput=
+  if %settinginput% == 1 goto deljson
+  if %settinginput% == 2 goto uninstall
+  goto setting
+  :uninstall
+  echo RtmJsonCreatorをアンインストールします。
+  echo;
+  echo 詳細を選択してください。
+  echo;
+  echo  1 RtmJsonCreatorを削除(必須) , true
+  rem echo  2 ".tscf"拡張子のファイルを全て削除する(RJCとは無関係のtscfファイルも削除します!) , %deltscf%
+  echo  3 作成したJsonファイルを避難させる , %savejson%
+  echo  4 echoをonにする , %echomode%
+  echo  5 やっぱりアンインストールやめる , %canceluninst%
+  echo  6 アンインストールをさっさと始めろ , %startuninst%
+  set /p uninstoption=
+  if %uninstoption% == 2 set deltscf=true
+  if %uninstoption% == 3 set savejson=true
+  if %uninstoption% == 4 set echomode=true
+  if %uninstoption% == 5 goto setting
+  if %uninstoption% == 6 goto startuninst
+  goto uninstall
+
+  :startuninst
+  echo **オプション確認**
+  echo これは最後の確認です!
+  echo;
+  echo RtmJsonCreatorを削除: True,
+  rem echo ".tscf"拡張子のファイルを全て削除する: %deltscf%,
+  echo 作成したJsonファイルを避難させる: %savejson%,
+  echo echoをonにする: %echomode%,
+  echo アンインストールをさっさと始めろ: True.
+  echo;
+  set /p confirm=(Y/N): 
+  if not %confirm% == y goto setting
+  if %echomode% == true echo on
+  pushd %temp%
+  if %savejson% == true md %temp%\rjcjson\ & copy %temp%\.RJC\json\* %temp%\rjcjson\ & echo Jsonファイルは%temp%\rjcjsonに保存されました。
+  timeout /t 3
+  echo del /Q %temp%\.RJC\>>%temp%\deleterjc.bat
+  echo del /Q %temp%\.Rtm_Json_Creator.tscf>>%temp%\deleterjc.bat
+  echo del /Q %temp%\.ams1.tscf>>%temp%\deleterjc.bat
+  echo del /Q %temp%\.ams2.tscf>>%temp%\deleterjc.bat
+  echo del /Q %temp%\rjcupdate.tscf>>%temp%\deleterjc.bat
+  echo del /Q %temp%\rjcversion.tscf>>%temp%\deleterjc.bat
+  pushd c:\>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b RtmJsonCreator.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm_json_creator.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm-json-creator-v1.0.1.2.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b RtmJsonCreator-v1.0.1.1.EXE') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm-json-creator-v0.9.8.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b Rtm-Json-Creator-v0.9.6.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b Rtm-Json-Creator-v0.9.5.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b Rtm-Json-Creator-v0.9.4.7.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm_json_creator-v0.9.4.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm-json-creator-v0.9.3.5.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm-json-creator-v0.9.2.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm-json-creator-v0.9.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm_json_creator-v0.9.0.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b rtm-json-v0.8.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b sign_json_v0.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  for /f %%a in ('dir /s /b  rtm_json_creator_SFS.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  echo uninstall complete.>>%temp%\deleterjc.bat
+  pause>>%temp%\deleterjc.bat
+  echo del /Q %temp%\deleterjc.bat>>%temp%\deleterjc.bat
+  start %temp%\deleterjc.bat
+  exit
+
+ :turnosc
+  if %oscmode% == 1 del %temp%\.RJC\osc.tscf
+  if %oscmode% == 0 echo OSC=TRUE>>%temp%\.RJC\osc.tscf
+  goto startrjc
+
+:specialthanks
+ echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
+ echo ----
+ echo スペシャルサンクス(敬称略)
+ echo  jsonのデータの提供
+ echo   -- .zip
+ echo   -- はちこうとっかい ^| https://twitter.com/Hachiko_Server
+ echo  デバッグ
+ echo   -- akikawa9616
+ echo   -- ちとがわ ^| https://www.youtube.com/@Yonkatsu12
+ echo;
+ echo  一部機能発案者
+ echo   -- K.kirikoto ^| https://twitter.com/mikawa8002
+ echo;
+ echo  参考文献
+ echo   -- RTMモデルパック作成マニュアル_2.4.8_1.pdf ^| 著 ngt5479 ^| 2019/06/25
+ echo;
+ echo このプログラムはMITライセンスで公開されています。
+ echo MIT License全文は行動選択画面で"License"を入力してください。
+ echo;
+ echo version: %version% / releaseversion: %releaseversion% / OSC: %oscmode%
+ pause
+ cls
+ exit /b
 rem AutomaticMaterialSettingErrors
  rem ERROR
   :cantload_UnSupportedFormat
