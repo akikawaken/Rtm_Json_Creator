@@ -2,7 +2,7 @@
 :startrjc
 rem (c) 2022 - 2024 akikawa9616
 title Rtm_Json_Creator.bat
-set version=1.3.3
+set version=1.3.3.1
 set releaseversion=4
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2625,7 +2625,7 @@ goto selectwelcome
  if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
  echo;
  echo Done.
- timeout /t 3>nul
+ timeout /t 3 >nul
  goto startrjc
 :deljson
  del /Q %temp%\.RJC\json\*
