@@ -3097,22 +3097,22 @@ goto selectwelcome
   echo del /Q %temp%\rjcupdate.tscf>>%temp%\deleterjc.bat
   echo del /Q %temp%\rjcversion.tscf>>%temp%\deleterjc.bat
   echo pushd c:\>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b RtmJsonCreator.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm_json_creator.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm-json-creator-v1.0.1.2.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b RtmJsonCreator-v1.0.1.1.EXE') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm-json-creator-v0.9.8.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b Rtm-Json-Creator-v0.9.6.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b Rtm-Json-Creator-v0.9.5.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b Rtm-Json-Creator-v0.9.4.7.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm_json_creator-v0.9.4.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm-json-creator-v0.9.3.5.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm-json-creator-v0.9.2.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm-json-creator-v0.9.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm_json_creator-v0.9.0.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b rtm-json-v0.8.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b sign_json_v0.1.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
-  echo for /f %%a in ('dir /s /b  rtm_json_creator_SFS.bat') do ( del /Q %%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b RtmJsonCreator.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm_json_creator.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm-json-creator-v1.0.1.2.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b RtmJsonCreator-v1.0.1.1.EXE') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm-json-creator-v0.9.8.1.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b Rtm-Json-Creator-v0.9.6.1.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b Rtm-Json-Creator-v0.9.5.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b Rtm-Json-Creator-v0.9.4.7.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm_json_creator-v0.9.4.1.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm-json-creator-v0.9.3.5.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm-json-creator-v0.9.2.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm-json-creator-v0.9.1.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm_json_creator-v0.9.0.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b rtm-json-v0.8.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b sign_json_v0.1.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
+  echo for /f ^%^%a in ('dir /s /b  rtm_json_creator_SFS.bat') do ( del /Q ^%^%a )>>%temp%\deleterjc.bat
   echo uninstall complete.>>%temp%\deleterjc.bat
   echo pause>>%temp%\deleterjc.bat
   echo del /Q %temp%\deleterjc.bat>>%temp%\deleterjc.bat
