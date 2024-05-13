@@ -1,8 +1,8 @@
 @echo off
 :startrjc
 rem (c) 2022 - 2024 akikawa9616
-title Rtm_Json_Creator.bat
-set version=1.3.3.2
+title RtmJsonCreator.bat
+set version=1.3.3.3
 set releaseversion=4
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -73,7 +73,7 @@ if %start% == 12 goto signal
 if %start% == 13 goto rail
 if %start% == 14 goto contami
 if %start% == 15 goto gun
-if %start% == 16 goto connector0
+if %start% == 16 goto connector
 if %start% == 17 goto wire
 if %start% == 18 goto car
 if %start% == setpath call :setpath
@@ -2849,7 +2849,7 @@ goto selectwelcome
  goto matroop
 
 :setting
- timeout /t 3>nul
+ timeout /t 3 >nul
  cls
  set count=0
  rem ln limit:30 
@@ -3089,7 +3089,6 @@ goto selectwelcome
   if %echomode% == true echo on
   pushd %temp%
   if %savejson% == true md %temp%\rjcjson\ & copy %temp%\.RJC\json\* %temp%\rjcjson\ & echo Jsonファイルは%temp%\rjcjsonに保存されました。
-  timeout /t 3
   echo rd /S /Q %temp%\.RJC\>>%temp%\deleterjc.bat
   echo del /Q %temp%\.Rtm_Json_Creator.tscf>>%temp%\deleterjc.bat
   echo del /Q %temp%\.ams1.tscf>>%temp%\deleterjc.bat
@@ -3105,6 +3104,7 @@ goto selectwelcome
   echo echo uninstall complete.>>%temp%\deleterjc.bat
   echo pause>>%temp%\deleterjc.bat
   echo del /Q %temp%\deleterjc.bat>>%temp%\deleterjc.bat
+  timeout /t 3
   start %temp%\deleterjc.bat
   exit
 
