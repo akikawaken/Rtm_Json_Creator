@@ -2861,7 +2861,7 @@ goto selectwelcome
  echo    3  アップデート/ダウングレード
  rem echo    4  行動選択画面の並び替え
  echo    5  コマンドライン呼び出し
- echo    6  削除/アンインストール (まだ試してない！)
+ echo    6  削除/アンインストール
  echo    7  自動材質設定の初期版を利用する
  echo    8  explorer.exeをコールします。
  echo    9  互換モードを切り替える
