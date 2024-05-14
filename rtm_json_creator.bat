@@ -2,7 +2,7 @@
 :startrjc
 rem (c) 2022 - 2024 akikawa9616
 title RtmJsonCreator.bat
-set version=1.3.3.3
+set version=1.3.3.4
 set releaseversion=4
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2743,6 +2743,12 @@ goto selectwelcome
  set /p texturedir=
  echo dir: %texturedir%
  echo ------------------
+ echo 描画スクリプト(rendererPath)を利用する場合は相対パス scripts/ファイル名.js を入力。
+ echo 利用しない場合は何も入力せずにEnter.
+ set rendererPath=null
+ set /p rendererPath=
+ echo rendererPath: %rendererPath%
+ echo ------------------
  if not exist %modelfile% goto cantload_notfound
  del %temp%\.ams1.tscf
  del %temp%\.ams2.tscf
@@ -2792,10 +2798,15 @@ goto selectwelcome
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
+ if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} >>%temp%\.ams2.tscf  
+ if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]]} >>%temp%\.ams2.tscf  
+ if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% },  & goto renda
+ if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% },  & goto renda
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} >>%temp%\.ams2.tscf
  if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]} >>%temp%\.ams2.tscf
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} 
  if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}
+ :renda
  endlocal
  set matcount=1
  :matroop
@@ -2841,10 +2852,10 @@ goto selectwelcome
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
- if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams1.tscf
- if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams1.tscf
- if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, 
- if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}, 
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"], >>%temp%\.ams1.tscf
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"], 
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""], 
  endlocal
  goto matroop
 
