@@ -3,7 +3,7 @@
 rem (c) 2022 - 2024 akikawa9616
 title RtmJsonCreator.bat
 set version=1.3.3.4
-set releaseversion=4
+set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 pushd %temp%\.RJC\json
