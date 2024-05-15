@@ -1,8 +1,9 @@
 @echo off
+set from=%cd%
 :startrjc
 rem (c) 2022 - 2024 akikawa9616
 title RtmJsonCreator.bat
-set version=1.3.3.5
+set version=1.3.3.6
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -60,7 +61,7 @@ set /p start=行動の数字を入力してください...
 set back=selectwelcome
 echo;
 if %start% == 1 goto train
-if %start% == 2 exit
+if %start% == 2 pushd %from% & call cmd.exe & exit
 if %start% == 3 goto sign
 if %start% == 4 call :specialthanks
 if %start% == 5 goto machine
@@ -83,8 +84,7 @@ if %start% == License goto License
 if %start% == update goto update
 rem 以下の機能は将来、削除されるか変更となる可能性があります。
 if %start% == 999 goto soundcreate
-if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。
-if %start% == cmd call cmd.exe
+if %start% == cmd echo exit /b を使用してRtmJsonCreatorに戻ることができます。 & pushd %from% & call cmd.exe & popd
 if %start% == deljson goto deljson
 if %start% == ams goto useams
 rem 試験的機能の終焉
@@ -2572,7 +2572,6 @@ goto selectwelcome
  goto rail
 :firstsetting
  set isnotconfirm=false
- set autorestart=false
  echo 初期設定を行っています...
  pushd %temp%
  echo Create dir: %temp%\.RJC\json
@@ -2590,7 +2589,7 @@ goto selectwelcome
  echo   行動の番号         行動の内容          >>%temp%\.RJC\setting\welcome.tscf
  echo  ---------------------------------------->>%temp%\.RJC\setting\welcome.tscf
  echo       1         列車のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
- echo       2         このウィンドウを殺します。>>%temp%\.RJC\setting\welcome.tscf
+ echo       2         RtmJsonCreatorを終了します。>>%temp%\.RJC\setting\welcome.tscf
  echo       3         看板のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
  echo       4         スペシャルサンクスと作者>>%temp%\.RJC\setting\welcome.tscf
  echo       5         機能あり/なし設置物のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
@@ -2609,8 +2608,7 @@ goto selectwelcome
  echo setting         設定画面を開きます。>>%temp%\.RJC\setting\welcome.tscf
  echo     cmd         cmd.exeをコールします。>>%temp%\.RJC\setting\welcome.tscf
  echo setpath         指定したディレクトリにパスを通します。>>%temp%\.RJC\setting\welcome.tscf
- if %isnotconfirm% == true echo Done.
- if %isnotconfirm% == true goto setting
+ if %isnotconfirm% == true echo Done. & goto setting
  set ERRORLEVEL=0
  echo do "where choice" command
  where choice
