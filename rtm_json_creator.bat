@@ -2,7 +2,7 @@
 :startrjc
 rem (c) 2022 - 2024 akikawa9616
 title RtmJsonCreator.bat
-set version=1.3.3.4
+set version=1.3.3.5
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2798,8 +2798,8 @@ goto selectwelcome
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
- if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} >>%temp%\.ams2.tscf  
- if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]]} >>%temp%\.ams2.tscf  
+ if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
+ if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
  if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% },  & goto renda
  if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% },  & goto renda
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} >>%temp%\.ams2.tscf
