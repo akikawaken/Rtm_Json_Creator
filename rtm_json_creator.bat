@@ -2904,7 +2904,7 @@ goto selectwelcome
  if %settinginput% == 8 start explorer.exe %setpath%
  if %settinginput% == 9 goto turnosc
  if %settinginput% == 10 call :setpath
- if %settinginput% == rexit exit
+ if %settinginput% == rexit pushd %from% & call cmd.exe & exit
  if %settinginput% == exit goto startrjc
  echo エラー:不明な番号です。
  goto selectwelcome
@@ -3154,27 +3154,27 @@ rem AutomaticMaterialSettingErrors
    echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
    echo 続行すると終了します。
    pause
-   exit /b
+   pushd %from% & call cmd.exe & exit
   :cantload_UnknownFormatOrVer
    echo;
    echo [ERROR] 形式またはバージョンが認識できませんでした。
    echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
    echo 続行すると終了します。
    pause
-   exit /b
+   pushd %from% & call cmd.exe & exit
   :cantload_Noise
    echo;
    echo [ERROR] TrialNoiseチャンクが検出されました。
    echo [ERROR] %modelFile%に対する読み込みは強制的に停止されました。
    echo 続行すると終了します。
    pause
-   exit /b
+   pushd %from% & call cmd.exe & exit
   :cantload_notfound
    echo;
    echo [ERROR] %modelfile%が見つかりませんでした。
    echo 続行すると終了します。
    pause
-   exit /b
+   pushd %from% & call cmd.exe & exit
   :PathError
    echo;
    echo %ESC%[41m------------------------------------%ESC%[0m
@@ -3186,7 +3186,7 @@ rem AutomaticMaterialSettingErrors
    echo %ESC%[41m------------------------------------%ESC%[0m
    echo;
    pause
-   exit /b
+   pushd %from% & call cmd.exe & exit
  rem WARN
   :AddDummyTexture
    set texturedir=textures/train
