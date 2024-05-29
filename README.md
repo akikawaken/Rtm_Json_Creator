@@ -11,7 +11,7 @@
 - win11home(22H2,23H2)
 
 # ダウンロード場所
-GitHubダウンロード: [assets内の一番上がインストーラ兼本体です。](https://github.com/akikawaken/Rtm_Json_Creator/releases/tag/v1.3.3.3 "download page" )  
+GitHubダウンロード: [ダウンロードしたいバージョンのassets内、一番上をクリックしてください。](https://github.com/akikawaken/Rtm_Json_Creator/releases "download page" )  
 CLIダウンロード: 
 ```
 curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat & call RtmJsonCreator.bat
