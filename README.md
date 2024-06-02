@@ -70,3 +70,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 # 五時
 誤字は許してください
+
+# 要望とか
+要望とかマジでめっちゃほしい！！！  
+IssueにEnchantmentのタグ付けて投稿してくれれば速攻取り組んでみるから要望たくさんくれ！！(ただし、技術力の問題で実装不可の可能性あり)
