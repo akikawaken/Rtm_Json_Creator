@@ -1,9 +1,16 @@
 @echo off
+rem (c) 2022 - 2024 akikawa9616
+set hikisu1=%1
+set hikisu2=%2
+set hikisu3=%3
+set hikisu4=%4
+set hikisu5=%5
+rem if defined hikisu1 (goto hikisu )
+:sof
 set from=%cd%
 :startrjc
-rem (c) 2022 - 2024 akikawa9616
 title RtmJsonCreator.bat
-set version=1.3.3.6
+set version=1.4
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -14,9 +21,6 @@ set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 echo;
-for /f %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
-  if %%a == true goto down
-)
 if EXIST %temp%\.RJC\osc.tscf ( set oscmode=1 ) ELSE ( set oscmode=0 )
 if EXIST %temp%\.RJC\osc.tscf goto oscwelcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
@@ -27,6 +31,10 @@ if exist %temp%\rjcversion.tscf ( for /f %%a in ( %temp%\rjcupdate.tscf ) do ( c
 if %latestver% == %releaseversion% goto welcome
 for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
+for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
+  set downver=%%c
+  if %version% == %%a ( if %%b == true ( call :down ))
+)
 if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
 :oscwelcome
 del %temp%\.Rtm_Json_Creator_json.tscf
@@ -2958,6 +2966,8 @@ goto selectwelcome
   if not exist %loadfile% goto setting
   del %temp%\.RJC\setting\welcome.tscf
   type %loadfile% >> %temp%\.RJC\setting\welcome.tscf
+  echo Done.
+  goto setting
  
   :createoriginalwelcomescreen
   del %temp%\.RJC\setting\welcome.tscf
@@ -3146,6 +3156,29 @@ goto selectwelcome
  pause
  cls
  exit /b
+
+:down
+ echo 開発者によるダウングレードが決定されたバージョンが検出されました。
+ echo 以下は開発者からの説明です:
+ echo;
+ curl https://akikawaken.github.io/RJC/VC/whydown.txt
+ echo;
+ echo ダウングレード実行時に失敗した場合は、以下のコマンドを実行してください。(すべてのRtmJsonCreatorに関する情報は削除されます。)
+ echo curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/delfirstsettingfiles.bat & call delfirstsettingfiles.bat & curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat & call RtmJsonCreator.bat
+ echo;
+ choice /c yn /m "ダウングレードを実行しますか? (これを拒否した場合、何が起こっても知りません!) , Y/N" /n 
+ if not %ERRORLEVEL% == 1 exit /b
+ timeout /t 5 >nul
+ pushd %temp%
+ curl -sLJO https://akikawaken.github.io/RJC/VC/Old/%downver%_delete.bat
+ start %temp%\%downver%_delete.bat
+ echo ウィンドウを消す場合は"exit"コマンドを利用するか、"x"ボタンを押してください!
+ cmd
+ exit
+ 
+:hikisu
+
+
 rem AutomaticMaterialSettingErrors
  rem ERROR
   :cantload_UnSupportedFormat
