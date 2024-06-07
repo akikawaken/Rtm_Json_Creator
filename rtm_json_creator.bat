@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.4
+set version=1.4.1
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -125,8 +125,8 @@ goto selectwelcome
  rem Traintype setting end
  echo ------------------
  rem tags setting start
- echo tagsを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)と","
- echo 複数指定する場合は","で区切って入力してください。(例:tag1,tag2,tag3)
+ echo tagsを決めてください。 使用可能:半角英数字(英語は小文字のみ可能)
+ echo 複数指定する場合はスペースで区切って入力してください。(例:tag1 tag2 tag3)
  set /p tags=
  echo tagsは %tags% に設定されました。
  echo    "tags":"%tags%", >> ModelTrain_%trainname%.json
@@ -1113,7 +1113,7 @@ goto selectwelcome
  echo doCullingは %doCulling% に設定されました。
  echo --------------------
  echo tagsを決めてください。
- echo 複数指定する場合は","を使用してください。(例:akikawa,point,original)
+ echo 複数指定する場合はスペースを使用してください。(例:tag1 tag2 tag3)
  set /p tags=
  echo tagsは %tags% に設定されました。
  echo   "buttonTexture": "%button%", >> ModelMachine_%name%.json
@@ -2771,6 +2771,7 @@ goto selectwelcome
  for /f "delims=" %%a in ('findstr /B /R /C:Material* %modelFile%') do set mat=%%a
  set mat=%mat:~9%
  set mat=%mat:~0,-2%
+ set dummy=false
  echo 材質数を取得: %mat%
  setlocal enabledelayedexpansion
  set /a "count=0"
@@ -2795,15 +2796,18 @@ goto selectwelcome
  set hoge=!texture:~1,2!
  if !hoge! == :\ goto PathError
  echo !line! | findstr /C:"tex(" >nul
- if !errorlevel! == 1 call :AddDummyTexture
+ set option=null
+ if !errorlevel! == 1 ( set dummy=true & call :AddDummyTexture )
+ if %dummy% == true goto amsdummy1
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
- set option=null
  set /p option=オプションを設定,上記の数字を入力。オプション不要の場合は何も入力せずEnter: 
  if !option! == 1 set option=AlphaBlend
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
+ :amsdummy1
+ set dummy=false
  if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
  if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
  if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% },  & goto renda
@@ -2849,15 +2853,18 @@ goto selectwelcome
  set hoge=!texture:~1,2!
  if !hoge! == :\ goto PathError
  echo !line! | findstr /C:"tex(" >nul
- if !errorlevel! == 1 call :AddDummyTexture
+ set option=null
+ if !errorlevel! == 1 ( set dummy=true & call :AddDummyTexture )
+ if %dummy% == true goto amsdummy2
  echo name: !matname! , texturedir: !texturedir! , texturename: !texture!
  echo オプション: 1 : AlphaBlend , 2 : Light , 3 : AlphaBlend,Light , 4 : AlphaBlend,Light,OneTex
- set option=null
  set /p option=オプションを設定,上記の数字を入力。オプション不要の場合は何も入力せずEnter: 
  if !option! == 1 set option=AlphaBlend
  if !option! == 2 set option=Light
  if !option! == 3 set option=AlphaBlend,Light
  if !option! == 4 set option=AlphaBlend,Light,OneTex
+ :amsdummy2
+ set dummy=false
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"], >>%temp%\.ams1.tscf
  if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""], >>%temp%\.ams1.tscf
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"], 
@@ -3224,6 +3231,7 @@ rem AutomaticMaterialSettingErrors
   :AddDummyTexture
    set texturedir=textures/train
    set texture=tp.png
+   set option=AlphaBlend
    echo [WARN] テクスチャが設定されていない材質を検出しました。
    echo [WARN] RTM内に同梱されている透明なテクスチャを代わりに適用します。
    exit /b
