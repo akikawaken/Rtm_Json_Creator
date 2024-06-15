@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.4.1
+set version=1.4.1.1
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2450,7 +2450,7 @@ goto selectwelcome
  echo vibrationを決めてください。
  echo 0.0, 0.0 の形式で入力してください。
  set /p vibration=
- echo  "vibration":[%vibration%], >>%tempfile%
+ echo  "vibration": [%vibration%], >>%tempfile%
  echo;
  echo gripPosを決めてください。
  echo これはリフトとワイヤーの接点をx,y,zのメートル単位で指定してください。
