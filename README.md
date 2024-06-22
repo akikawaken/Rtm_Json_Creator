@@ -1,10 +1,11 @@
 このバッチファイルはRTMのアドオン製作にて一番躓きやすいjsonのコーディングを簡単にするべく作られたものです。 
 # 動作環境
 
-**絶対にCドライブで利用してください**
+**必ずCドライブで利用してください**
 
 10,11のWindowsならほぼ確で動く。
-7は(RJCの)互換モードでぎりいけるか? って感じ。 xpまで行くと無理だと思う
+<del>7は(RJCの)互換モードでぎりいけるか? って感じ。 xpまで行くと無理だと思う</del>
+サポートが切れたOSでは実行しないことを推奨します。
 
 動作確認済み:
 - win10home(21H2,22H2)
@@ -31,10 +32,10 @@ curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/upda
 不明なファイル/危険なファイルとして起動がブロックされることがあります。 その場合、詳細から続行するをクリックして起動してください。  
 もし、このバッチファイルが危険に見えるのならば、githubでコードを覗いてみてください。 あなたがバッチを理解できるのならば、危険ではないことがわかるはずです。  
 
-# jsonの作成がブラウザ上で体験できます!
-[![json作成を体験する](https://raw.githubusercontent.com/akikawaken/images/main/RJC/nyan.png)](https://akikawaken.github.io/)
+# GUI版頑張って作ってます
+[![どんなもんか見てみる](https://raw.githubusercontent.com/akikawaken/images/main/RJC/nyan.png)](https://akikawaken.github.io/RJC/Json/)
 *画像はイメージです。  
-*画像をクリックするとjson作成の体験ができるページに飛びます。
+*画像をクリックすると作成Json選択ページに飛びます。
 
 # 対応可否
 **バージョン:1.0.1 , 2023-12-25時点.**
