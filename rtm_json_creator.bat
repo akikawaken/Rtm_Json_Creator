@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.4.1.1
+set version=1.4.1.2
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -966,7 +966,7 @@ goto selectwelcome
  set tsw=w
  echo 機能あり/なし設置物のどれを作成しますか?
  echo 何も入力しない場合は強制終了します。
- echo 使用可能(機能あり):遮断機,転轍機,改札機,券売機,照明R,車止め,ATC,列車検出器,照明
+ echo 使用可能(機能あり):遮断機,転轍機,改札機,券売機,照明R,車止め,ATC,列車検出器,照明R
  echo 使用可能(機能なし):照明,階段,足場,架線柱,パイプ,植物
  echo "照明R"と"照明"の違いはRS入力が可能かどうかです。 基本的には"照明"を選択することをお勧めします。
  echo ----------
