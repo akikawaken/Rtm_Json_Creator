@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.4.1.2
+set version=1.4.1.3
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -3169,9 +3169,6 @@ goto selectwelcome
  echo 以下は開発者からの説明です:
  echo;
  curl https://akikawaken.github.io/RJC/VC/whydown.txt
- echo;
- echo ダウングレード実行時に失敗した場合は、以下のコマンドを実行してください。(すべてのRtmJsonCreatorに関する情報は削除されます。)
- echo curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/delfirstsettingfiles.bat & call delfirstsettingfiles.bat & curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/update/RtmJsonCreator.bat & call RtmJsonCreator.bat
  echo;
  choice /c yn /m "ダウングレードを実行しますか? (これを拒否した場合、何が起こっても知りません!) , Y/N" /n 
  if not %ERRORLEVEL% == 1 exit /b
