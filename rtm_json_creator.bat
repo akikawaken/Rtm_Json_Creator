@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.4.1.3
+set version=1.5
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -21,8 +21,10 @@ set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 echo;
-if EXIST %temp%\.RJC\osc.tscf ( set oscmode=1 ) ELSE ( set oscmode=0 )
-if EXIST %temp%\.RJC\osc.tscf goto oscwelcome
+if not exist %temp%\.RJC\osc.tscf set oscmode=true
+for /f %%a in (%temp%\.RJC\osc.tscf) do ( if %%a == 1 ( set oscmode=true) ELSE ( set oscmode=false))
+for /f %%a in (%temp%\.RJC\SettingUI.tscf) do ( if %%a == old ( set isUseNewUI=false) ELSE ( set isUseNewUI=true))
+if %oscmode% == true goto oscwelcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
 set latestver=%%a
 )
@@ -44,22 +46,9 @@ if not exist %temp%\.RJC\rjc.tscf goto firstsetting
 cls
 echo Rtm_Json_Creatorへようこそ!
 echo 行動を選択してください
-
 :selectwelcome
-goto syoki
-
-if exist %temp%\.RJC\setting\osc.tscf goto syoki
-more %temp%\.RJC\setting\welcome.tscf
-if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
-echo  ----------------------------------------
-echo 現在のディレクトリ: %setpath%
-echo  ----------------------------------------
-set /p start=行動の数字を入力してください...
-set back=selectwelcome
-echo;
-for /f 
-
-:syoki
+:old_selectmenu
+set return=welcome
 more %temp%\.RJC\setting\welcome.tscf
 if %notlatest% == true ( echo  update        RtmJsonCreatorを最新版にアップデートします。 )
 echo  ----------------------------------------
@@ -71,7 +60,7 @@ echo;
 if %start% == 1 goto train
 if %start% == 2 pushd %from% & call cmd.exe & exit
 if %start% == 3 goto sign
-if %start% == 4 call :specialthanks
+if %start% == 4 goto specialthanks
 if %start% == 5 goto machine
 if %start% == 6 goto npc
 if %start% == 7 goto flag
@@ -180,7 +169,7 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
+   if %oscmode% == true goto osc-mat-train
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -214,7 +203,7 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
+   if %oscmode% == true goto osc-mat-train-last
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -293,7 +282,7 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train
+   if %oscmode% == true goto osc-mat-train
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -327,7 +316,7 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if EXIST %temp%\.RJC\osc.tscf goto osc-mat-train-last
+   if %oscmode% == true goto osc-mat-train-last
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -1518,7 +1507,7 @@ goto selectwelcome
  echo どう? できた?
  pause
  cls
- goto welcome
+ goto %return%
 :pack
  echo pack.jsonを作成します。
  echo 現在のディレクトリ: %cd% .
@@ -2580,15 +2569,28 @@ goto selectwelcome
  goto rail
 :firstsetting
  set isnotconfirm=false
+ set progress=4
  echo 初期設定を行っています...
+ echo -----
+ echo プログレス: RtmJsonCreatorのディレクトリを構成 (1/%progress%)
+ echo -----
  pushd %temp%
  echo Create dir: %temp%\.RJC\json
  md .RJC\json
  echo Create dir: %temp%\.RJC\setting
  md .RJC\setting
+ popd
  pushd %temp%\.RJC
+ echo -----
+ echo プログレス: RtmJsonCreatorの必須ファイルを構成 (2/%progress%)
+ echo -----
  echo Create file: %temp%\.RJC\rjc.tscf
  echo;>rjc.tscf
+ echo Create file: %temp%\.RJC\osc.tscf
+ echo 0 >%temp%\.RJC\osc.tscf
+ echo Create file: %temp%\.RJC\SettingUI.tscf
+ echo old>%temp%\.RJC\SettingUI.tscf
+ popd
  :loadwelcome
  if exist %temp%\.RJC\setting\welcome.tscf del %temp%\.RJC\setting\welcome.tscf
  pushd %temp%\.RJC\setting
@@ -2616,23 +2618,76 @@ goto selectwelcome
  echo setting         設定画面を開きます。>>%temp%\.RJC\setting\welcome.tscf
  echo     cmd         cmd.exeをコールします。>>%temp%\.RJC\setting\welcome.tscf
  echo setpath         指定したディレクトリにパスを通します。>>%temp%\.RJC\setting\welcome.tscf
+ popd
  if %isnotconfirm% == true echo Done. & goto setting
- set ERRORLEVEL=0
+ echo -----
+ echo プログレス: オプションコマンドの確認 (3/%progress%)
+ echo -----
  echo do "where choice" command
  where choice
  if %ERRORLEVEL% == 0 echo CHOICE COMMAND FOUND.
- if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
- if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
- set ERRORLEVEL=0
+ if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND.
+ if %ERRORLEVEL% == 1 echo 1>%temp%\.RJC\osc.tscf
  echo do "where curl" command
  where curl
  if %ERRORLEVEL% == 0 echo CURL COMMAND FOUND.
- if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND. Create file: %temp%\.RJC\OSC.tscf
- if %ERRORLEVEL% == 1 echo OSC=TRUE>>%temp%\.RJC\OSC.tscf
+ if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND.
+ if %ERRORLEVEL% == 1 echo 1>%temp%\.RJC\osc.tscf
  echo;
+ for /f %%a in (%temp%\.RJC\osc.tscf) do ( if %%a == 1 ( set oscmode=true) ELSE ( set oscmode=false))
+ if %oscmode% == true goto firstsetting_osc
+ echo write file: %temp%\.RJC\SettingUI.tscf
+ echo new>%temp%\.RJC\SettingUI.tscf
+ echo -----
+ echo プログレス: ライブラリのダウンロード/設定 (4/%progress%)
+ echo -----
+ set isBack1=false
+
+ :downloadBatchSelectorUI
+ echo Create dir: %temp%\.BatchSelectorUI
+ md %temp%\.BatchSelectorUI\
+ pushd %temp%\.BatchSelectorUI
+ echo BatchSelectorUI をダウンロード中...
+ curl -sLJO https://github.com/akikawaken/BatchSelectorUI/releases/download/latest/BatchSelectorUI.bat
+ echo %temp%\.BatchSelectorUI\exist.tscf を作成中...
+ echo;>%temp%\.BatchSelectorUI\exist.tscf
+ echo %temp%\.BatchSelectorUI\RJC_Setting_Text.txt に UI用文字列ファイル を作成中..
+ echo #設定>RJC_Setting_Text.txt
+ echo @11 >>RJC_Setting_Text.txt
+ echo スペシャルサンクス>>RJC_Setting_Text.txt
+ echo ディレクトリ構成>>RJC_Setting_Text.txt
+ echo バージョン変更>>RJC_Setting_Text.txt
+ echo コマンドライン>>RJC_Setting_Text.txt
+ echo アンインストール>>RJC_Setting_Text.txt
+ echo 自動材質設定>>RJC_Setting_Text.txt
+ echo エクスプローラ>>RJC_Setting_Text.txt
+ echo 互換モードをOFFにする>>RJC_Setting_Text.txt
+ echo パス>>RJC_Setting_Text.txt
+ echo 古いUIを利用する>>RJC_Setting_Text.txt
+ echo 設定終了>>RJC_Setting_Text.txt
+
+ echo %temp%\.BatchSelectorUI\RJC_Setting_Text.txt に UI用ヒントファイル を作成中..
+ echo RtmJsonCreator_Setting>RJC_Setting_Hint.txt
+ echo 1:開発に携わった人や、感謝すべき相手への感謝一覧を見ます。>>RJC_Setting_Hint.txt
+ echo 2:RTMのアドオンフォルダを構成します。>>RJC_Setting_Hint.txt
+ echo 3:アップデートまたはダウングレードを実行します。>>RJC_Setting_Hint.txt
+ echo 4:cmd.exeをコールします。>>RJC_Setting_Hint.txt
+ echo 5:RtmJsonCreatorをこのPCから排除します。>>RJC_Setting_Hint.txt
+ echo 6:MQOモデルファイルのパスを入力すると、そのモデルの材質名やテクスチャを表示します。>>RJC_Setting_Hint.txt
+ echo 7:explorer.exeをコールします。>>RJC_Setting_Hint.txt
+ echo 8:一部のコマンドを実行しないようにするモードをOFFにします。>>RJC_Setting_Hint.txt
+ echo 8:これを実行すると古いUIのみ利用可能になります。>>RJC_Setting_Hint.txt
+ echo 9:指定したディレクトリにパスを通します。>>RJC_Setting_Hint.txt
+ echo 10:v1.5より昔の設定画面UIを利用します。>>RJC_Setting_Hint.txt
+ echo 11:設定画面を閉じます。>>RJC_Setting_Hint.txt
+ if %isBack1% == true exit /b
+ popd
+
+ :firstsetting_osc
  echo Done.
  timeout /t 3 >nul
- goto startrjc
+ if %username% == akika (call %~dp0\rtm_json_creator.bat)
+ call %~dp0\RtmJsonCreator.bat
 :deljson
  del /Q %temp%\.RJC\json\*
  echo Done.
@@ -2873,8 +2928,11 @@ goto selectwelcome
  goto matroop
 
 :setting
- timeout /t 3 >nul
  cls
+ set return=setting
+ if %oscmode% == true goto old_settingmenu
+ if %isUseNewUI% == true goto new_settingmenu
+ :old_settingmenu
  set count=0
  rem ln limit:30 
  echo;
@@ -2887,10 +2945,10 @@ goto selectwelcome
  echo    5  コマンドライン呼び出し
  echo    6  削除/アンインストール
  echo    7  自動材質設定の初期版を利用する
- echo    8  explorer.exeをコールします。
+ echo    8  explorer.exeをコールする
  echo    9  互換モードを切り替える
  echo   10  パスを通す
- rem echo   11  
+ echo   11  新しいUIを利用する (互換モードだと使えません!!)
  rem echo   12  
  rem echo   13  
  rem echo   14  
@@ -2909,7 +2967,7 @@ goto selectwelcome
  echo;
  set count=0
  set /p settinginput=
- if %settinginput% == 1 call :specialthanks
+ if %settinginput% == 1 goto specialthanks
  if %settinginput% == 2 goto dir
  if %settinginput% == 3 goto supdate
  if %settinginput% == 4 goto changewelcome
@@ -2919,10 +2977,25 @@ goto selectwelcome
  if %settinginput% == 8 start explorer.exe %setpath%
  if %settinginput% == 9 goto turnosc
  if %settinginput% == 10 call :setpath
+ if %settinginput% == 11 call :setting_enableNewUI
  if %settinginput% == rexit pushd %from% & call cmd.exe & exit
  if %settinginput% == exit goto startrjc
- echo エラー:不明な番号です。
- goto selectwelcome
+ goto setting
+
+ :new_settingmenu
+ call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_Setting_Text.txt %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt w s p false true
+ if %tsv_place2% == 1 goto specialthanks
+ if %tsv_place2% == 2 goto dir
+ if %tsv_place2% == 3 goto supdate
+ if %tsv_place2% == 4 call cmd.exe
+ if %tsv_place2% == 5 goto deletes
+ if %tsv_place2% == 6 goto useams
+ if %tsv_place2% == 7 start explorer.exe %setpath%
+ if %tsv_place2% == 8 goto turnosc
+ if %tsv_place2% == 9 call :setpath
+ if %tsv_place2% == 10 call :setting_disableNewUI
+ if %tsv_place2% == 11 goto startrjc
+ goto new_settingmenu
 
  :supdate
   if not %oscmode% == 0 goto setting
@@ -3073,7 +3146,6 @@ goto selectwelcome
   set deltscf=false
   set savejson=false
   set canceluninst=false
-  set startuninst=false
   set echomode=false
   echo  1 作成したJsonを削除する(全て削除します!)
   echo  2 RtmJsonCreatorをアンインストールする
@@ -3091,7 +3163,7 @@ goto selectwelcome
   echo  3 作成したJsonファイルを避難させる , %savejson%
   echo  4 echoをonにする , %echomode%
   echo  5 やっぱりアンインストールやめる , %canceluninst%
-  echo  6 アンインストールをさっさと始めろ , %startuninst%
+  echo  6 アンインストールをさっさと始めろ , false
   set /p uninstoption=
   if %uninstoption% == 2 set deltscf=true
   if %uninstoption% == 3 set savejson=true
@@ -3115,6 +3187,8 @@ goto selectwelcome
   if %echomode% == true echo on
   pushd %temp%
   if %savejson% == true md %temp%\rjcjson\ & copy %temp%\.RJC\json\* %temp%\rjcjson\ & echo Jsonファイルは%temp%\rjcjsonに保存されました。
+  del /q %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt
+  del /q %temp%\.BatchSelectorUI\RJC_Setting_Text.txt
   echo rd /S /Q %temp%\.RJC\>>%temp%\deleterjc.bat
   echo del /Q %temp%\.Rtm_Json_Creator.tscf>>%temp%\deleterjc.bat
   echo del /Q %temp%\.ams1.tscf>>%temp%\deleterjc.bat
@@ -3135,10 +3209,20 @@ goto selectwelcome
   exit
 
  :turnosc
-  if %oscmode% == 1 del %temp%\.RJC\osc.tscf
-  if %oscmode% == 0 echo OSC=TRUE>>%temp%\.RJC\osc.tscf
+  if %oscmode% == true echo 0>%temp%\.RJC\osc.tscf
+  if %oscmode% == false echo 1>%temp%\.RJC\osc.tscf
   goto startrjc
 
+ :setting_enableNewUI
+  if %oscmode% == true (echo 互換モードが有効なため、利用できません。 & goto old_settingmenu)
+  if not exist %temp%\.BatchSelectorUI\BatchSelectorUI.bat set isBack1=true & call :downloadBatchSelectorUI
+  set isUseNewUI=true
+  echo new>%temp%\.RJC\SettingUI.tscf
+  goto setting
+ :setting_disableNewUI
+  set isUseNewUI=false
+  echo old>%temp%\.RJC\SettingUI.tscf
+  goto setting
 :specialthanks
  echo 作者:akikawa9616 ^| https://github.com/akikawaken/Rtm_Json_Creator
  echo ----
@@ -3160,9 +3244,28 @@ goto selectwelcome
  echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
  echo version: %version% / releaseversion: %releaseversion% / OSC: %oscmode%
+ timeout /t 1 >nul
+ echo -----
+ echo acknowledgements
+ echo このソフトウェアには、以下のソフトウェアが含まれる可能性があります。
+ echo;
+ echo = BatchSelectorUI =
+ echo BatchSelectorUI は akikawaken によって開発されました。 BatchSelectorUIは以下から確認が可能です。: https://github.com/akikawaken/BatchSelectorUI
+ echo BatchSelectorUI は MIT License によってライセンスされています。
+ echo;
+ echo MIT License
+ echo;
+ echo Copyright (c) 2024 akikawa9616
+ echo;
+ echo Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ echo;
+ echo The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ echo;
+ echo THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ echo;
  pause
  cls
- exit /b
+ goto %return%
 
 :down
  echo 開発者によるダウングレードが決定されたバージョンが検出されました。
