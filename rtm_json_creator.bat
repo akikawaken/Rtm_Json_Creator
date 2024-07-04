@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.5
+set version=1.5.1
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2651,7 +2651,7 @@ goto selectwelcome
  curl -sLJO https://github.com/akikawaken/BatchSelectorUI/releases/download/latest/BatchSelectorUI.bat
  echo %temp%\.BatchSelectorUI\exist.tscf を作成中...
  echo;>%temp%\.BatchSelectorUI\exist.tscf
- echo %temp%\.BatchSelectorUI\RJC_Setting_Text.txt に UI用文字列ファイル を作成中..
+ echo %temp%\.BatchSelectorUI\RJC_Setting_Text.txt に 設定画面UI用文字列ファイル を作成中..
  echo #設定>RJC_Setting_Text.txt
  echo @11 >>RJC_Setting_Text.txt
  echo スペシャルサンクス>>RJC_Setting_Text.txt
@@ -2666,7 +2666,7 @@ goto selectwelcome
  echo 古いUIを利用する>>RJC_Setting_Text.txt
  echo 設定終了>>RJC_Setting_Text.txt
 
- echo %temp%\.BatchSelectorUI\RJC_Setting_Text.txt に UI用ヒントファイル を作成中..
+ echo %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt に 設定画面UI用ヒントファイル を作成中..
  echo RtmJsonCreator_Setting>RJC_Setting_Hint.txt
  echo 1:開発に携わった人や、感謝すべき相手への感謝一覧を見ます。>>RJC_Setting_Hint.txt
  echo 2:RTMのアドオンフォルダを構成します。>>RJC_Setting_Hint.txt
@@ -2680,6 +2680,18 @@ goto selectwelcome
  echo 9:指定したディレクトリにパスを通します。>>RJC_Setting_Hint.txt
  echo 10:v1.5より昔の設定画面UIを利用します。>>RJC_Setting_Hint.txt
  echo 11:設定画面を閉じます。>>RJC_Setting_Hint.txt
+
+ echo %temp%\.BatchSelectorUI\RJC_supdate_Text.txt に 強化されたアップデートUI用文字列ファイル を作成中..
+ echo #バージョン変更>RJC_supdate_Text.txt
+ echo @2>>RJC_supdate_Text.txt
+ echo 最新版>>RJC_supdate_Text.txt
+ echo 特定のバージョン>>RJC_supdate_Text.txt
+ 
+ echo %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt に 強化されたアップデートUI用ヒントファイル を作成中..
+ echo RtmJsonCreator_supdate>RJC_supdate_Hint.txt
+ echo 1:現在利用しているRtmJsonCreatorが最新版であるかどうかを確認せずに、最新版をダウンロードします。>>RJC_supdate_Hint.txt
+ echo 2:特定のバージョンをダウンロード、起動します。>>RJC_supdate_Hint.txt
+ echo 2:現時点で利用可能なバージョンはGitHubのリリース機能を使ってリリースされたバージョンのみです。>>RJC_supdate_Hint.txt
  if %isBack1% == true exit /b
  popd
 
@@ -2983,7 +2995,7 @@ goto selectwelcome
  goto setting
 
  :new_settingmenu
- call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_Setting_Text.txt %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt w s p false true
+ call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt w s p false true
  if %tsv_place2% == 1 goto specialthanks
  if %tsv_place2% == 2 goto dir
  if %tsv_place2% == 3 goto supdate
@@ -2998,12 +3010,10 @@ goto selectwelcome
  goto new_settingmenu
 
  :supdate
-  if not %oscmode% == 0 goto setting
-  echo 1 強制的に最新版へアップデートする
-  echo 2 強制的に特定のバージョンへ移行させる
-  set /p settinginput=
-  if %settinginput% == 1 goto update
-  if %settinginput% == 2 goto HyperUpdate
+  if not %oscmode% == false goto setting
+  call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_supdate_Text.txt %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt w s p false true
+  if %tsv_place2% == 1 goto update
+  if %tsv_place2% == 2 goto HyperUpdate
   goto setting
  :HyperUpdate
   pushd %temp%\.RJC
