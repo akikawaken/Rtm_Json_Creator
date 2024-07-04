@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.5.4
+set version=1.5.4.1
 set releaseversion=6
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -2700,8 +2700,8 @@ goto selectwelcome
  :firstsetting_osc
  echo Done.
  timeout /t 3 >nul
- if %username% == akika (call %~dp0\rtm_json_creator.bat)
- call %~dp0\RtmJsonCreator.bat
+ if %username% == akika (call %~dp0rtm_json_creator.bat)
+ call %~dp0RtmJsonCreator.bat
 :deljson
  del /Q %temp%\.RJC\json\*
  echo Done.
