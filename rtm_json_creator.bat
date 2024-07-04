@@ -1,4 +1,4 @@
-@echo off
+
 rem (c) 2022 - 2024 akikawa9616
 set hikisu1=%1
 set hikisu2=%2
@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.5.1
+set version=1.5.2
 set releaseversion=5
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -730,7 +730,7 @@ goto selectwelcome
  for /f "delims=" %%a in (ModelTrain_%trainname%.json) do (
   echo %%a
  )
-:sign
+:2
  echo -------------------
  echo 続行すると内容が消えます。
  echo 続行してもよろしいですか?
@@ -742,7 +742,7 @@ goto selectwelcome
  goto %back%
  :21
   goto welcome
-:3
+:sign
  cls
  set tsw=S
  echo 看板のjsonを作成します。
@@ -2648,6 +2648,7 @@ goto selectwelcome
  md %temp%\.BatchSelectorUI\
  pushd %temp%\.BatchSelectorUI
  echo BatchSelectorUI をダウンロード中...
+ echo BatchSelectorUI - akikawa9616 , download from: https://github.com/akikawaken/BatchSelectorUI/releases/download/latest/BatchSelectorUI.bat
  curl -sLJO https://github.com/akikawaken/BatchSelectorUI/releases/download/latest/BatchSelectorUI.bat
  echo %temp%\.BatchSelectorUI\exist.tscf を作成中...
  echo;>%temp%\.BatchSelectorUI\exist.tscf
@@ -2683,15 +2684,17 @@ goto selectwelcome
 
  echo %temp%\.BatchSelectorUI\RJC_supdate_Text.txt に 強化されたアップデートUI用文字列ファイル を作成中..
  echo #バージョン変更>RJC_supdate_Text.txt
- echo @2>>RJC_supdate_Text.txt
+ echo @3>>RJC_supdate_Text.txt
  echo 最新版>>RJC_supdate_Text.txt
  echo 特定のバージョン>>RJC_supdate_Text.txt
+ echo キャンセル>>RJC_supdate_Text.txt
  
  echo %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt に 強化されたアップデートUI用ヒントファイル を作成中..
  echo RtmJsonCreator_supdate>RJC_supdate_Hint.txt
  echo 1:現在利用しているRtmJsonCreatorが最新版であるかどうかを確認せずに、最新版をダウンロードします。>>RJC_supdate_Hint.txt
  echo 2:特定のバージョンをダウンロード、起動します。>>RJC_supdate_Hint.txt
  echo 2:現時点で利用可能なバージョンはGitHubのリリース機能を使ってリリースされたバージョンのみです。>>RJC_supdate_Hint.txt
+ echo 3:バージョン変更 メニューを閉じます。>>RJC_supdate_Hint.txt
  if %isBack1% == true exit /b
  popd
 
@@ -2995,7 +2998,7 @@ goto selectwelcome
  goto setting
 
  :new_settingmenu
- call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt w s p false true
+ call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_Setting_Text.txt %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt w s p false true
  if %tsv_place2% == 1 goto specialthanks
  if %tsv_place2% == 2 goto dir
  if %tsv_place2% == 3 goto supdate
@@ -3011,9 +3014,11 @@ goto selectwelcome
 
  :supdate
   if not %oscmode% == false goto setting
-  call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_supdate_Text.txt %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt w s p false true
+  cls
+  call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_supdate_Text.txt %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt w s p false true
   if %tsv_place2% == 1 goto update
   if %tsv_place2% == 2 goto HyperUpdate
+  if %tsv_place2% == 3 goto setting
   goto setting
  :HyperUpdate
   pushd %temp%\.RJC
