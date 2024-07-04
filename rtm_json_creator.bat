@@ -10,8 +10,8 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.5.2
-set releaseversion=5
+set version=1.5.3
+set releaseversion=6
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 pushd %temp%\.RJC\json
@@ -3259,6 +3259,13 @@ goto selectwelcome
  echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
  echo version: %version% / releaseversion: %releaseversion% / OSC: %oscmode%
+ timeout /t 1 >nul
+ echo -----
+ echo RtmJsonCreatorホームページ: https://akikawaken.github.io/RJC/main/
+ echo;
+ echo よくある質問: https://akikawaken.github.io/Blog/RJC/yokuaru.html
+ echo;
+ echo RTMのJsonについてのドキュメント: https://akikawaken.github.io/RTM/Docs/json.html
  timeout /t 1 >nul
  echo -----
  echo acknowledgements
