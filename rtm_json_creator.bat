@@ -10,7 +10,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.5.3
+set version=1.5.4
 set releaseversion=6
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -34,8 +34,7 @@ if %latestver% == %releaseversion% goto welcome
 for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
 :welcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
-  set downver=%%c
-  if %version% == %%a ( if %%b == true ( call :down ))
+  if %version% == %%a ( call :down )
 )
 if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
 :oscwelcome
@@ -3290,6 +3289,9 @@ goto selectwelcome
  goto %return%
 
 :down
+ for /f "tokens=2 delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
+   set downver=%%a
+ )
  echo 開発者によるダウングレードが決定されたバージョンが検出されました。
  echo 以下は開発者からの説明です:
  echo;
