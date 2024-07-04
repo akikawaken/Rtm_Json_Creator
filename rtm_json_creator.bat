@@ -2702,6 +2702,7 @@ goto selectwelcome
  timeout /t 3 >nul
  if %username% == akika (call %~dp0rtm_json_creator.bat)
  call %~dp0RtmJsonCreator.bat
+ exit
 :deljson
  del /Q %temp%\.RJC\json\*
  echo Done.
