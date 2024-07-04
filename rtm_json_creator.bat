@@ -1,4 +1,4 @@
-
+@echo off
 rem (c) 2022 - 2024 akikawa9616
 set hikisu1=%1
 set hikisu2=%2
