@@ -10,8 +10,8 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.5.4.1
-set releaseversion=6
+set version=1.6
+set releaseversion=7
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
 pushd %temp%\.RJC\json
@@ -21,23 +21,20 @@ set tsw=NONE
 set setpath=%cd%
 for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 echo;
-if not exist %temp%\.RJC\osc.tscf set oscmode=true
-for /f %%a in (%temp%\.RJC\osc.tscf) do ( if %%a == 1 ( set oscmode=true) ELSE ( set oscmode=false))
 for /f %%a in (%temp%\.RJC\SettingUI.tscf) do ( if %%a == old ( set isUseNewUI=false) ELSE ( set isUseNewUI=true))
-if %oscmode% == true goto oscwelcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/version.txt') do ( 
 set latestver=%%a
 )
-if not exist %temp%\rjcupdate.tscf ( goto welcome ) 
-if exist %temp%\rjcversion.tscf ( for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a ) )
-if %latestver% == %releaseversion% goto welcome
-for /f %%a in ( %temp%\rjcupdate.tscf ) do ( call %%a\RtmJsonCreator.bat )
+if not exist %temp%\rjcupdate.tscf ( goto welcome )
+if defined isDownGraded goto welcome 
+if exist %temp%\rjcversion.tscf ( for /f %%a in ( %temp%\rjcupdate.tscf ) do ( set isDownGraded=true & call %%a ) )
+if %latestver% GEQ %releaseversion% goto welcome
+for /f %%a in ( %temp%\rjcupdate.tscf ) do ( set isDownGraded=true & call %%a\RtmJsonCreator.bat )
 :welcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
   if %version% == %%a ( call :down )
 )
 if %releaseversion% == %latestver% ( echo; ) ELSE ( set notlatest=true )
-:oscwelcome
 del %temp%\.Rtm_Json_Creator_json.tscf
 del %temp%\.ams1.tscf
 del %temp%\.ams2.tscf
@@ -168,7 +165,6 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if %oscmode% == true goto osc-mat-train
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -183,14 +179,6 @@ goto selectwelcome
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
    goto matcheck
-  :osc-mat-train
-   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
-   set /p mata=
-   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
-   echo ------------------
-   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
-  goto matcheck
  :matlast
    echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
@@ -202,7 +190,6 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if %oscmode% == true goto osc-mat-train-last
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -215,16 +202,6 @@ goto selectwelcome
    if %ERRORLEVEL% == 2 set mata=AlphaBlend
    if %ERRORLEVEL% == 3 set mata=Light
    if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
-   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
-   echo ------------------
-   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
-   echo                     ] >> ModelTrain_%trainname%.json
-   echo               }, >> ModelTrain_%trainname%.json
-   goto bogi
-  :osc-mat-train-last
-   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
-   set /p mata=
    echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
@@ -281,7 +258,6 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if %oscmode% == true goto osc-mat-train
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -296,14 +272,6 @@ goto selectwelcome
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
    goto matchecks
-  :osc-mat-bogie
-   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
-   set /p mata=
-   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
-   echo ------------------
-   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelTrain_%trainname%.json
- goto matchecks
  :matlasts
    echo 列車の3Dモデルの材質,%count%つめの名前を決めてください。
    echo 材質名を入力してください。
@@ -315,7 +283,6 @@ goto selectwelcome
    set /p mattexture=
    echo %mat% のテクスチャパスは %mattexture% に設定されました。
    echo ------------------
-   if %oscmode% == true goto osc-mat-train-last
    echo %mat% の %mattexture% にオプションをつけますか?
    echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
    CHOICE /c 0123
@@ -328,16 +295,6 @@ goto selectwelcome
    if %ERRORLEVEL% == 2 set mata=AlphaBlend
    if %ERRORLEVEL% == 3 set mata=Light
    if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
-   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
-   echo ------------------
-   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
-   echo                     ] >> ModelTrain_%trainname%.json
-   echo               }, >> ModelTrain_%trainname%.json
-   goto 1222
-  :osc-mat-bogie-last
-   echo %mat% の %mattexture% にオプションをつけますか? 使用可能: "AlphaBlend" , "Light" , "AlphaBlend,Light"
-   echo オプションを設定しない/よくわからないのならば、何も入力せずにenterしてください
-   set /p mata=
    echo %mat% の %mattexture% のオプションは %mata% に設定されました。
    echo ------------------
    echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelTrain_%trainname%.json
@@ -2585,8 +2542,6 @@ goto selectwelcome
  echo -----
  echo Create file: %temp%\.RJC\rjc.tscf
  echo;>rjc.tscf
- echo Create file: %temp%\.RJC\osc.tscf
- echo 0 >%temp%\.RJC\osc.tscf
  echo Create file: %temp%\.RJC\SettingUI.tscf
  echo old>%temp%\.RJC\SettingUI.tscf
  popd
@@ -2619,26 +2574,10 @@ goto selectwelcome
  echo setpath         指定したディレクトリにパスを通します。>>%temp%\.RJC\setting\welcome.tscf
  popd
  if %isnotconfirm% == true echo Done. & goto setting
- echo -----
- echo プログレス: オプションコマンドの確認 (3/%progress%)
- echo -----
- echo do "where choice" command
- where choice
- if %ERRORLEVEL% == 0 echo CHOICE COMMAND FOUND.
- if %ERRORLEVEL% == 1 echo CHOICE COMMAND NOT FOUND.
- if %ERRORLEVEL% == 1 echo 1>%temp%\.RJC\osc.tscf
- echo do "where curl" command
- where curl
- if %ERRORLEVEL% == 0 echo CURL COMMAND FOUND.
- if %ERRORLEVEL% == 1 echo CURL COMMAND NOT FOUND.
- if %ERRORLEVEL% == 1 echo 1>%temp%\.RJC\osc.tscf
- echo;
- for /f %%a in (%temp%\.RJC\osc.tscf) do ( if %%a == 1 ( set oscmode=true) ELSE ( set oscmode=false))
- if %oscmode% == true goto firstsetting_osc
  echo write file: %temp%\.RJC\SettingUI.tscf
  echo new>%temp%\.RJC\SettingUI.tscf
  echo -----
- echo プログレス: ライブラリのダウンロード/設定 (4/%progress%)
+ echo プログレス: ライブラリのダウンロード/設定 (3/%progress%)
  echo -----
  set isBack1=false
 
@@ -2653,7 +2592,7 @@ goto selectwelcome
  echo;>%temp%\.BatchSelectorUI\exist.tscf
  echo %temp%\.BatchSelectorUI\RJC_Setting_Text.txt に 設定画面UI用文字列ファイル を作成中..
  echo #設定>RJC_Setting_Text.txt
- echo @11 >>RJC_Setting_Text.txt
+ echo @10 >>RJC_Setting_Text.txt
  echo スペシャルサンクス>>RJC_Setting_Text.txt
  echo ディレクトリ構成>>RJC_Setting_Text.txt
  echo バージョン変更>>RJC_Setting_Text.txt
@@ -2661,7 +2600,6 @@ goto selectwelcome
  echo アンインストール>>RJC_Setting_Text.txt
  echo 自動材質設定>>RJC_Setting_Text.txt
  echo エクスプローラ>>RJC_Setting_Text.txt
- echo 互換モードをOFFにする>>RJC_Setting_Text.txt
  echo パス>>RJC_Setting_Text.txt
  echo 古いUIを利用する>>RJC_Setting_Text.txt
  echo 設定終了>>RJC_Setting_Text.txt
@@ -2675,11 +2613,9 @@ goto selectwelcome
  echo 5:RtmJsonCreatorをこのPCから排除します。>>RJC_Setting_Hint.txt
  echo 6:MQOモデルファイルのパスを入力すると、そのモデルの材質名やテクスチャを表示します。>>RJC_Setting_Hint.txt
  echo 7:explorer.exeをコールします。>>RJC_Setting_Hint.txt
- echo 8:一部のコマンドを実行しないようにするモードをOFFにします。>>RJC_Setting_Hint.txt
- echo 8:これを実行すると古いUIのみ利用可能になります。>>RJC_Setting_Hint.txt
- echo 9:指定したディレクトリにパスを通します。>>RJC_Setting_Hint.txt
- echo 10:v1.5より昔の設定画面UIを利用します。>>RJC_Setting_Hint.txt
- echo 11:設定画面を閉じます。>>RJC_Setting_Hint.txt
+ echo 8:指定したディレクトリにパスを通します。>>RJC_Setting_Hint.txt
+ echo 9:v1.5より昔の設定画面UIを利用します。>>RJC_Setting_Hint.txt
+ echo 10:設定画面を閉じます。>>RJC_Setting_Hint.txt
 
  echo %temp%\.BatchSelectorUI\RJC_supdate_Text.txt に 強化されたアップデートUI用文字列ファイル を作成中..
  echo #バージョン変更>RJC_supdate_Text.txt
@@ -2696,8 +2632,6 @@ goto selectwelcome
  echo 3:バージョン変更 メニューを閉じます。>>RJC_supdate_Hint.txt
  if %isBack1% == true exit /b
  popd
-
- :firstsetting_osc
  echo Done.
  timeout /t 3 >nul
  if %username% == akika (call %~dp0rtm_json_creator.bat)
@@ -2945,7 +2879,6 @@ goto selectwelcome
 :setting
  cls
  set return=setting
- if %oscmode% == true goto old_settingmenu
  if %isUseNewUI% == true goto new_settingmenu
  :old_settingmenu
  set count=0
@@ -2961,7 +2894,6 @@ goto selectwelcome
  echo    6  削除/アンインストール
  echo    7  自動材質設定の初期版を利用する
  echo    8  explorer.exeをコールする
- echo    9  互換モードを切り替える
  echo   10  パスを通す
  echo   11  新しいUIを利用する (互換モードだと使えません!!)
  rem echo   12  
@@ -2990,7 +2922,6 @@ goto selectwelcome
  if %settinginput% == 6 goto deletes
  if %settinginput% == 7 goto useams
  if %settinginput% == 8 start explorer.exe %setpath%
- if %settinginput% == 9 goto turnosc
  if %settinginput% == 10 call :setpath
  if %settinginput% == 11 call :setting_enableNewUI
  if %settinginput% == rexit pushd %from% & call cmd.exe & exit
@@ -2999,6 +2930,7 @@ goto selectwelcome
 
  :new_settingmenu
  call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_Setting_Text.txt %temp%\.BatchSelectorUI\RJC_Setting_Hint.txt w s p false true
+ if %ERRORLEVEL% == 0 start %~dp0RtmJsonCreator.bat & exit
  if %tsv_place2% == 1 goto specialthanks
  if %tsv_place2% == 2 goto dir
  if %tsv_place2% == 3 goto supdate
@@ -3006,14 +2938,14 @@ goto selectwelcome
  if %tsv_place2% == 5 goto deletes
  if %tsv_place2% == 6 goto useams
  if %tsv_place2% == 7 start explorer.exe %setpath%
- if %tsv_place2% == 8 goto turnosc
- if %tsv_place2% == 9 call :setpath
- if %tsv_place2% == 10 call :setting_disableNewUI
- if %tsv_place2% == 11 goto startrjc
- goto new_settingmenu
+ if %tsv_place2% == 8  call :setpath
+ if %tsv_place2% == 9 call :setting_disableNewUI
+ if %tsv_place2% == 10 goto startrjc
+
+ start %~dp0RtmJsonCreator.bat
+ exit
 
  :supdate
-  if not %oscmode% == false goto setting
   cls
   call %temp%\.BatchSelectorUI\BatchSelectorUI.bat true %temp%\.BatchSelectorUI\RJC_supdate_Text.txt %temp%\.BatchSelectorUI\RJC_supdate_Hint.txt w s p false true
   if %tsv_place2% == 1 goto update
@@ -3022,6 +2954,9 @@ goto selectwelcome
   goto setting
  :HyperUpdate
   pushd %temp%\.RJC
+  echo 注意: ダウングレード対象は当時提供された状態で現在も提供されるため、バグや謎仕様が存在する可能性がありますが、作者は一切の責任を負いません。
+  echo 注意: cURLコマンドが無限に実行される場合、すぐにCTRL+Cまたはxボタンで動作を停止させてください。
+  echo;
   curl https://akikawaken.github.io/RJC/VC/DownloadList.tscf
   popd
   echo;
@@ -3222,14 +3157,7 @@ goto selectwelcome
   timeout /t 3
   start %temp%\deleterjc.bat
   exit
-
- :turnosc
-  if %oscmode% == true echo 0>%temp%\.RJC\osc.tscf
-  if %oscmode% == false echo 1>%temp%\.RJC\osc.tscf
-  goto startrjc
-
  :setting_enableNewUI
-  if %oscmode% == true (echo 互換モードが有効なため、利用できません。 & goto old_settingmenu)
   if not exist %temp%\.BatchSelectorUI\BatchSelectorUI.bat set isBack1=true & call :downloadBatchSelectorUI
   set isUseNewUI=true
   echo new>%temp%\.RJC\SettingUI.tscf
@@ -3258,7 +3186,7 @@ goto selectwelcome
  echo このプログラムはMITライセンスで公開されています。
  echo MIT License全文は行動選択画面で"License"を入力してください。
  echo;
- echo version: %version% / releaseversion: %releaseversion% / OSC: %oscmode%
+ echo version: %version% / releaseversion: %releaseversion%
  timeout /t 1 >nul
  echo -----
  echo RtmJsonCreatorホームページ: https://akikawaken.github.io/RJC/main/
