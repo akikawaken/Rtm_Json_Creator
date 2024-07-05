@@ -2525,7 +2525,7 @@ goto selectwelcome
  goto rail
 :firstsetting
  set isnotconfirm=false
- set progress=4
+ set progress=3
  echo 初期設定を行っています...
  echo -----
  echo プログレス: RtmJsonCreatorのディレクトリを構成 (1/%progress%)
