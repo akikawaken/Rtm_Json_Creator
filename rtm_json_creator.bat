@@ -5,12 +5,16 @@ set hikisu2=%2
 set hikisu3=%3
 set hikisu4=%4
 set hikisu5=%5
+set hikisu6=%6
+set hikisu7=%7
+set hikisu8=%8
+set hikisu9=%9
 rem if defined hikisu1 (goto hikisu )
 :sof
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.6
+set version=1.6.3.2
 set releaseversion=7
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -1190,6 +1194,7 @@ goto selectwelcome
  for /f "delims=" %%a in (ModelNPC_%name%) do (
   echo %%a
  )
+ pause
  goto 2
 :flag
  cls
@@ -1447,17 +1452,34 @@ goto selectwelcome
  echo;
  set /p directry=
  pushd %directry%
+ md RTM\assets
+ md RTM\assets\minecraft
+ md RTM\assets\minecraft\models
  md RTM\assets\minecraft\models\json
  md RTM\assets\minecraft\scripts
+ md RTM\assets\minecraft\scripts\gui
+ md RTM\assets\minecraft\scripts\server
+ md RTM\assets\minecraft\shaders
+ md RTM\assets\minecraft\textures
+ md RTM\assets\minecraft\textures\connector
  md RTM\assets\minecraft\textures\container
+ md RTM\assets\minecraft\textures\decoration
+ md RTM\assets\minecraft\textures\ebb
+ md RTM\assets\minecraft\textures\firearm
+ md RTM\assets\minecraft\textures\flag
+ md RTM\assets\minecraft\textures\gui
  md RTM\assets\minecraft\textures\machine
+ md RTM\assets\minecraft\textures\mechanism
+ md RTM\assets\minecraft\textures\npc
+ md RTM\assets\minecraft\textures\ornament
  md RTM\assets\minecraft\textures\rail
  md RTM\assets\minecraft\textures\rrs
  md RTM\assets\minecraft\textures\signal
  md RTM\assets\minecraft\textures\signboard
  md RTM\assets\minecraft\textures\train
- md RTM\assets\minecraft\textures\npc
- md RTM\mods\RTM\train
+ md RTM\assets\minecraft\textures\vehicle
+ md RTM\assets\minecraft\textures\wire
+ md RTM\assets\minecraft\timetable
  pushd %directry%\RTM
  tree
  echo どう? できた?
@@ -2452,6 +2474,162 @@ goto selectwelcome
   if %user% == 3 echo F | xcopy %tempfile% %setpath%\ModelVehicle_%name%.json /V /C /F /-Y
   goto car_json
  
+:mechanism
+ echo 機構のJsonを作成します。
+ echo これはJSONが自動保存されます。 ModelMechanism_%%name%%.json にできるはずです。
+ echo -----------------
+ echo nameを決めてください。
+ set /p name=
+ echo nameは %name% に設定されました。
+ echo { > ModelMechanism_%name%.json
+ echo    "name": "%name%", >> ModelMechanism_%name%.json
+ echo ------------------
+ echo 機構モデルファイルのパスを入力してください。
+ echo これは変数を使用せず、 C:\rtm\assets\minecraft\models\bogie.mqo の形式で入力してください。
+ echo %ESC%[7m必ず / (スラッシュ)ではなく \ (バックスラッシュ)を使用してください。%ESC%[0m
+ set /p modelFile=
+ rem check format
+ if %modelfile:~-4% == mqoz goto mat_oldmecha
+ if %modelfile:~-3% == obj goto mat_oldmecha
+ if %modelfile:~-4% == ngto goto mat_oldmecha
+ if %modelfile:~-4% == ngtz goto mat_oldmecha
+ rem format end
+ setlocal enabledelayedexpansion
+ for %%a in ("%modelFile%") do set "filename=%%~nxa"
+ echo     "modelFile": "!filename:~0,-4!", >> ModelMechanism_%name%.json
+ endlocal
+ set return=mecha
+ set filename=ModelMechanism_%name%.json
+ goto ams
+  :mat_oldmecha
+   echo modelFileを決めてください。
+   echo 機構の3Dモデルのファイル名を"拡張子あり"で入力してください。
+   set /p modelFile=
+   echo modelFileは %modelFile% に設定されました。
+   echo  "model":{ >> ModelMechanism_%name%.json
+   echo     "modelFile": "%modelFile%", >> ModelMechanism_%name%.json
+   echo          "textures":[>> ModelMechanism_%name%.json
+   echo ------------------
+   set count=0
+  :matcountsettingmecha
+   set /p matcount=機構モデルの材質数を入力してください
+   echo 材質数は %matcount% に設定されました。
+  :matcheckmecha
+   if %matcount% == 1 goto matlastmecha
+   if %matcount% equ %count% ( goto matlastmecha ) ELSE ( goto matsettingmecha )
+  :matsettingmecha
+   set /a count=%count%+1
+   echo ------------------
+   echo 機構の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
+   echo ------------------
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
+   echo ------------------
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo ------------------
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""], >> ModelMechanism_%name%.json
+   if %ERRORLEVEL% == 1 goto matcheckmecha
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"], >> ModelMechanism_%name%.json
+   goto matcheckmecha
+ :matlastmecha
+   echo 機構の3Dモデルの材質,%count%つめの名前を決めてください。
+   echo 材質名を入力してください。
+   set /p mat=
+   echo 材質,%count%つめの名前は %mat% に設定されました。
+   echo ------------------
+   echo %mat% のテクスチャへのパスを記述してください。(普通であれば、 textures/train/traintexture.png などになります。)
+   echo オプションは次で設定します。
+   set /p mattexture=
+   echo %mat% のテクスチャパスは %mattexture% に設定されました。
+   echo ------------------
+   echo %mat% の %mattexture% にオプションをつけますか?
+   echo "オプションなし" の場合は 0 を、 "AlphaBlend" の場合は 1 を、 "Light" は 2 を、 "AlphaBlend,Light" は 3 を押してください。
+   CHOICE /c 0123
+   if %ERRORLEVEL% == 1 echo %mat% の %mattexture% のオプションは (なし) に設定されました。
+   if %ERRORLEVEL% == 1 echo ------------------
+   if %ERRORLEVEL% == 1 echo                      ["%mat%", "%mattexture%", ""] >> ModelMechanism_%name%.json
+   if %ERRORLEVEL% == 1 echo                     ] >> ModelMechanism_%name%.json
+   if %ERRORLEVEL% == 1 echo               }, >> ModelMechanism_%name%.json
+   if %ERRORLEVEL% == 1 goto mecha
+   if %ERRORLEVEL% == 2 set mata=AlphaBlend
+   if %ERRORLEVEL% == 3 set mata=Light
+   if %ERRORLEVEL% == 4 set mata=AlphaBlend,Light
+   echo %mat% の %mattexture% のオプションは %mata% に設定されました。
+   echo ------------------
+   echo                      ["%mat%", "%mattexture%", "%mata%"] >> ModelMechanism_%name%.json
+   echo                     ] >> ModelMechanism_%name%.json
+   echo               }, >> ModelMechanism_%name%.json
+   goto mecha
+ :mecha
+ echo buttontextureを決めてください。
+ set /p button=
+ echo ボタンテクスチャへのパスは %button% に設定されました。
+ echo  "buttonTexture": "%button%", >> ModelMechanism_%name%.json
+ echo ------------------
+ echo typeを決めてください。
+ echo 選択可能な選択肢は以下の通りです(大文字指定):
+ echo TRANSMISSION,GEAR,POWER,PULLEY
+ set /p type=
+ echo typeは %type% に設定されました。
+ echo  "type": "%type%", >> ModelMechanism_%name%.json
+ echo ------------------
+ set count=0
+ :transmissionRatioON
+ set /a count=%count% + 1
+ echo transmissionRatioON , %count% つめを決めてください。
+ set /p transmissionRatioON%count%=
+ echo %transmissionRatioON% に指定されました。
+ echo ------------------
+ if not %count% == 5 goto transmissionRatioON
+ set count=0
+ :transmissionRatioOFF
+ set /a count=%count% + 1
+ echo transmissionRatioOFF , %count% つめを決めてください。
+ set /p transmissionRatioOFF%count%=
+ echo %transmissionRatioOFF% に指定されました。
+ echo ------------------
+ if not %count% == 5 goto transmissionRatioOFF
+ echo  "transmissionRatioON": [%transmissionRatioON1%,%transmissionRatioON2%,%transmissionRatioON3%,%transmissionRatioON4%,%transmissionRatioON5%], >> ModelMechanism_%name%.json
+ echo  "transmissionRatioOFF": [%transmissionRatioOFF1%,%transmissionRatioOFF2%,%transmissionRatioOFF3%,%transmissionRatioOFF4%,%transmissionRatioOFF5%], >> ModelMechanism_%name%.json
+ echo maxSpeedを決めてください。
+ set /p maxSpeed=
+ echo  "maxSpeed": %maxSpeed%, >> ModelMechanism_%name%.json
+ echo ------------------
+ echo accelerationを決めてください。
+ set /p acceleration=
+ echo  "acceleration": %acceleration%, >> ModelMechanism_%name%.json
+ if %type% == GEAR echo ------------------
+ if %type% == GEAR echo teethCountを決めてください。
+ if %type% == GEAR set /p teethCount=
+ if %type% == GEAR echo  "teethCount": %teethCount%, >> ModelMechanism_%name%.json
+ echo ------------------
+ echo radiusを決めてください。
+ set /p radius=
+ echo  "radius": %radius% >> ModelMechanism_%name%.json
+ echo } >> ModelMechanism_%name%.json
+ echo ------------------
+ :mechanismjson
+  set back=mechanismjson
+  echo -----Path:%setpath%\ModelMechanism_%name%.json-----
+  for /f "delims=" %%a in (ModelMechanism_%name%.json) do (
+  echo %%a
+  )
+  pause
+  goto 2
+
 :soundcreate
  echo このサウンドクリエイト機能はsounds.jsonの作成テストに使用するためのものです。
  echo sound.logファイルを削除する必要がありますか? (必要ない場合は今すでにあるものに+で作成されます,例えば、99行のファイルが既に存在していて5行追加したい場合は必要なしを選択することで99行にプラスで5行を書き加えることができます。)
@@ -2941,7 +3119,6 @@ goto selectwelcome
  if %tsv_place2% == 8  call :setpath
  if %tsv_place2% == 9 call :setting_disableNewUI
  if %tsv_place2% == 10 goto startrjc
-
  start %~dp0RtmJsonCreator.bat
  exit
 
