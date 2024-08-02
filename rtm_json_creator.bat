@@ -14,7 +14,7 @@ rem if defined hikisu1 (goto hikisu )
 set from=%cd%
 :startrjc
 title RtmJsonCreator.bat
-set version=1.6.3.2
+set version=1.6.3.3
 set releaseversion=7
 rem 人生Tips: version変数は普通にバージョンを表すが、releaseversion変数はv1.1を1としたリリースのバージョン。
 rem CLIアップデートはリリースバージョンが上がった時のみ実行可能.
@@ -77,7 +77,6 @@ if %start% == 18 goto car
 if %start% == setpath call :setpath
 if %start% == setting goto setting
 if %start% == explorer start explorer.exe %setpath%
-if %start% == License goto License
 if %start% == update goto update
 rem 以下の機能は将来、削除されるか変更となる可能性があります。
 if %start% == 999 goto soundcreate
@@ -87,6 +86,38 @@ if %start% == ams goto useams
 rem 試験的機能の終焉
 echo エラー:不明な番号です。
 goto selectwelcome
+
+:new_welcome
+
+ if %tsv_place2% == 1 goto train
+ if %tsv_place2% == 2 goto sign
+ if %tsv_place2% == 3 goto machine
+ if %tsv_place2% == 4 goto npc
+ if %tsv_place2% == 5 goto flag
+ if %tsv_place2% == 6 goto signal
+ if %tsv_place2% == 7 goto rail
+ if %tsv_place2% == 8 goto contami
+ if %tsv_place2% == 9 goto gun
+ if %tsv_place2% == 10 goto connector
+ if %tsv_place2% == 11 goto wire
+ if %tsv_place2% == 12 goto car
+ if %tsv_place2% == 13 goto sound
+ if %tsv_place2% == 14 goto pack
+ if %tsv_place2% == 15 goto setting
+ if %tsv_place2% == 16 echo exit /b を使用してRtmJsonCreatorに戻ることができます。 & pushd %from% & call cmd.exe & popd
+ if %tsv_place2% == 17 call :setpath
+ if %tsv_place2% == 18 goto 
+ if %tsv_place2% == 19 goto 
+ if %tsv_place2% == 20 goto 
+ if %tsv_place2% == 21 goto 
+ if %tsv_place2% == 22 goto 
+ if %tsv_place2% == 23 goto 
+ if %tsv_place2% == 24 goto 
+ if %tsv_place2% == 25 goto 
+ if %tsv_place2% == 26 goto 
+
+ 
+
 :train
  cls
  set tsw=t
@@ -2808,6 +2839,37 @@ goto selectwelcome
  echo 2:特定のバージョンをダウンロード、起動します。>>RJC_supdate_Hint.txt
  echo 2:現時点で利用可能なバージョンはGitHubのリリース機能を使ってリリースされたバージョンのみです。>>RJC_supdate_Hint.txt
  echo 3:バージョン変更 メニューを閉じます。>>RJC_supdate_Hint.txt
+
+ rem echo %temp%\.BatchSelectorUI\RJC_welcome_Text.txt に welcome画面UI用ヒントファイル を作成中..
+ rem echo #Rtm_Json_Creatorへようこそ!_行動を選択してください>RJC_welcome_Text.txt
+ rem echo @26
+ rem echo 列車
+ rem echo 看板
+ rem echo 機能あり/なし設置物
+ rem echo NPC
+ rem echo 旗
+ rem echo 信号機
+ rem echo レール
+ rem echo コンテナ
+ rem echo 火器
+ rem echo コネクタ
+ rem echo ワイヤ
+ rem echo 乗り物
+ rem echo sounds.json
+ rem echo pack.json
+ rem echo 設定
+ rem echo cmd.exe
+ rem echo setpath
+ rem echo 
+ rem echo 
+ rem echo 
+ rem echo 
+ rem echo 
+ rem echo 
+ rem echo 
+ rem echo 
+ rem echo 
+
  if %isBack1% == true exit /b
  popd
  echo Done.
@@ -2994,8 +3056,8 @@ goto selectwelcome
  if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
  if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% },  & goto renda
  if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% },  & goto renda
- if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} >>%temp%\.ams2.tscf
- if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]} >>%temp%\.ams2.tscf
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams2.tscf
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams2.tscf
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} 
  if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}
  :renda
@@ -3360,17 +3422,17 @@ goto selectwelcome
  echo  参考文献
  echo   -- RTMモデルパック作成マニュアル_2.4.8_1.pdf ^| 著 ngt5479 ^| 2019/06/25
  echo;
- echo このプログラムはMITライセンスで公開されています。
- echo MIT License全文は行動選択画面で"License"を入力してください。
+ echo このソフトウェアはMITライセンスで公開されています。
+ echo ライセンス本文は以下を参照してください(リンクは短縮リンクです): https://akikawaken.github.io/s/rjcclilicense
  echo;
  echo version: %version% / releaseversion: %releaseversion%
  timeout /t 1 >nul
  echo -----
  echo RtmJsonCreatorホームページ: https://akikawaken.github.io/RJC/main/
  echo;
- echo よくある質問: https://akikawaken.github.io/Blog/RJC/yokuaru.html
+ echo よくある質問: https://akikawaken.github.io/Blog/RJC/yokuaru
  echo;
- echo RTMのJsonについてのドキュメント: https://akikawaken.github.io/RTM/Docs/json.html
+ echo RTMのJsonについてのドキュメント: https://akikawaken.github.io/RTM/Docs/json
  timeout /t 1 >nul
  echo -----
  echo acknowledgements
