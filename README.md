@@ -36,7 +36,7 @@ curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/upda
 *画像をクリックすると作成Json選択ページに飛びます。
 
 # 対応可否
-**バージョン:1.4.1.1 , 2024-06-26時点.**
+**バージョン:1.6.3.3 , 2024-08-03時点.**
 ## 対応しています
 - 列車 (一部の項目は利用できません)
 - 看板
@@ -55,7 +55,6 @@ curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/upda
 - 船舶
 - リフト
 - ワイヤー
-## 対応していません
 - 機構
 
 # LICENSE 
