@@ -74,6 +74,7 @@ if %start% == 15 goto gun
 if %start% == 16 goto connector
 if %start% == 17 goto wire
 if %start% == 18 goto car
+if %start% == 19 goto mechanism
 if %start% == setpath call :setpath
 if %start% == setting goto setting
 if %start% == explorer start explorer.exe %setpath%
@@ -2778,6 +2779,7 @@ goto selectwelcome
  echo      16         コネクターのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
  echo      17         ワイヤーのjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
  echo      18         乗り物(自動車,航空機,船舶,リフト)のjsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
+ echo      19         機構のJsonを作成します。>>%temp%\.RJC\setting\welcome.tscf
  echo setting         設定画面を開きます。>>%temp%\.RJC\setting\welcome.tscf
  echo     cmd         cmd.exeをコールします。>>%temp%\.RJC\setting\welcome.tscf
  echo setpath         指定したディレクトリにパスを通します。>>%temp%\.RJC\setting\welcome.tscf
