@@ -32,7 +32,7 @@ set latestver=%%a
 if not exist %temp%\rjcupdate.tscf ( goto welcome )
 if defined isDownGraded goto welcome 
 if exist %temp%\rjcversion.tscf ( for /f %%a in ( %temp%\rjcupdate.tscf ) do ( set isDownGraded=true & call %%a ) )
-if %latestver% GEQ %releaseversion% goto welcome
+if %latestver% LEQ %releaseversion% goto welcome
 for /f %%a in ( %temp%\rjcupdate.tscf ) do ( set isDownGraded=true & call %%a\RtmJsonCreator.bat )
 :welcome
 for /f "delims=@" %%a in ('curl https://akikawaken.github.io/RJC/VC/down.txt') do (
