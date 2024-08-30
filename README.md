@@ -30,10 +30,14 @@ curl -sLJO https://github.com/akikawaken/Rtm_Json_Creator/releases/download/upda
 不明なファイル/危険なファイルとして起動がブロックされることがあります。 その場合、詳細から続行するをクリックして起動してください。  
 もし、このバッチファイルが危険に見えるのならば、githubでコードを覗いてみてください。 あなたがバッチを理解できるのならば、危険ではないことがわかるはずです。  
 
-# GUI版頑張って作ってます
+# ホムペジ
+
+https://akikawaken.github.io/RJC/main/
+
+↓これはGUI版のページ
+
 [![どんなもんか見てみる](https://raw.githubusercontent.com/akikawaken/images/main/RJC/nyan.png)](https://akikawaken.github.io/RJC/Json/)
 *画像はイメージです。  
-*画像をクリックすると作成Json選択ページに飛びます。
 
 # 対応可否
 **バージョン:1.6.3.3 , 2024-08-03時点.**
