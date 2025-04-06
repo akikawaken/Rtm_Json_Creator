@@ -3060,8 +3060,8 @@ goto selectwelcome
  if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% },  & goto renda
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams2.tscf
  if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}, >>%temp%\.ams2.tscf
- if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]} 
- if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]}
+ if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]},
+ if !option! == null echo       [!matname!, "%texturedir%/!texture!", ""]]},
  :renda
  endlocal
  set matcount=1
