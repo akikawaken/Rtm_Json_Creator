@@ -3054,8 +3054,8 @@ goto selectwelcome
  if !option! == 4 set option=AlphaBlend,Light,OneTex
  :amsdummy1
  set dummy=false
- if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
- if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% } >>%temp%\.ams2.tscf  
+ if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% }, >>%temp%\.ams2.tscf  
+ if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% }, >>%temp%\.ams2.tscf  
  if not !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]],"rendererPath": %rendererPath% },  & goto renda
  if !option! == null if not %rendererPath% == null echo       [!matname!, "%texturedir%/!texture!", ""]],"rendererPath": %rendererPath% },  & goto renda
  if not !option! == null echo       [!matname!, "%texturedir%/!texture!", "!option!"]]}, >>%temp%\.ams2.tscf
